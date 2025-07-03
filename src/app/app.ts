@@ -1,12 +1,25 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterOutlet, RouterModule, Router } from '@angular/router';
+import { FlowbiteService } from './core/services/flowbite.service';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [RouterOutlet, RouterModule],
+  template: ` <router-outlet />
+  `,
 })
-export class App {
-  protected title = 'app-multi_acueductos';
+export class App implements OnInit {
+  constructor(
+    private readonly flowbiteService: FlowbiteService,
+    private readonly router: Router
+  ) {}
+
+  title = 'app-multi-acueductos';
+
+  ngOnInit(): void {
+    this.flowbiteService.loadFlowbite((flowbite) => {
+      initFlowbite();
+    });
+  }
 }
