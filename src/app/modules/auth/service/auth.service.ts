@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Inject, Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment.local";
 import { END_POINT_SERVICE } from "../../../environments/environment.variables";
 import { HttpClient } from "@angular/common/http";
@@ -13,8 +13,9 @@ import { Router } from "@angular/router";
 })
 export class AuthService {
     private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.POST_AUTH_USER}`;
-
-    constructor(private http: HttpClient, private router: Router) {}
+    
+    protected readonly router= inject(Router)
+    protected readonly http= inject(HttpClient)
 
     login(nombre: string, contrasena: string): Observable<ApiResponse<Iuser>> {
     const body = { username: nombre, contrasena };

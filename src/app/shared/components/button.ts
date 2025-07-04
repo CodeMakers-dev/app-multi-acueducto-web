@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-  <button (click)="clicked.emit()" [class]="class()">
+  <button (click)="clicked.emit()" [class]="class()" >
     <ng-content></ng-content>
   </button>
   `,
