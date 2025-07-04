@@ -17,8 +17,8 @@ export class AuthService {
     protected readonly router= inject(Router)
     protected readonly http= inject(HttpClient)
 
-    login(nombre: string, contrasena: string): Observable<ApiResponse<Iuser>> {
-    const body = { username: nombre, contrasena };
+    login(username: string, password: string): Observable<ApiResponse<Iuser>> {
+    const body = { username: username, password };
 
     return this.http.post<ApiResponse<Iuser>>(this.apiUrl, body).pipe(
       mergeMap((response: ApiResponse<Iuser>) => {
