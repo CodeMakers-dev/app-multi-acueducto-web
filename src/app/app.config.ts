@@ -3,12 +3,16 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay, withIncrementalHydration } from '@angular/platform-browser';
+import { provideHttpClient} from '@angular/common/http';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes), provideClientHydration(withEventReplay(), withIncrementalHydration())
+    provideRouter(routes), 
+    provideClientHydration(withEventReplay(), 
+    withIncrementalHydration())
   ]
 };
