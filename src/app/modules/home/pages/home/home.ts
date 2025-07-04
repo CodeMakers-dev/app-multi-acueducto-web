@@ -9,13 +9,14 @@ import { Welcome } from '@components/welcome';
   template: `
     <app-header></app-header>
     <app-Welcome></app-Welcome>
-    @defer (on viewport) {
-    <app-footer></app-footer>
+     <app-footer></app-footer>
+    <!-- @defer (on viewport) {
+   
     }@placeholder {
     <div style="height: 1000px; background-color: lightblue;">
       <p>Loading...</p>
     </div>
-    }
+    } -->
   `,
 })
 export class Home {}
