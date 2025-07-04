@@ -9,9 +9,9 @@ import { Welcome } from '@components/welcome';
   template: `
     <app-header></app-header>
     <app-Welcome></app-Welcome>
-     <app-footer></app-footer>
+    <app-footer></app-footer>
+    
     <!-- @defer (on viewport) {
-   
     }@placeholder {
     <div style="height: 1000px; background-color: lightblue;">
       <p>Loading...</p>

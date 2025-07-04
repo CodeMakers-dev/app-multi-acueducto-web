@@ -15,6 +15,10 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/auth/auth.route').then(m => m.default)
   },
   {
+    path: 'start',
+    loadChildren: () => import('./modules/start/start.route').then(m => m.default)
+  },
+  {
     path: '**',
     redirectTo: '/home'
   }
