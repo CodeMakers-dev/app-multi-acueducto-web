@@ -49,17 +49,21 @@
                         ¿Olvidaste tu contraseña?
                     </a>
 
-                    <button type="submit"
+                    <!-- <button type="submit"
                         class="cursor-pointer w-1/2 bg-[#3388f5] hover:bg-blue-700 text-white text-sm font-medium py-1.5 rounded-lg mb-2 mx-auto block">
                         Iniciar Sesión
-                    </button>
+                    </button> -->
+                    <app-button type="submit" [class]="'cursor-pointer w-1/2 bg-[#3388f5] hover:bg-blue-700 text-white text-sm font-medium py-1.5 rounded-lg mb-2 mx-auto block'">
+                        Iniciar Sesión
+                    </app-button>
 
                     <div class="text-center">
-                        <a href="#" class="text-[#3388f5] hover:underline">Regístrate</a>
+                        <!-- <a href="#" class="text-[#3388f5] hover:underline">Regístrate</a> -->
+                         <app-link [link]="'#'" class="text-[#3388f5] hover:underline">Regístrate</app-link>
                     </div>
                 </form>
             </div>
-        </div>
+        </div> 
 
         <div class="relative w-full h-[120px] mt-auto">
             <svg class="absolute w-full h-full" viewBox="0 0 924 120" preserveAspectRatio="none">
