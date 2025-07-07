@@ -8,7 +8,7 @@ import { Image } from '@shared/components/image';
   imports: [Image],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <footer class="bg-gradient-to-br from-blue-800 via-blue-600 to-blue-500">
+    <footer class="bg-[linear-gradient(182deg,_rgba(3,53,152,1)_0%,_rgba(41,117,225,1)_100%)] text-white p-6">
       <div
         class="max-w-screen-lg py-10 px-4 pb-0 pt-0 sm:px-6 text-white sm:flex justify-between mx-auto">
         <div class="w-full text-center py-8">

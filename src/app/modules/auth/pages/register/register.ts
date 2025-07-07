@@ -22,11 +22,11 @@ export class Register implements OnInit {
   isLoading: boolean = false;
   addresses: IAddress[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private addressService: AddressService) {}
 
   ngOnInit(): void {
     this.initializeForm();
-    // this.loadAddresses();
+    this.loadAddresses();
   }
 
   private initializeForm(): void {
@@ -40,17 +40,17 @@ export class Register implements OnInit {
     });
   }
 
-  // private loadAddresses(): void {
-  //   this.addressService.getAllAddresses().subscribe({
-  //     next: (data) => {
-  //       this.addresses = data;
-  //       console.log('Direcciones cargadas:', this.addresses);
-  //     },
-  //     error: (err) => {
-  //       console.error('Error al cargar direcciones:', err);
-  //     }
-  //   });
-  // }
+  private loadAddresses(): void {
+    this.addressService.getAllAddresses().subscribe({
+      next: (data) => {
+        this.addresses = data;
+        console.log('Direcciones cargadas:', this.addresses);
+      },
+      error: (err) => {
+        console.error('Error al cargar direcciones:', err);
+      }
+    });
+  }
 
   onSubmit(): void {
     if (this.registroForm.valid) {
