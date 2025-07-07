@@ -8,6 +8,7 @@ import { ApiResponse } from '@interfaces/Iresponse';
 import { Iuser } from '@interfaces/Iuser';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -22,9 +23,9 @@ export class Login {
   password: string = '';
 
   constructor(
-  private router: Router,
-  private authService: AuthService
-) {}
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -56,21 +57,30 @@ export class Login {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Credenciales incorrectas',
-            text: resp.message || 'Usuario o contraseña incorrectos',
+            title: 'Error de autenticación',
+            text: resp.message || 'Credenciales inválidas',
             confirmButtonColor: '#d33',
           });
         }
       },
-      error: () => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error de conexión',
-          text: 'Error en la comunicación con el servidor',
-          confirmButtonColor: '#d33',
-        });
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 401) {
+          const errorMessage = err.error && err.error.message ? err.error.message : 'Credenciales inválidas';
+          Swal.fire({
+            icon: 'error',
+            title: 'Credenciales incorrectas',
+            text: errorMessage,
+            confirmButtonColor: '#d33',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'Error en la comunicación con el servidor. Por favor, intenta de nuevo más tarde.',
+            confirmButtonColor: '#d33',
+          });
+        }
       },
     });
   }
-
 }

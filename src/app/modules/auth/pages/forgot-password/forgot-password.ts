@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../service/user.service';
 import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-forgot-password',
@@ -38,10 +39,8 @@ export class ForgotPassword {
           text: 'Por favor, ingresa una dirección de correo válida.',
         });
       }
-
       return;
     }
-
     const correo = this.form.get('correo')?.value;
     this.userService.recoverPassword(correo).subscribe({
       next: (res) => {
@@ -59,15 +58,25 @@ export class ForgotPassword {
           });
         }
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         console.error('Error en el backend:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error de servidor',
-          text: 'Ocurrió un error al intentar enviar el correo.',
-        });
+        if (err.status === 404) {
+          const errorMessage = err.error && err.error.message ? err.error.message : 'Correo no encontrado o inactivo.';
+          Swal.fire({
+            icon: 'error',
+            title: 'Correo no encontrado',
+            text: errorMessage,
+            confirmButtonColor: '#d33',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de servidor',
+            text: 'Ocurrió un error al intentar enviar el correo. Por favor, intenta de nuevo más tarde.',
+            confirmButtonColor: '#d33',
+          });
+        }
       }
     });
   }
-
 }
