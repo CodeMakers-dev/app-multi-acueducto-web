@@ -29,9 +29,9 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
               cumpliendo con la DIAN de manera automática.
             </p>
             <button
-              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              class="bg-[linear-gradient(182deg,_rgba(3,53,152,1)_0%,_rgba(41,117,225,1)_100%)] text-white p-2 rounded-lg"
             >
-              Conocer más
+              Conoce más
             </button>
           </div>
           <div class="order-first lg:order-last">
