@@ -32,9 +32,13 @@ export class RecoverPassword {
 
   constructor() {
     this.form = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
-    });
+  password: ['', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.])[A-Za-z\d@$!%*?&\-_.]{8,}$/)
+  ]],
+  confirmPassword: ['', Validators.required],
+});
 
     this.route.queryParams.subscribe(params => {
       this.token = params['token'] || '';
@@ -42,33 +46,34 @@ export class RecoverPassword {
     });
   }
 
-  onSubmit(): void { 
-    if (this.form.invalid) {
-      Swal.fire('Error', 'Todos los campos son obligatorios', 'error');
-      return;
-    }
-
-    const { password, confirmPassword } = this.form.value;
-
-    if (password !== confirmPassword) {
-      Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
-      return;
-    }
-
-    this.userService.updatePasswordByToken(this.token, password).subscribe({
-      next: res => {
-        if (res.success) {
-          Swal.fire('Éxito', res.message, 'success').then(() => {
-            this.router.navigate(['/auth/login']);
-          });
-        } else {
-          Swal.fire('Error', res.message, 'error');
-        }
-      },
-      error: err => {
-        console.error(err);
-        Swal.fire('Error', 'Error actualizando contraseña', 'error');
-      }
-    });
+  onSubmit(): void {
+  const { password, confirmPassword } = this.form.value;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.])[A-Za-z\d@$!%*?&\-_.]{8,}$/;
+  if (!passwordRegex.test(password)) {
+    Swal.fire('Error', 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, un número y un carácter especial.', 'error');
+    return;
   }
+
+  if (password !== confirmPassword) {
+    Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
+    return;
+  }
+
+  this.userService.updatePasswordByToken(this.token, password).subscribe({
+    next: res => {
+      if (res.success) {
+        Swal.fire('Éxito', res.message, 'success').then(() => {
+          this.router.navigate(['/auth/login']);
+        });
+      } else {
+        Swal.fire('Error', res.message, 'error');
+      }
+    },
+    error: err => {
+      console.error(err);
+      Swal.fire('Error', 'Error actualizando contraseña', 'error');
+    }
+  });
+}
+
 }
