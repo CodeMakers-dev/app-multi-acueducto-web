@@ -19,4 +19,16 @@ export class UserService {
     const params = new HttpParams().set('correo', correo);
     return this.http.post<ApiResponse<any>>(this.apiUrl, null, { params });
   }
+
+  updatePasswordByToken(token: string, contrasena: string): Observable<ApiResponse<any>> {
+  const url = `${environment.apiUrl}/${END_POINT_SERVICE.POST_UPD_PASS}`;
+  const headers = {
+    token: `${token}`,
+    'Content-Type': 'application/json',
+  };
+  const body = {
+    contrasena: contrasena
+  };
+  return this.http.post<ApiResponse<any>>(url, body, { headers });
+}
 }
