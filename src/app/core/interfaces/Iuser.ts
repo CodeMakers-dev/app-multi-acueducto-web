@@ -16,3 +16,9 @@ export interface Iuser {
     activo: boolean;
     token: string;
 }
+
+export interface IAuthResponse {
+  id: string;
+  token: string;
+  usuario: Iuser;
+}

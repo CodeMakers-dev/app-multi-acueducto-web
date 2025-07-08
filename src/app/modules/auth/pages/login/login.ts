@@ -5,7 +5,7 @@ import { Buttoon } from "../../../../shared/components/button";
 import { Link } from "../../../../shared/components/link";
 import { AuthService } from '../../service/auth.service';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { Iuser } from '@interfaces/Iuser';
+import { IAuthResponse, Iuser } from '@interfaces/Iuser';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -43,7 +43,7 @@ export class Login {
     }
 
     this.authService.login(this.username, this.password).subscribe({
-      next: (resp: ApiResponse<Iuser>) => {
+      next: (resp: ApiResponse<IAuthResponse>) => {
         if (resp.code === 200 && resp.response?.token) {
           Swal.fire({
             icon: 'success',
