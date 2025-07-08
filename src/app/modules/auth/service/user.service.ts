@@ -32,6 +32,14 @@ export class UserService {
     return this.http.post<ApiResponse<any>>(url, body, { headers });
   }
 
+updateUserImage(id: number, imagen: File, usuarioModificacion: string): Observable<ApiResponse<any>> {
+  const url = `${this.apiUrl}/${END_POINT_SERVICE.PUT_IMG_USER}/${id}`;
+  const formData = new FormData();
+  formData.append('imagen', imagen);
+  formData.append('usuarioModificacion', usuarioModificacion);
+  return this.http.put<ApiResponse<any>>(url, formData);
+}
+
 
   getUserById(id: number): Observable<ApiResponse<Iuser>> {
     const url = `${this.apiUrl}/${id}`;
