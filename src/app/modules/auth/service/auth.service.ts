@@ -32,6 +32,7 @@ export class AuthService {
             localStorage.setItem('token', user.token);
             localStorage.setItem('userId', String(user.id));
             localStorage.setItem('userName', user.nombre || '');
+            localStorage.setItem('userImagen', user.imagen || '');
           }
           return of(response);
         } else {
