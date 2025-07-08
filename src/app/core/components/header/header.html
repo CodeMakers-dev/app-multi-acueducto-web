@@ -1,1 +1,38 @@
-<p>header works!</p>
+<header class="bg-blue-600 text-white flex items-center justify-between px-6 py-3 shadow-md">
+
+    <nav class="flex space-x-8">
+        <a href="#" class="hover:underline underline-offset-4">Clientes</a>
+        <a href="#" class="hover:underline underline-offset-4">Facturas</a>
+        <a href="#" class="hover:underline underline-offset-4">Lecturas</a>
+        <a href="#" class="hover:underline underline-offset-4">Empleados</a>
+        <a href="#" class="hover:underline underline-offset-4">Contadores</a>
+    </nav>
+
+    <div class="flex items-center space-x-3" *ngIf="usuario">
+     
+        <ng-container *ngIf="usuario.imagen; else iconoUsuario">
+            <img [src]="'data:image/jpeg;base64,' + usuario.imagen" alt="Avatar"
+                class="w-8 h-8 rounded-full object-cover cursor-pointer" (click)="abrirModal()" />
+        </ng-container>
+
+        <div *ngIf="mostrarModal" class="fixed inset-0 bg-transparent flex items-center justify-center z-20"
+            (click)="cerrarModal()">
+            <img [src]="'data:image/jpeg;base64,' + usuario.imagen" alt="Avatar grande"
+                class="w-60 rounded-lg shadow-lg border-4 border-white" (click)="$event.stopPropagation()" />
+        </div>
+        
+        <ng-template #iconoUsuario>
+            <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center cursor-default">
+                <i class="fas fa-user text-gray-600 text-lg"></i>
+            </div>
+        </ng-template>
+
+        <span class="text-sm font-medium text-white">{{ usuario.nombre || 'Usuario' }}</span>
+
+        <button title="Cerrar sesión" class="text-white hover:text-gray-200 cursor-pointer" (click)="cerrarSesion()">
+            <i class="fas fa-sign-out-alt text-xl"></i>
+        </button>
+    </div>
+
+
+</header>
