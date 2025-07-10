@@ -4,7 +4,7 @@ import { END_POINT_SERVICE } from "../../../environments/environment.variables";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
-import { Iuser } from "@interfaces/Iuser";
+import { IUpdatePassword, Iuser } from "@interfaces/Iuser";
 
 
 
@@ -32,17 +32,22 @@ export class UserService {
     return this.http.post<ApiResponse<any>>(url, body, { headers });
   }
 
-updateUserImage(id: number, imagen: File, usuarioModificacion: string): Observable<ApiResponse<any>> {
-  const url = `${this.apiUrl}/${END_POINT_SERVICE.PUT_IMG_USER}/${id}`;
-  const formData = new FormData();
-  formData.append('imagen', imagen);
-  formData.append('usuarioModificacion', usuarioModificacion);
-  return this.http.put<ApiResponse<any>>(url, formData);
-}
+  updateUserImage(id: number, imagen: File, usuarioModificacion: string): Observable<ApiResponse<any>> {
+    const url = `${this.apiUrl}/${END_POINT_SERVICE.PUT_IMG_USER}/${id}`;
+    const formData = new FormData();
+    formData.append('imagen', imagen);
+    formData.append('usuarioModificacion', usuarioModificacion);
+    return this.http.put<ApiResponse<any>>(url, formData);
+  }
 
 
   getUserById(id: number): Observable<ApiResponse<Iuser>> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<ApiResponse<Iuser>>(url);
   }
+
+  updatePassword(id: number, data: IUpdatePassword): Observable<ApiResponse<any>> {
+  const url = `${this.apiUrl}/${END_POINT_SERVICE.PUT_UPD_PASS}/${id}`;
+  return this.http.put<ApiResponse<any>>(url, data);
+}
 }

@@ -22,3 +22,8 @@ export interface IAuthResponse {
   token: string;
   usuario: Iuser;
 }
+
+export interface IUpdatePassword {
+  nuevaContrasena: string;
+  usuarioModificacion: string;
+}
