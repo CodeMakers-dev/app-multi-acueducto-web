@@ -1,4 +1,3 @@
-
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -8,7 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ICorregimiento } from '@interfaces/icorregimiento';
 import { DepartamentService } from '../../service/departament.service';
 import { IDepartament } from '@interfaces/Idepartament';
 import { CityService } from '../../service/city.service';
@@ -17,6 +15,8 @@ import { EnterpriseService } from '../../service/enterprise.service';
 import { ICity } from '../../../../../app/core/interfaces/Icity';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '@interfaces/Iresponse';
+import Swal from 'sweetalert2';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 
 @Component({
   selector: 'app-register',
@@ -27,8 +27,8 @@ import { ApiResponse } from '@interfaces/Iresponse';
 export class Register implements OnInit {
   registerForm!: FormGroup;
   isLoading: boolean = false;
-  
-  departaments: IDepartament[] = [] ;
+
+  departaments: IDepartament[] = [];
   cities: ICity[] = [];
   corregimientos: ICorregimiento[] = [];
 
@@ -39,18 +39,32 @@ export class Register implements OnInit {
   filteredCities: ICity[] = [];
   filteredCorregimientos: ICorregimiento[] = [];
 
-  protected readonly router= inject(Router)
-  protected readonly fb= inject(FormBuilder)
-  protected readonly departamentService= inject(DepartamentService)
-  protected readonly cityService= inject(CityService)
-  protected readonly corregimientoService= inject(CorregimientoService)
-  protected readonly enterpriseService= inject(EnterpriseService)
+  showPassword: boolean = false;
+
+  protected readonly router = inject(Router);
+  protected readonly fb = inject(FormBuilder);
+  protected readonly departamentService = inject(DepartamentService);
+  protected readonly cityService = inject(CityService);
+  protected readonly corregimientoService = inject(CorregimientoService);
+  protected readonly enterpriseService = inject(EnterpriseService);
 
   ngOnInit(): void {
     this.initializeForm();
     this.loadDepartamentData();
     this.loadAllCities();
     this.loadAllCorregimiento();
+
+    this.registerForm
+      .get('idDepartamento')
+      ?.valueChanges.subscribe((departamentoId) => {
+        console.log('valueChanges idDepartamento:', departamentoId);
+        this.selectedDepartamentId = departamentoId;
+        this.onDepartamentChange();
+      });
+
+    this.registerForm.get('idCiudad')?.valueChanges.subscribe(() => {
+      this.onCitiesChange();
+    });
   }
 
   private initializeForm(): void {
@@ -62,105 +76,87 @@ export class Register implements OnInit {
       idCiudad: ['', [Validators.required]],
       idCorregimiento: [''],
       descripcionDireccion: [''],
-      nit: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      nit: ['', [Validators.required]],
       codigoEmpresa: ['', [Validators.required]],
     });
   }
 
-  /*private loadDepartamentData(): void {
-    this.departamentService.getAllDepartaments().subscribe({
-      next: (resp: ApiResponse<IDepartament[]>)  => {
-        if (resp.success) {
-          this.departaments = resp.response;
-          console.log('Departamentos cargados:', this.departaments);
-        } else {
-          console.error('Error al cargar departamentos:', resp.message);
-        }
-      }
-    })
-  }*/
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 
   loadDepartamentData(): void {
     this.departamentService.getAllDepartaments().subscribe((response) => {
       this.departaments = response.response;
-    })
+    });
   }
 
   loadAllCities(): void {
-    this.cityService.getAllCitys().subscribe((response) => {
-      this.cities = response.response;
-      console.log("DEBUG: allDepartamentos cargados:", this.cities);
-      if (this.selectedDepartamentId && this.cities.length > 0) {
-        this.onDepartamentChange();
+    this.cityService.getAllCitys().subscribe({
+    next: (resp: ApiResponse<ICity[]>)  => {
+      if (resp.success) {
+        this.cities = resp.response;
+        console.log('Ciudades cargados:', this.cities);
+      } else {
+        console.error('Error al cargar ciudades:', resp.message);
       }
-    }, error => {
-      console.error("ERROR: No se pudieron cargar todos los departamentos", error);
+    },
+    error: (err) => {
+      console.error('Error de red al cargar ciudades:', err);
+    }
     });
   }
-
-  /*private loadCityData(): void {
-    this.cityService.getAllCitys().subscribe({
-      next: (resp: ApiResponse<ICity[]>)  => {
-        if (resp.success) {
-          this.cities = resp.response;
-          console.log('Ciudades cargados:', this.cities);
-        } else {
-          console.error('Error al cargar ciudades:', resp.message);
-        }
-      }
-    })
-  }*/
 
   loadAllCorregimiento(): void {
-    this.corregimientoService.getAllCorregimientos().subscribe((response) => {
-      this.corregimientos = response.response;
-      console.log("DEBUG: allDepartamentos cargados:", this.corregimientoService);
-      if (this.selectCitiesId && this.corregimientos.length > 0) {
-        this.onCitiesChange();
+    this.corregimientoService.getAllCorregimientos().subscribe({
+    next: (resp: ApiResponse<ICorregimiento[]>)  => {
+      if (resp.success) {
+        this.corregimientos = resp.response;
+        console.log('Corregimientos cargados:', this.corregimientos);
+      } else {
+        console.error('Error al cargar corregimientos:', resp.message);
       }
-    }, error => {
-      console.error("ERROR: No se pudieron cargar todos los departamentos", error);
+    },
+    error: (err) => {
+      console.error('Error de red al cargar corregimientos:', err);
+    }
     });
   }
 
-  /*private loadCorregimientoData(): void {
-    this.corregimientoService.getAllCorregimientos().subscribe({
-      next: (resp: ApiResponse<ICorregimiento[]>)  => {
-        if (resp.success) {
-          this.corregimientos = resp.response;
-          console.log('Corregimientos cargados:', this.corregimientos);
-        } else {
-          console.error('Error al cargar corregimientos:', resp.message);
-        }
-      }
-    })
-  }*/
-
   onDepartamentChange(): void {
-    console.log("DEBUG: onDepartamentChange disparado. selectedDepartamentId:", this.selectedDepartamentId);
+    console.log('selectedDepartamentId:', this.selectedDepartamentId);
+    console.log(
+      'departamentoId de cada ciudad:',
+      this.cities.map((c) => c.departamento?.id)
+    );
     this.selectCitiesId = null;
     this.selectCorregimientoId = null;
     this.filteredCorregimientos = [];
 
     if (this.selectedDepartamentId) {
       this.filteredCities = this.cities.filter(
-        (cyt) => Number(cyt.departamentoId.id) === Number(this.selectedDepartamentId)
+        (cyt) =>
+          cyt.departamento &&
+          Number(cyt.departamento.id) === Number(this.selectedDepartamentId)
       );
+      console.log('filteredCities:', this.filteredCities);
     } else {
       this.filteredCities = [];
     }
   }
 
   onCitiesChange(): void {
-    console.log("DEBUG: onDepartamentoChange disparado. selectDepartamentoId:", this.selectCitiesId);
+    const selectedCityId = this.registerForm.get('idCiudad')?.value;
     this.selectCorregimientoId = null;
 
-    if (this.selectCitiesId) {
+    if (selectedCityId) {
       this.filteredCorregimientos = this.corregimientos.filter(
-        (cor) => Number(cor.cityId.id) === Number(this.selectCitiesId)
+        (cor) => cor.ciudad && String(cor.ciudad.id) === String(selectedCityId)
       );
+      console.log('filteredCorregimientos:', this.filteredCorregimientos);
     } else {
       this.filteredCorregimientos = [];
+      console.log('filteredCorregimientos: []');
     }
   }
 
@@ -179,7 +175,7 @@ export class Register implements OnInit {
         idDepartamento: formData.idDepartamento,
         idCiudad: formData.idCiudad,
         idCorregimiento: formData.idCorregimiento || null,
-        descripcionDireccion: formData.descripcionDireccion || null
+        descripcionDireccion: formData.descripcionDireccion || null,
       };
 
       console.log('Datos a enviar para registrar empresa:', empresaData);
@@ -188,27 +184,31 @@ export class Register implements OnInit {
         next: (response) => {
           this.isLoading = false;
           console.log('Registro de empresa exitoso:', response);
-          alert('Empresa registrada exitosamente!');
-          this.router.navigate(['/login']);
+          Swal.fire({
+            icon: 'success',
+            title: 'Empresa registrada exitosamente',
+            text: 'Usuario por activar',
+            timer: 1500,
+            showConfirmButton: false,
+          });
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1500);
         },
         error: (err) => {
           this.isLoading = false;
           console.error('Error al registrar empresa:', err);
-          alert(`Error al registrar empresa: ${err.message || 'Error desconocido'}`);
-        }
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `Error al registrar empresa: ${
+              err.message || 'Error desconocido'
+            }`,
+            showConfirmButton: true,
+          });
+        },
       });
-
-    } else {
-      this.markFormGroupTouched();
-      console.warn('Formulario inválido. Por favor, revisa los campos.');
     }
-  }
-
-  private markFormGroupTouched(): void {
-    Object.keys(this.registerForm.controls).forEach((field) => {
-      const control = this.registerForm.get(field);
-      control?.markAsTouched({ onlySelf: true });
-    });
   }
 
   isFieldInvalid(fieldName: string): boolean {
@@ -232,4 +232,3 @@ export class Register implements OnInit {
     return '';
   }
 }
-

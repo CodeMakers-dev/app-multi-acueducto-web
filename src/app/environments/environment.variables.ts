@@ -4,4 +4,6 @@ export const END_POINT_SERVICE = {
    POST_UPD_PASS: 'update-password',
    PUT_IMG_USER:'imagen',
    GET_USER: 'Usuario',
+
+   GET_ENT_CLI_COU: 'EmpresaClienteContador',
 }
