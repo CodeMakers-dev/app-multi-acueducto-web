@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.local';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { ICorregimiento } from '@interfaces/icorregimiento';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 import { ApiResponse } from '@interfaces/Iresponse';
 
 @Injectable({

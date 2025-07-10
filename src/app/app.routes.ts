@@ -19,6 +19,10 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/start/start.route').then(m => m.default)
   },
   {
+    path: 'client',
+    loadChildren: () => import('./modules/client/client.routes').then(m => m.default)
+  },
+  {
     path: '**',
     redirectTo: '/home'
   }

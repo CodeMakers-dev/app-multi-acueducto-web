@@ -15,7 +15,7 @@ export class EnterpriseService {
   protected readonly http= inject(HttpClient)
 
   registerEnterprise(empresaData: IEnterpriseSp) {
-    return this.http.post(`${this.apiUrl}/Empresa/crear_o_actualizar_empresa`, empresaData, {
+    return this.http.post(`${this.apiUrl}/Empresa/registrarEmpresa`, empresaData, {
       headers: { 'Content-Type': 'application/json' }
     });
   }

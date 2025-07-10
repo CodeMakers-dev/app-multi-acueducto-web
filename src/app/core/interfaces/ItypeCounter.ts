@@ -1,12 +1,10 @@
-import { ICity } from "@interfaces/Icity";
-
-export interface ICorregimiento {
+export interface ITypeCounter {
     id: number;
     nombre: string;
-    ciudad: ICity;
+    descripcion: string;
     activo: boolean;
     usuarioCreacion: string;
     fechaCreacion: Date;
-    usuarioModificacion: string;
+    usuarioActualizacion: string;
     fechaModificacion: Date;
 }
