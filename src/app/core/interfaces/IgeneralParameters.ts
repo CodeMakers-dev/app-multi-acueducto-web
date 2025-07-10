@@ -1,12 +1,12 @@
-import { ICity } from "@interfaces/Icity";
-
-export interface ICorregimiento {
+export interface IGeneralParameters {
     id: number;
+    codigoPadre: string;
+    codigo: string;
     nombre: string;
-    ciudad: ICity;
+    descripcion: string;
     activo: boolean;
     usuarioCreacion: string;
     fechaCreacion: Date;
-    usuarioModificacion: string;
+    usuarioActualizacion: string;
     fechaModificacion: Date;
 }

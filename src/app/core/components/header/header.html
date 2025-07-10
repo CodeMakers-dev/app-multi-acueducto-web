@@ -1,11 +1,15 @@
 <header class="bg-blue-600 text-white flex items-center justify-between px-6 py-3 shadow-md relative">
 
+
+    <nav class="flex space-x-8">
+        <a href="/client" class="hover:underline underline-offset-4">Clientes</a>
     <button class="md:hidden text-white focus:outline-none cursor-pointer" (click)="mostrarMenu = !mostrarMenu">
         <i class="fas fa-bars text-2xl"></i>
     </button>
 
     <nav class="hidden md:flex space-x-6">
         <a href="#" class="hover:underline underline-offset-4">Clientes</a>
+
         <a href="#" class="hover:underline underline-offset-4">Facturas</a>
         <a href="#" class="hover:underline underline-offset-4">Lecturas</a>
         <a href="#" class="hover:underline underline-offset-4">Empleados</a>
@@ -100,4 +104,5 @@
             <i class="fas fa-sign-out-alt text-xl"></i>
         </button>
     </div>
+
 </header>

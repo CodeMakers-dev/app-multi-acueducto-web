@@ -3,7 +3,7 @@ import { IDepartament } from "@interfaces/Idepartament";
 export interface ICity {
     id: number;
     nombre: string;
-    departamentoId: IDepartament;
+    departamento: IDepartament;
     activo: boolean;
     usuarioCreacion: string;
     fechaCreacion: Date;
