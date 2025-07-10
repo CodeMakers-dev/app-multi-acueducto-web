@@ -5,10 +5,11 @@ import { UserService } from '../../../modules/auth/service/user.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../modules/auth/service/auth.service';
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-header-header',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
@@ -16,20 +17,90 @@ export class Header implements OnInit {
   usuario!: Iuser;
   imagenBase64: string = '';
   mostrarModal = false;
+  mostrarModalEditar = false;
   mostrarMenu = false;
-
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
+  nuevaContrasena = '';
+  confirmarContrasena = '';
 
   private router = inject(Router);
   private authService = inject(AuthService);
   private userService = inject(UserService);
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
   abrirModal(): void {
     this.mostrarModal = true;
+    this.mostrarModalEditar = false;
   }
 
   cerrarModal(): void {
     this.mostrarModal = false;
   }
+  abrirModalEditar(): void {
+    this.mostrarModal = false;
+    this.mostrarModalEditar = true;
+  }
+
+  cerrarModalEditar(): void {
+    this.mostrarModalEditar = false;
+    this.nuevaContrasena = '';
+    this.confirmarContrasena = '';
+  }
+  guardarContrasena(): void {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+    if (!passwordRegex.test(this.nuevaContrasena)) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Contraseña no segura',
+        text: 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, un número y un carácter especial.'
+      });
+      return;
+    }
+
+    if (this.nuevaContrasena !== this.confirmarContrasena) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Contraseñas no coinciden',
+        text: 'Verifica que ambas contraseñas sean iguales.'
+      });
+      return;
+    }
+
+    const dto = {
+      nuevaContrasena: this.nuevaContrasena,
+      usuarioModificacion: this.usuario.nombre || 'sistema'
+    };
+
+    this.userService.updatePassword(Number(this.usuario.id), dto).subscribe({
+      next: (resp) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Contraseña actualizada',
+          text: 'Tu contraseña ha sido actualizada exitosamente.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        this.cerrarModalEditar();
+      },
+      error: (err) => {
+        console.error('Error al actualizar la contraseña', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al actualizar la contraseña.'
+        });
+      }
+    });
+  }
+
+
   ngOnInit(): void {
     const user = this.authService.getUser();
     if (user) {
