@@ -1,0 +1,88 @@
+<app-header-header></app-header-header>
+
+<div class="max-w-7xl mx-auto p-6">
+    <h2 class="text-2xl font-semibold text-center mb-6">Registrar Cliente</h2>
+
+    <form [formGroup]="registerForm">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <div>
+                <select formControlName="tipoDocumento"
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" required>
+                    <option [ngValue]="null" disabled>Tipo de documento...</option>
+                    <option *ngFor="let tipo of typeDocument" [ngValue]="tipo.id">{{ tipo.nombre }}</option>
+                </select>
+            </div>
+            <div>
+                <input formControlName="numeroDocumento" type="number" placeholder="Número de documento..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+            <div>
+                <input formControlName="correo" type="email" placeholder="Correo..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+            <div>
+                <input formControlName="primerNombre" type="text" placeholder="Primer nombre..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+
+            <div>
+                <input formControlName="segundoNombre" type="text" placeholder="Segundo nombre..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+            <div>
+                <input formControlName="primerApellido" type="text" placeholder="Primer apellido..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+
+            <div>
+                <input formControlName="segundoApellido" type="text" placeholder="Segundo apellido..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+
+            <div> <select formControlName="idDepartamento"
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" required>
+                    <option [ngValue]="null" disabled selected>Departamento...</option>
+                    <option *ngFor="let item of departaments" [value]="item.id">
+                        {{ item.nombre }}
+                    </option>
+                </select>
+            </div>
+
+            <div> <select formControlName="idCiudad" (change)="onCitiesChange()"
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" required>
+                    <option [ngValue]="null" disabled selected>Ciudad...</option>
+                    <option *ngFor="let city of filteredCities" [value]="city.id">
+                        {{ city.nombre }}
+                    </option>
+                </select>
+            </div>
+
+
+            <div> <select formControlName="idCorregimiento"
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" required>
+                    <option [ngValue]="null" disabled selected>Corregimiento...</option>
+                    <option *ngFor="let cor of filteredCorregimientos" [value]="cor.id">
+                        {{ cor.nombre }}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <input formControlName="telefonoPersona" type="number" placeholder="Telefono..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+            <div>
+                <input formControlName="direccion" type="text" placeholder="Dirección..."
+                    class="w-full p-2 bg-gray-100 rounded-md border border-gray-300 focus:outline-none" />
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <button
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
+                Registrar
+            </button>
+        </div>
+    </form>
+</div>
+
+<app-footer-footer></app-footer-footer>
