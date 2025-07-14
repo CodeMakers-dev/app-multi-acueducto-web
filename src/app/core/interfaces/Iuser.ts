@@ -27,3 +27,14 @@ export interface IUpdatePassword {
   nuevaContrasena: string;
   usuarioModificacion: string;
 }
+
+export interface ITipoDocumento {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  usuarioCreacion: string;
+  fechaCreacion: string;
+  usuarioModificacion: string | null;
+  fechaModificacion: string | null;
+  activo: boolean;
+}

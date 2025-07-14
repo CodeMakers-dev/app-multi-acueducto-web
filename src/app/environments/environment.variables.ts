@@ -7,4 +7,13 @@ export const END_POINT_SERVICE = {
    GET_USER: 'Usuario',
 
    GET_ENT_CLI_COU: 'EmpresaClienteContador',
+
+   GET_ALL_TIPO_DOCUMENTO:'TipoDocumento/all',
+
+   GET_ALL_CORREO_PER: 'CorreoPersona/all',
+
+   GET_ALL_TELEFONO_PER: 'TelefonoPersona/all',
+
+   GET_FACTURA: 'Factura',
+   GET_FACTURA_ALL: 'all',
 }
