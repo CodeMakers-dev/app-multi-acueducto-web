@@ -8,9 +8,9 @@ import { TableColumn } from '@interfaces/ItableColumn';
 import { IFactura } from '@interfaces/Ifactura';
 import { FacturaService } from '../../service/factura.service';
 import { ApiResponse } from '@interfaces/Iresponse';
+import { ToastService } from '@services/toast.service';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
-import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-bill',
@@ -42,6 +42,7 @@ export class Bill implements OnInit {
   currentSortDirection: 'asc' | 'desc' = 'asc';
 
   protected readonly facturaService = inject(FacturaService);
+  protected readonly toastService = inject(ToastService);
 
   ngOnInit(): void {
     this.loadFacturas();
@@ -57,7 +58,6 @@ export class Bill implements OnInit {
     ).subscribe(
       (apiResponse: ApiResponse<IFactura[]>) => {
         const facturas = apiResponse.response;
-
         const facturasConNombreCompleto = facturas.map(factura => {
           const cliente = factura.empresaClienteContador?.cliente;
           const nombreCompleto = [
@@ -145,32 +145,20 @@ export class Bill implements OnInit {
     FileSaver.saveAs(blob, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
   }
 
-
-
-  deleteClient(id: number): void {
-    console.log('Eliminando factura con id:', id);
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: '¿Deseas eliminar esta factura?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.facturaService.deleteFacturaById(id).subscribe({
-          next: (response) => {
-            Swal.fire('Eliminado', 'La factura ha sido eliminada correctamente.', 'success');
-            this.loadFacturas();
-          },
-          error: (err) => {
-            Swal.fire('Error', 'Ocurrió un error al eliminar la factura.', 'error');
-            console.error('Error al eliminar factura:', err.message);
-          }
-        });
-      }
-    });
-  }
+ deleteClient(id: number): void {
+   console.log('Eliminando factura con id:', id);
+   this.toastService.warning('Eliminar factura', '¿Estás seguro de que deseas eliminar esta factura?');
+   if (confirm('¿Estás seguro de que deseas eliminar esta factura?')) {
+     this.facturaService.deleteFacturaById(id).subscribe({
+       next: (response) => {
+         this.toastService.success('Eliminado', 'La factura ha sido eliminada correctamente.');
+         this.loadFacturas();
+       },
+       error: (err) => {
+         this.toastService.error('Error', 'Ocurrió un error al eliminar la factura.');
+         console.error('Error al eliminar factura:', err.message);
+       }
+     });
+   }
+ }
 }

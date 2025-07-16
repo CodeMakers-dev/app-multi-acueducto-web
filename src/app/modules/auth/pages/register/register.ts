@@ -15,7 +15,6 @@ import { EnterpriseService } from '../../service/enterprise.service';
 import { ICity } from '../../../../../app/core/interfaces/Icity';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '@interfaces/Iresponse';
-import Swal from 'sweetalert2';
 import { ICorregimiento } from '@interfaces/Icorregimiento';
 
 @Component({
@@ -184,13 +183,13 @@ export class Register implements OnInit {
         next: (response) => {
           this.isLoading = false;
           console.log('Registro de empresa exitoso:', response);
-          Swal.fire({
-            icon: 'success',
-            title: 'Empresa registrada exitosamente',
-            text: 'Usuario por activar',
-            timer: 1500,
-            showConfirmButton: false,
-          });
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'Empresa registrada exitosamente',
+          //   text: 'Usuario por activar',
+          //   timer: 1500,
+          //   showConfirmButton: false,
+          // });
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 1500);
@@ -198,14 +197,14 @@ export class Register implements OnInit {
         error: (err) => {
           this.isLoading = false;
           console.error('Error al registrar empresa:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: `Error al registrar empresa: ${
-              err.message || 'Error desconocido'
-            }`,
-            showConfirmButton: true,
-          });
+          // Swal.fire({
+          //   icon: 'error',
+          //   title: 'Error',
+          //   text: `Error al registrar empresa: ${
+          //     err.message || 'Error desconocido'
+          //   }`,
+          //   showConfirmButton: true,
+          // });
         },
       });
     }

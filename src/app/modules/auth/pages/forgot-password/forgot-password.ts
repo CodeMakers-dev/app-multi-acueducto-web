@@ -4,7 +4,6 @@ import { Buttoon } from "../../../../shared/components/button";
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../service/user.service';
-import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -27,17 +26,17 @@ export class ForgotPassword {
       const control = this.form.get('correo');
 
       if (control?.errors?.['required']) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Correo requerido',
-          text: 'Por favor, ingresa tu dirección de correo electrónico.',
-        });
+        // Swal.fire({
+        //   icon: 'warning',
+        //   title: 'Correo requerido',
+        //   text: 'Por favor, ingresa tu dirección de correo electrónico.',
+        // });
       } else if (control?.errors?.['email']) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Correo no válido',
-          text: 'Por favor, ingresa una dirección de correo válida.',
-        });
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Correo no válido',
+        //   text: 'Por favor, ingresa una dirección de correo válida.',
+        // });
       }
       return;
     }
@@ -45,36 +44,36 @@ export class ForgotPassword {
     this.userService.recoverPassword(correo).subscribe({
       next: (res) => {
         if (res.success) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Correo enviado',
-            text: res.message,
-          });
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'Correo enviado',
+          //   text: res.message,
+          // });
         } else {
-          Swal.fire({
-            icon: 'warning',
-            title: 'No se pudo enviar',
-            text: res.message,
-          });
+          // Swal.fire({
+          //   icon: 'warning',
+          //   title: 'No se pudo enviar',
+          //   text: res.message,
+          // });
         }
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error en el backend:', err);
         if (err.status === 404) {
           const errorMessage = err.error && err.error.message ? err.error.message : 'Correo no encontrado o inactivo.';
-          Swal.fire({
-            icon: 'error',
-            title: 'Correo no encontrado',
-            text: errorMessage,
-            confirmButtonColor: '#d33',
-          });
+          // Swal.fire({
+          //   icon: 'error',
+          //   title: 'Correo no encontrado',
+          //   text: errorMessage,
+          //   confirmButtonColor: '#d33',
+          // });
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error de servidor',
-            text: 'Ocurrió un error al intentar enviar el correo. Por favor, intenta de nuevo más tarde.',
-            confirmButtonColor: '#d33',
-          });
+          // Swal.fire({
+          //   icon: 'error',
+          //   title: 'Error de servidor',
+          //   text: 'Ocurrió un error al intentar enviar el correo. Por favor, intenta de nuevo más tarde.',
+          //   confirmButtonColor: '#d33',
+          // });
         }
       }
     });

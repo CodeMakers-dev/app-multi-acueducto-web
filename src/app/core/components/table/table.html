@@ -3,6 +3,12 @@
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-gray-50">
         <tr>
+            <!--
+            Autor: pipe
+            Comentario: Se observa una mala práctica en la implementación de bucles y condicionales.
+            Es importante explicar por qué se realizan tantas validaciones y ciclos anidados,
+            los controls flow no cumplen con esta version, por que se hace hace tanto ngIf en ves de utilizar un switch
+            -->
           <th *ngFor="let column of columns"
               scope="col"
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"

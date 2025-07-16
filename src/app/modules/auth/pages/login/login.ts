@@ -1,86 +1,83 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import {Component,signal,effect,inject, ChangeDetectionStrategy,} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Buttoon } from "../../../../shared/components/button";
-import { Link } from "../../../../shared/components/link";
+import { Buttoon } from '@shared/components/button';
+import { Link } from '@shared/components/link';
+import { FormsModule } from '@angular/forms';
+import { ToastService } from '@services/toast.service';
 import { AuthService } from '../../service/auth.service';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { IAuthResponse, Iuser } from '@interfaces/Iuser';
-import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
-import { HttpErrorResponse } from '@angular/common/http';
+import { IAuthResponse } from '@interfaces/Iuser';
+import { rxResource } from '@angular/core/rxjs-interop';
+
+type Creds = { user: string; pass: string };
 
 @Component({
   selector: 'app-login',
-  imports: [RouterModule, Buttoon, Link, CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, Buttoon, Link],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class LoginComponent {
+  private readonly toast = inject(ToastService);
+  private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
 
-export class Login {
-  showPassword: boolean = false;
-  username: string = '';
-  password: string = '';
-
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) { }
+  showPassword = false;
+  username = signal('');
+  password = signal('');
+  creds = signal<Creds>({ user: '', pass: '' });
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
+  readonly login = rxResource<ApiResponse<IAuthResponse>, Creds>({
+    stream: ({ params }) => this.auth.login(params.user, params.pass),
+    params: () => this.creds(),
+    defaultValue: undefined,
+  });
+
   onSubmit(): void {
-    if (!this.username || !this.password) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Campos incompletos',
-        text: 'Por favor, completa ambos campos',
-        confirmButtonColor: '#3388f5',
-      });
+    if (!this.username() || !this.password()) {
+      this.toast.error('Error', 'Por favor, completa ambos campos');
       return;
     }
-
-    this.authService.login(this.username, this.password).subscribe({
-      next: (resp: ApiResponse<IAuthResponse>) => {
-        if (resp.code === 200 && resp.response?.token) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Bienvenido',
-            text: 'Inicio de sesión exitoso',
-            timer: 1500,
-            showConfirmButton: false,
-          }).then(() => {
-            this.router.navigate(['/start/start']);
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error de autenticación',
-            text: resp.message || 'Credenciales inválidas',
-            confirmButtonColor: '#d33',
-          });
-        }
-      },
-      error: (err: HttpErrorResponse) => {
-        if (err.status === 401) {
-          const errorMessage = err.error && err.error.message ? err.error.message : 'Credenciales inválidas';
-          Swal.fire({
-            icon: 'error',
-            title: 'Credenciales incorrectas',
-            text: errorMessage,
-            confirmButtonColor: '#d33',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error de conexión',
-            text: 'Error en la comunicación con el servidor. Por favor, intenta de nuevo más tarde.',
-            confirmButtonColor: '#d33',
-          });
-        }
-      },
-    });
+    this.creds.set({ user: this.username(), pass: this.password() });
   }
+
+  readonly loginFx = effect(() => {
+    switch (this.login.status()) {
+      case 'loading':
+        return;
+      case 'resolved': {
+        const resp = this.login.value()!;
+        if (resp.code === 200 && resp.response?.token) {
+          this.toast.success('Bienvenido', 'Inicio de sesión exitoso');
+          this.router.navigate(['/start/start']);
+        } else {
+          this.toast.error(
+            'Error de autenticación',
+            resp.message ?? 'Credenciales inválidas'
+          );
+        }
+        break;
+      }
+      case 'error': {
+        const err: any = this.login.error();
+        const msg =
+          err?.status === 401
+            ? err.error?.message ?? 'Credenciales inválidas'
+            : 'Problema de conexión. Inténtalo más tarde.';
+        const title =
+          err?.status === 401
+            ? 'Credenciales incorrectas'
+            : 'Error de conexión';
+
+        this.toast.error(title, msg);
+        break;
+      }
+    }
+  });
 }

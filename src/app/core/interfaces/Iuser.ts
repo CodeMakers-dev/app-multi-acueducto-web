@@ -1,11 +1,11 @@
-import { IPersona } from "./Ipersona";
+import { IPerson } from "./Iperson";
 import { IRol } from "./Irol";
 
 
 export interface Iuser {
     id: string;
     rol:IRol;
-    persona: IPersona;
+    persona: IPerson;
     nombre: string;
     contrasena: string;
     imagen:string | null;

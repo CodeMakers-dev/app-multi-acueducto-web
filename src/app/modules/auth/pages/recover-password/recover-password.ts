@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
+import { ToastService } from '@services/toast.service';
 
 @Component({
   selector: 'app-recover-password',
@@ -15,10 +15,11 @@ import Swal from 'sweetalert2';
 export class RecoverPassword {
    showPassword: boolean = false;
    showConfirmPassword: boolean = false;
-  private fb = inject(FormBuilder);
-  private userService = inject(UserService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+  private readonly userService = inject(UserService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
   form: FormGroup;
   token: string = '';
@@ -42,7 +43,7 @@ export class RecoverPassword {
 
     this.route.queryParams.subscribe(params => {
       this.token = params['token'] || '';
-     
+
     });
   }
 
@@ -50,28 +51,28 @@ export class RecoverPassword {
   const { password, confirmPassword } = this.form.value;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.])[A-Za-z\d@$!%*?&\-_.]{8,}$/;
   if (!passwordRegex.test(password)) {
-    Swal.fire('Error', 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, un número y un carácter especial.', 'error');
+    this.toast.error('Error','La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, un número y un carácter especial.');
+
     return;
   }
 
   if (password !== confirmPassword) {
-    Swal.fire('Error', 'Las contraseñas no coinciden', 'error');
+    this.toast.error('Error', 'Las contraseñas no coinciden');
     return;
   }
 
   this.userService.updatePasswordByToken(this.token, password).subscribe({
     next: res => {
       if (res.success) {
-        Swal.fire('Éxito', res.message, 'success').then(() => {
-          this.router.navigate(['/auth/login']);
-        });
-      } else {
-        Swal.fire('Error', res.message, 'error');
+        this.toast.success('Éxito', res.message);
+        this.router.navigate(['/auth/login']);
+            } else {
+        this.toast.error('Error', res.message);
       }
     },
     error: err => {
       console.error(err);
-      Swal.fire('Error', 'Error actualizando contraseña', 'error');
+      this.toast.error('Error', 'Ocurrió un error al actualizar la contraseña. Por favor, intenta de nuevo más tarde.');
     }
   });
 }

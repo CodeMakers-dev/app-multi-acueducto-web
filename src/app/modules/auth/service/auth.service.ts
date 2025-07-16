@@ -12,8 +12,8 @@ import { Router } from "@angular/router";
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.POST_AUTH_USER}`;
-  private baseUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_USER}`;
+  private readonly apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.POST_AUTH_USER}`;
+  private  readonly baseUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_USER}`;
 
   protected readonly router = inject(Router)
   protected readonly http = inject(HttpClient)

@@ -4,8 +4,8 @@ import { Iuser } from '@interfaces/Iuser';
 import { UserService } from '../../../modules/auth/service/user.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../modules/auth/service/auth.service';
-import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '@services/toast.service';
 
 @Component({
   selector: 'app-header-header',
@@ -24,9 +24,10 @@ export class Header implements OnInit {
   nuevaContrasena = '';
   confirmarContrasena = '';
 
-  private router = inject(Router);
-  private authService = inject(AuthService);
-  private userService = inject(UserService);
+  private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
+  private readonly authService = inject(AuthService);
+  private readonly userService = inject(UserService);
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -56,20 +57,16 @@ export class Header implements OnInit {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
     if (!passwordRegex.test(this.nuevaContrasena)) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Contraseña no segura',
-        text: 'La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, un número y un carácter especial.'
-      });
+      this.toast.error('Error', 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.');
       return;
     }
 
     if (this.nuevaContrasena !== this.confirmarContrasena) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Contraseñas no coinciden',
-        text: 'Verifica que ambas contraseñas sean iguales.'
-      });
+      // Swal.fire({
+      //   icon: 'warning',
+      //   title: 'Contraseñas no coinciden',
+      //   text: 'Verifica que ambas contraseñas sean iguales.'
+      // });
       return;
     }
 
@@ -80,22 +77,22 @@ export class Header implements OnInit {
 
     this.userService.updatePassword(Number(this.usuario.id), dto).subscribe({
       next: (resp) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Contraseña actualizada',
-          text: 'Tu contraseña ha sido actualizada exitosamente.',
-          timer: 2000,
-          showConfirmButton: false
-        });
+        // Swal.fire({
+        //   icon: 'success',
+        //   title: 'Contraseña actualizada',
+        //   text: 'Tu contraseña ha sido actualizada exitosamente.',
+        //   timer: 2000,
+        //   showConfirmButton: false
+        // });
         this.cerrarModalEditar();
       },
       error: (err) => {
         console.error('Error al actualizar la contraseña', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Ocurrió un error al actualizar la contraseña.'
-        });
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Error',
+        //   text: 'Ocurrió un error al actualizar la contraseña.'
+        // });
       }
     });
   }
@@ -149,36 +146,36 @@ export class Header implements OnInit {
               localStorage.setItem('userObject', JSON.stringify(this.usuario));
               this.mostrarModal = false;
 
-              Swal.fire({
-                icon: 'success',
-                title: 'Imagen actualizada',
-                text: 'Tu imagen de perfil se ha actualizado exitosamente.',
-                timer: 2000,
-                showConfirmButton: false
-              });
+              // Swal.fire({
+              //   icon: 'success',
+              //   title: 'Imagen actualizada',
+              //   text: 'Tu imagen de perfil se ha actualizado exitosamente.',
+              //   timer: 2000,
+              //   showConfirmButton: false
+              // });
             } else {
-              Swal.fire({
-                icon: 'warning',
-                title: 'Imagen no actualizada',
-                text: 'No se recibió la nueva imagen desde el servidor.',
-              });
+              // Swal.fire({
+              //   icon: 'warning',
+              //   title: 'Imagen no actualizada',
+              //   text: 'No se recibió la nueva imagen desde el servidor.',
+              // });
             }
           },
           error: (err) => {
             console.error('Error al subir imagen', err);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Ocurrió un error al subir la imagen.',
-            });
+            // Swal.fire({
+            //   icon: 'error',
+            //   title: 'Error',
+            //   text: 'Ocurrió un error al subir la imagen.',
+            // });
           }
         });
       } else {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Archivo inválido',
-          text: 'Por favor selecciona un archivo de imagen válido.',
-        });
+        // Swal.fire({
+        //   icon: 'warning',
+        //   title: 'Archivo inválido',
+        //   text: 'Por favor selecciona un archivo de imagen válido.',
+        // });
       }
     }
   }
