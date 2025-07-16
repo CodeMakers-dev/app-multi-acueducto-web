@@ -8,10 +8,10 @@
             (input)="onSearchInput($event)" />
 
         <button
-            class="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition cursor-pointer"
-            (click)="descargarHistorial()">
-            <i class="fas fa-file-excel"></i>
-            Descargar historial
+            class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition cursor-pointer"
+            (click)="irADeudaCliente()">
+            <i class="fas fa-money-bill-wave"></i>
+            Deuda Clientes
         </button>
     </div>
 
@@ -35,5 +35,15 @@
             </div>
         </ng-template>
     </app-table>
+
+       <div class="flex justify-end mt-6">
+  <button
+    class="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition cursor-pointer"
+    (click)="descargarHistorial()">
+    <i class="fas fa-file-excel"></i>
+    Descargar historial
+  </button>
+</div>
+
 </div>
 <app-footer-footer></app-footer-footer>

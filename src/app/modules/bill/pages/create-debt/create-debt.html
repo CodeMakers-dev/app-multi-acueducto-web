@@ -1,0 +1,53 @@
+<app-header-header></app-header-header>
+
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-semibold text-center mb-6">Agregar deuda de cliente</h2>
+<div *ngIf="showSuccessMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 text-center" role="alert">
+  <strong class="font-bold">¡Éxito!</strong>
+  <span class="block sm:inline">La deuda fue guardada correctamente.</span>
+</div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+
+        <div class="flex flex-col">
+            <select formControlName="empresaClienteContador" class="p-3 border rounded-md w-full" required>
+                <option [ngValue]="null" disabled>Cliente...</option>
+                <option *ngFor="let cliente of empresaClienteContador" [ngValue]="cliente">
+                    {{ cliente.cliente.nombre }} {{ cliente.cliente.segundoNombre || '' }} {{ cliente.cliente.apellido
+                    }} {{ cliente.cliente.segundoApellido || '' }}
+                </option>
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <select formControlName="tipoDeuda" class="p-3 border rounded-md w-full" required>
+                <option [ngValue]="null" disabled>Tipo Deuda...</option>
+                <option *ngFor="let tip of tipoDeuda" [ngValue]="tip">{{ tip.nombre }}</option>
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <input type="date" class="p-3 border rounded-md w-full" formControlName="fechaDeuda"
+                placeholder="Fecha Deuda" />
+        </div>
+
+        <div class="flex flex-col">
+            <input type="text" class="p-3 border rounded-md w-full" formControlName="valor" placeholder="Valor" />
+        </div>
+
+        <div class="flex flex-col">
+            <input type="text" class="p-3 border rounded-md w-full" formControlName="descripcion"
+                placeholder="Descripción" />
+        </div>
+
+        <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
+            <button (ngSubmit)="onSubmit()" type="submit"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
+                Guardar
+            </button>
+        </div>
+    </form>
+</div>
+
+<app-footer-footer></app-footer-footer>

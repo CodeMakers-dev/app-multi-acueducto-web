@@ -7,6 +7,7 @@ export const END_POINT_SERVICE = {
    GET_USER: 'Usuario',
 
    GET_ENT_CLI_COU: 'EmpresaClienteContador',
+   GET_ALL_CLI: 'all',
 
    GET_ALL_TIPO_DOCUMENTO:'TipoDocumento/all',
 
@@ -16,4 +17,15 @@ export const END_POINT_SERVICE = {
 
    GET_FACTURA: 'Factura',
    GET_FACTURA_ALL: 'all',
+
+
+   GET_DEUDA: 'DeudaCliente',
+   GET_DEUDA_ALL: 'all',
+
+   GET_ABONO: 'Abono',
+   GET_ABONO_ALL: 'all',
+
+   GET_ALL_ESTADO: 'Estado/all',
+
+   GET_ALL_TIPO_DEUDA: 'TipoDeuda/all',
 }

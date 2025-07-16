@@ -55,4 +55,9 @@ export class EnterpriseClientCounterService {
     console.error('Error in EnterpriseClientCounterService:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
+
+  getAllCLiente(): Observable<ApiResponse<IEnterpriseClientCounter[]>> {
+    const url = `${this.apiUrl}/${END_POINT_SERVICE.GET_ALL_CLI}`;
+      return this.http.get<ApiResponse<IEnterpriseClientCounter[]>>(url);
+    }
 }

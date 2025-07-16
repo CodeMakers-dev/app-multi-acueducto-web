@@ -6,24 +6,25 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
 import { IFactura } from "@interfaces/Ifactura";
+import { IAbonoFactura, IDeudaCliente } from "@interfaces/IdeudaFactura";
 
 @Injectable({
     providedIn: 'root'
 })
-export class FacturaService {
+export class AbonoService {
 
-    private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
+    private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_ABONO}`;
 
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
-    getAllFactura(
+    getAllAbono(
         page: number,
         pageSize: number,
         searchTerm: string,
         sortColumn: string,
         sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IFactura[]>> {
+    ): Observable<ApiResponse<IAbonoFactura[]>> {
 
         let params = new HttpParams();
         params = params.append('page', page.toString());
@@ -37,31 +38,10 @@ export class FacturaService {
             params = params.append('sortDirection', sortDirection);
         }
 
-        return this.http.get<ApiResponse<IFactura[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`, { params }).pipe(
+        return this.http.get<ApiResponse<IAbonoFactura[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_ABONO_ALL}`, { params }).pipe(
             catchError(this.handleError)
         );
     }
-
-    deleteFacturaById(id: number): Observable<ApiResponse<any>> {
-        const url = `${this.apiUrl}/${id}`;
-        return this.http.delete<ApiResponse<any>>(url).pipe(
-            catchError(this.handleError)
-        );
-    }
-
-    getFacturaById(id: number): Observable<ApiResponse<IFactura>> {
-        const url = `${this.apiUrl}/${id}`;
-        return this.http.get<ApiResponse<IFactura>>(url).pipe(
-            catchError(this.handleError)
-        );
-    }
-    
-    updateFactura(factura: IFactura): Observable<ApiResponse<IFactura>> {
-        return this.http.put<ApiResponse<IFactura>>(this.apiUrl, factura).pipe(
-            catchError(this.handleError)
-        );
-    }
-
 
     private handleError(error: any): Observable<never> {
         let errorMessage = 'An unknown error occurred while loading factura.';
@@ -76,7 +56,4 @@ export class FacturaService {
         console.error('Error in facturaService:', errorMessage);
         return throwError(() => new Error(errorMessage));
     }
-
-
-
 }
