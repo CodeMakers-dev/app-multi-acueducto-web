@@ -21,8 +21,12 @@ export class Table implements OnInit {
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<{ column: string; direction: 'asc' | 'desc' }>();
 
+  
+
+
   currentSortColumn: string = '';
   currentSortDirection: 'asc' | 'desc' = 'asc';
+
 
   public Math = Math;
 
@@ -36,6 +40,8 @@ export class Table implements OnInit {
       this.totalItems = this.data.length;
     }
   }
+
+ 
 
   getNestedProperty(obj: any, path: string): any {
     // console.log(`Attempting to get property: ${path} from object:`, obj);

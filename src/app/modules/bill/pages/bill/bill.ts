@@ -3,7 +3,7 @@ import { Header } from "@components/header/header";
 import { Footer } from "@components/footer/footer";
 import { Table } from '@components/table/table';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TableColumn } from '@interfaces/ItableColumn';
 import { IFactura } from '@interfaces/Ifactura';
 import { FacturaService } from '../../service/factura.service';
@@ -16,7 +16,6 @@ import * as XLSX from 'xlsx';
   selector: 'app-bill',
   imports: [Header, CommonModule, Table, Footer, RouterModule],
   templateUrl: './bill.html',
-  styleUrl: './bill.css'
 })
 export class Bill implements OnInit {
 
@@ -42,10 +41,18 @@ export class Bill implements OnInit {
   currentSortDirection: 'asc' | 'desc' = 'asc';
 
   protected readonly facturaService = inject(FacturaService);
+
+  protected readonly router = inject(Router);
+
   protected readonly toastService = inject(ToastService);
+
 
   ngOnInit(): void {
     this.loadFacturas();
+  }
+
+  irADeudaCliente() {
+    this.router.navigate(['/bill/customer-debt']);
   }
 
   loadFacturas(): void {

@@ -9,8 +9,8 @@ export interface IFactura {
     lectura: ILectura;
     tipoPago: ITipoPago;
     estado: IEstado;
-    fechaEmision: Date;
-    fechaFin: Date;
+    fechaEmision: string | null; 
+    fechaFin: string | null;
     consumo: number;
     precio: string;
     codigo: string;

@@ -1,0 +1,37 @@
+<app-header-header></app-header-header>
+<div class="container mx-auto px-4 py-8">
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Abono Facturas</h1>
+
+    <div class="mb-4 flex justify-between items-center">
+        <input type="text" placeholder="Buscar..." class="border p-2 rounded-md w-1/3"
+            (input)="onSearchInput($event)" />
+
+
+        <button
+            class="flex items-center justify-center bg-green-600 text-white w-10 h-10 rounded-full hover:bg-green-700 transition cursor-pointer">
+            <i class="fas fa-plus"></i>
+        </button>
+
+    
+            
+    </div>
+    <app-table [columns]="abonoColumns" [data]="tableData" [pageSize]="pageSize" [currentPage]="currentPage"
+        [totalItems]="totalRegisters" [actionsTemplate]="actionsTemplate" (pageChange)="onPageChange($event)"
+        (sortChange)="onSortChange($event)">
+        <ng-template #actionsTemplate let-item>
+            <div class="flex items-center space-x-2">
+                
+                <a 
+                    class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
+                    <i class="fas fa-edit"></i>
+                </a>
+
+                <button  class="text-red-600 hover:text-red-900 text-sm cursor-pointer">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </ng-template>
+    </app-table>
+</div>
+<app-footer-footer></app-footer-footer>

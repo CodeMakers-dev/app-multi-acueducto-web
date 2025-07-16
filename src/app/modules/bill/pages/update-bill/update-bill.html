@@ -3,61 +3,55 @@
 <div class="container mx-auto px-4 py-8">
     <h2 class="text-2xl font-semibold text-center mb-6">Editar Factura</h2>
 
-    <form class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto" *ngIf="factura">
+    <form (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto" *ngIf="factura">
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">Código:</label>
-            <input type="text" placeholder="Código..." class="p-3 border rounded-md w-full" [value]="factura.codigo" />
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="factura.codigo" name="codigo" />
         </div>
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">Fecha de emisión:</label>
-            <input type="text" class="p-3 border rounded-md w-full"
-                [value]="factura.fechaEmision | date:'yyyy-MM-dd'" />
+            <input type="date" class="p-3 border rounded-md w-full" [(ngModel)]="factura.fechaEmision"
+                name="fechaEmision" />
         </div>
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">Consumo (m³):</label>
-            <input type="text" class="p-3 border rounded-md w-full" [value]="factura.consumo" />
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="factura.consumo" name="consumo" />
         </div>
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">Fecha fin:</label>
-            <input type="text" class="p-3 border rounded-md w-full" [value]="factura.fechaFin | date:'yyyy-MM-dd'" />
-        </div>
-
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Deuda:</label>
-            <input type="text" class="p-3 border rounded-md w-full" />
+            <input type="date" class="p-3 border rounded-md w-full" [(ngModel)]="factura.fechaFin" name="fechaFin" />
         </div>
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">Estado:</label>
-            <input type="text" class="p-3 border rounded-md w-full" [value]="factura.estado.nombre" />
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="factura.estado.id" name="estadoId">
+                <option *ngFor="let est of estado" [ngValue]="est.id">
+                    {{ est.nombre }}
+                </option>
+            </select>
         </div>
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Abono:</label>
-            <input type="text" class="p-3 border rounded-md w-full" />
-        </div>
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">Consumo anormal:</label>
-            <select class="p-3 border rounded-md w-full">
-                <option disabled selected>Selecciona una opción...</option>
-                <option [value]="true">Sí</option>
-                <option [value]="false">No</option>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="factura.lectura.consumoAnormal"
+                name="consumoAnormal">
+                <option [ngValue]="true">Sí</option>
+                <option [ngValue]="false">No</option>
             </select>
         </div>
 
         <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
-            <button type="submit"
-                class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition duration-200 cursor-pointer">
+            <button (click)="onSubmit()" type="submit"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
                 Actualizar Factura
             </button>
         </div>
     </form>
 </div>
-
 
 <app-footer-footer></app-footer-footer>
