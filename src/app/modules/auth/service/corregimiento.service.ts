@@ -32,5 +32,5 @@ export class CorregimientoService {
     console.error('Error en CorregimientoService:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
-  
+
 }
