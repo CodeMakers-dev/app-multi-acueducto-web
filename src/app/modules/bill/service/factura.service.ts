@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
-import { IFactura } from "@interfaces/Ifactura";
+import { IFactura, IfacturaResponse } from "@interfaces/Ifactura";
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +23,7 @@ export class FacturaService {
         searchTerm: string,
         sortColumn: string,
         sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IFactura[]>> {
+    ): Observable<ApiResponse<IfacturaResponse[]>> {
 
         let params = new HttpParams();
         params = params.append('page', page.toString());
@@ -37,7 +37,7 @@ export class FacturaService {
             params = params.append('sortDirection', sortDirection);
         }
 
-        return this.http.get<ApiResponse<IFactura[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`, { params }).pipe(
+        return this.http.get<ApiResponse<IfacturaResponse[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`, { params }).pipe(
             catchError(this.handleError)
         );
     }

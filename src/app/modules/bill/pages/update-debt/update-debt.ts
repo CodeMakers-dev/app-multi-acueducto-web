@@ -14,10 +14,11 @@ import { CommonModule } from '@angular/common';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { IFactura } from '@interfaces/Ifactura';
 import { ToastService } from '@services/toast.service';
+import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-update-debt',
-  imports: [CommonModule, Header, Footer, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, Header, Footer, FormsModule, ReactiveFormsModule, Navigation],
   templateUrl: './update-debt.html',
 })
 export class UpdateDebt implements OnInit {

@@ -7,11 +7,12 @@ import { IEstado, IFactura } from '@interfaces/Ifactura';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EstadoService } from '../../service/estado.service';
+import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-update-bill',
   standalone: true,
-  imports: [CommonModule, Header, Footer, FormsModule],
+  imports: [CommonModule, Header, Footer, FormsModule, Navigation],
   templateUrl: './update-bill.html',
   providers: [DatePipe]
 })

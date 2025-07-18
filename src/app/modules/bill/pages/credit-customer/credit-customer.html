@@ -1,4 +1,10 @@
 <app-header-header></app-header-header>
+<app-navigation [items]="[
+  { label: 'Inicio', route: '/start/start' },
+  { label: 'Facturas', route: '/bill' },
+  { label: 'Deuda de clientes', route: '/bill/customer-debt' },
+  { label: 'Abono Facturas' , route: '/bill/credit-customer' }
+]"></app-navigation>
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold text-gray-800 mb-6">Abono Facturas</h1>
 
