@@ -1,1 +1,31 @@
-<p>create-credit works!</p>
+<app-header-header></app-header-header>
+<app-navigation [items]="[
+  { label: 'Inicio', route: '/start/start' },
+  { label: 'Facturas', route: '/bill' },
+  { label: 'Deuda de clientes', route: '/bill/customer-debt' },
+  { label: 'Abono deuda'  }
+]"></app-navigation>
+<div class="container mx-auto px-4 py-8">
+  <h2 class="text-2xl font-semibold text-center mb-6">Registrar abono</h2>
+
+  <form [formGroup]="abonoForm" (ngSubmit)="onSubmit()" class="max-w-md mx-auto space-y-6">
+
+    <div class="flex flex-col">
+      <label for="valor" class="mb-1 font-semibold text-gray-700">Valor del abono :</label>
+      <input id="valor" type="text" formControlName="valor" class="p-3 border rounded-md w-full"
+        placeholder="Ingrese el valor....." />
+    </div>
+
+    <div class="flex justify-center">
+      <button type="submit" (ngSubmit)="onSubmit()"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
+        Guardar abono
+      </button>
+    </div>
+
+  </form>
+
+  
+</div>
+
+<app-footer-footer></app-footer-footer>

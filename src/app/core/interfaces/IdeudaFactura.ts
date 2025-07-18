@@ -40,7 +40,6 @@ export interface IAbonoFactura{
     id: number;
     deudaCliente: IDeudaCliente;
     valor: string;
-    codigoFactura: string;
     activo: boolean;
     usuarioCreacion: string;
     fechaCreacion: Date;

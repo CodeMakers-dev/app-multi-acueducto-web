@@ -67,5 +67,15 @@ export class DeudaService {
             catchError(this.handleError)
         );
     }
+    getDeudaById(id: number): Observable<ApiResponse<IDeudaCliente>> {
+        return this.http.get<ApiResponse<IDeudaCliente>>(`${this.apiUrl}/${id}`).pipe(
+            catchError(this.handleError)
+        );
+    }
+    updateDeuda(deuda: IDeudaCliente): Observable<ApiResponse<any>> {
+        return this.http.put<ApiResponse<any>>(`${this.apiUrl}`, deuda).pipe(
+            catchError(this.handleError)
+        );
+    }
 
 }

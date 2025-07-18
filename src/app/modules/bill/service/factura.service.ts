@@ -5,15 +5,20 @@ import { Router } from "@angular/router";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
-import { IFactura } from "@interfaces/Ifactura";
+import { IFactura, IfacturaResponse } from "@interfaces/Ifactura";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FacturaService {
 
+<<<<<<< HEAD
     private readonly apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
 
+=======
+    private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
+    private Url = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}/${END_POINT_SERVICE.GET_FACTURA_ALL}`;
+>>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
@@ -23,7 +28,7 @@ export class FacturaService {
         searchTerm: string,
         sortColumn: string,
         sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IFactura[]>> {
+    ): Observable<ApiResponse<IfacturaResponse[]>> {
 
         let params = new HttpParams();
         params = params.append('page', page.toString());
@@ -37,7 +42,7 @@ export class FacturaService {
             params = params.append('sortDirection', sortDirection);
         }
 
-        return this.http.get<ApiResponse<IFactura[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`, { params }).pipe(
+        return this.http.get<ApiResponse<IfacturaResponse[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`, { params }).pipe(
             catchError(this.handleError)
         );
     }
@@ -78,5 +83,12 @@ export class FacturaService {
     }
 
 
+<<<<<<< HEAD
 
 }
+=======
+    getFacturAll(): Observable<ApiResponse<IFactura[]>> {
+        return this.http.get<ApiResponse<IFactura[]>>(this.Url);
+    }
+}
+>>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830

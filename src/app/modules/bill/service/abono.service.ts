@@ -43,6 +43,12 @@ export class AbonoService {
         );
     }
 
+    saveAbono(abono: IAbonoFactura): Observable<ApiResponse<any>> {
+        return this.http.post<ApiResponse<any>>(`${this.apiUrl}`, abono).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     private handleError(error: any): Observable<never> {
         let errorMessage = 'An unknown error occurred while loading factura.';
         if (error.error instanceof ErrorEvent) {

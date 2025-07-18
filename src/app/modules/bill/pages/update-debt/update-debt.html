@@ -1,28 +1,22 @@
-<<<<<<< HEAD
-
-
-=======
 <app-header-header></app-header-header>
 <app-navigation [items]="[
   { label: 'Inicio', route: '/start/start' },
   { label: 'Facturas', route: '/bill' },
   { label: 'Deuda de clientes', route: '/bill/customer-debt' },
-  { label: 'Crear deuda' }
+  { label: 'Editar deuda'  }
 ]"></app-navigation>
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
 <div class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-semibold text-center mb-6">Agregar deuda de cliente</h2>
-<div *ngIf="showSuccessMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 text-center" role="alert">
-  <strong class="font-bold">¡Éxito!</strong>
-  <span class="block sm:inline">La deuda fue guardada correctamente.</span>
-</div>
+    <h2 class="text-2xl font-semibold text-center mb-6">Editar deuda de cliente</h2>
 
+    
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()"
         class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
 
+
         <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Cliente:</label>
             <select formControlName="empresaClienteContador" class="p-3 border rounded-md w-full" required>
-                <option [ngValue]="null" disabled>Cliente...</option>
+                <option [ngValue]="null" disabled>Seleccione un cliente...</option>
                 <option *ngFor="let cliente of empresaClienteContador" [ngValue]="cliente">
                     {{ cliente.cliente.nombre }} {{ cliente.cliente.segundoNombre || '' }} {{ cliente.cliente.apellido
                     }} {{ cliente.cliente.segundoApellido || '' }}
@@ -30,46 +24,60 @@
             </select>
         </div>
 
+
         <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Tipo de deuda:</label>
             <select formControlName="tipoDeuda" class="p-3 border rounded-md w-full" required>
-                <option [ngValue]="null" disabled>Tipo Deuda...</option>
+                <option [ngValue]="null" disabled>Seleccione tipo de deuda...</option>
                 <option *ngFor="let tip of tipoDeuda" [ngValue]="tip">{{ tip.nombre }}</option>
             </select>
         </div>
 
+
         <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Factura:</label>
             <select formControlName="factura" class="p-3 border rounded-md w-full" required>
-                <option [ngValue]="null" disabled>Factura...</option>
+                <option [ngValue]="null" disabled>Seleccione factura...</option>
                 <option *ngFor="let fac of factura" [ngValue]="fac">{{ fac.codigo }}</option>
             </select>
         </div>
 
         <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">N° de cuotas:</label>
             <select formControlName="plazoPago" class="p-3 border rounded-md w-full" required>
-                <option [ngValue]="null" disabled>N° de cuotas...</option>
+                <option [ngValue]="null" disabled>Seleccione número de cuotas...</option>
                 <option *ngFor="let plazo of plazoPago" [ngValue]="plazo">{{ plazo.nombre }}</option>
             </select>
         </div>
 
-        <div class="flex flex-col">
-            <input type="date" class="p-3 border rounded-md w-full" formControlName="fechaDeuda"
-                placeholder="Fecha Deuda" />
-        </div>
 
         <div class="flex flex-col">
-            <input type="text" class="p-3 border rounded-md w-full" formControlName="valor" placeholder="Valor" />
+            <label class="mb-1 font-medium text-gray-700">Fecha de deuda:</label>
+            <input type="date" class="p-3 border rounded-md w-full" formControlName="fechaDeuda" />
         </div>
 
+
         <div class="flex flex-col">
-            <input type="text" class="p-3 border rounded-md w-full" formControlName="descripcion"
-                placeholder="Descripción" />
+            <label class="mb-1 font-medium text-gray-700">Valor:</label>
+            <input type="text" class="p-3 border rounded-md w-full" formControlName="valor" placeholder="Ej: 150000" />
         </div>
+
+
+        <div class="flex flex-col sm:col-span-2">
+            <label class="mb-1 font-medium text-gray-700">Descripción:</label>
+            <textarea class="p-3 border rounded-md w-full resize-none" formControlName="descripcion" rows="3"
+                placeholder="Descripción opcional..."></textarea>
+        </div>
+
 
         <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
-            <button (ngSubmit)="onSubmit()" type="submit"
-                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
-                Guardar
+            <button type="submit"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded-md shadow-md cursor-pointer">
+                Actualizar deuda
             </button>
         </div>
+
     </form>
 </div>
+
+<app-footer-footer></app-footer-footer>
