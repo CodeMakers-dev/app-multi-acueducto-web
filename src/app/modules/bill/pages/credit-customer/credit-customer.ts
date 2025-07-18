@@ -13,19 +13,17 @@ import { IAbonoFactura } from '@interfaces/IdeudaFactura';
   selector: 'app-credit-customer',
   imports: [Header, CommonModule, Table, Footer, RouterModule],
   templateUrl: './credit-customer.html',
-  
+
 })
 export class CreditCustomer implements OnInit {
 
-   abonoColumns: TableColumn[] = [
-
-  { key: 'codigoFactura', label: 'Código factura', sortable: true },
-  { key: 'valorDeudaTexto', label: 'Valor deuda', sortable: true },
-  { key: 'fechaAbonoTexto', label: 'Fecha abono', sortable: true },
-  { key: 'valorTexto', label: 'Valor abono', sortable: true }
-];
-
-  tableData: any[] = []; 
+  abonoColumns: TableColumn[] = [
+    { key: 'clienteFactura', label: 'Cliente', sortable: true },
+    { key: 'codigoFactura', label: 'Código factura', sortable: true },
+    { key: 'fechaAbonoTexto', label: 'Fecha abono', sortable: true },
+    { key: 'valorTexto', label: 'Valor abono', sortable: true }
+  ];
+  tableData: any[] = [];
   totalRegisters: number = 0;
 
   currentPage: number = 1;
@@ -42,36 +40,44 @@ export class CreditCustomer implements OnInit {
   }
 
   loadAbono(): void {
-  this.abonoService.getAllAbono(
-    this.currentPage,
-    this.pageSize,
-    this.searchTerm,
-    this.currentSortColumn,
-    this.currentSortDirection
-  ).subscribe(
-    (apiResponse: ApiResponse<IAbonoFactura[]>) => {
-      const abonos = apiResponse.response;
+    this.abonoService.getAllAbono(
+      this.currentPage,
+      this.pageSize,
+      this.searchTerm,
+      this.currentSortColumn,
+      this.currentSortDirection
+    ).subscribe(
+      (apiResponse: ApiResponse<IAbonoFactura[]>) => {
+        const abonos = apiResponse.response;
 
-      const abonosTransformados = abonos.map(abono => {
-        const valorDeuda = abono.deudaCliente?.valor || '0';
-        const valorAbono = abono.valor || '0';
+        const abonosTransformados = abonos.map(abono => {
+          const valorDeuda = abono.deudaCliente?.valor || '0';
+          const valorAbono = abono.valor || '0';
+          const codigoFactura = abono.deudaCliente?.factura?.codigo || 'Sin código';
 
-        return {
-          ...abono,
-          valorDeudaTexto: `$${parseFloat(valorDeuda).toLocaleString('es-CO')}`,
-          valorTexto: `$${parseFloat(valorAbono).toLocaleString('es-CO')}`,
-          fechaAbonoTexto: abono.fechaCreacion?.toString().slice(0, 10)
-        };
-      });
+          const cliente = abono.deudaCliente?.empresaClienteContador?.cliente;
 
-      this.totalRegisters = abonos.length;
-      this.tableData = abonosTransformados;
-    },
-    error => {
-      console.error('Error al cargar los abonos:', error);
-    }
-  );
-}
+          const clienteNombreCompleto = cliente
+            ? `${cliente.nombre ?? ''} ${cliente.segundoNombre ?? ''} ${cliente.apellido ?? ''} ${cliente.segundoApellido ?? ''}`.trim().replace(/\s+/g, ' ')
+            : 'Sin cliente';
+
+          return {
+            ...abono,
+            codigoFactura,
+            clienteFactura: clienteNombreCompleto,
+            valorTexto: `$${parseFloat(valorAbono).toLocaleString('es-CO')}`,
+            fechaAbonoTexto: abono.fechaCreacion?.toString().slice(0, 10)
+          };
+        });
+
+        this.totalRegisters = abonos.length;
+        this.tableData = abonosTransformados;
+      },
+      error => {
+        console.error('Error al cargar los abonos:', error);
+      }
+    );
+  }
 
 
   onPageChange(newPage: number): void {

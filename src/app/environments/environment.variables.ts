@@ -28,4 +28,6 @@ export const END_POINT_SERVICE = {
    GET_ALL_ESTADO: 'Estado/all',
 
    GET_ALL_TIPO_DEUDA: 'TipoDeuda/all',
+
+   GET_ALL_PLAZO_PAGO: 'PlazoPago/all',
 }
