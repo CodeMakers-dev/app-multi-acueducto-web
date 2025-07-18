@@ -9,7 +9,7 @@ export interface IFactura {
     lectura: ILectura;
     tipoPago: ITipoPago;
     estado: IEstado;
-    fechaEmision: string | null; 
+    fechaEmision: string | null;
     fechaFin: string | null;
     consumo: number;
     precio: string;
@@ -78,4 +78,38 @@ export interface IEstado {
     fechaCreacion: Date;
     usuarioModificacion: string | null;
     fechaModificacion: Date | null;
+}
+
+
+export interface IfacturaResponse {
+    id: number;
+    empresaClienteContadorId: number;
+    personaId: number;
+    nombre: string;
+    segundoNombre: string;
+    apellido: string;
+    segundoApellido: string;
+
+    tarifaId: number;
+    tarifaValor: string;
+
+    lecturaId: number;
+    consumoAnormal: string;
+
+    tipoPagoId: number;
+    tipoPagoNombre: string;
+
+    estadoId: number;
+    estadoNombre: string;
+
+    fechaEmision: Date;
+    fechaFin: Date;
+    consumo: number;
+    precio: string;
+    codigo: string;
+    activo: boolean;
+    usuarioCreacion: string;
+    fechaCreacion: Date;
+    usuarioModificacion: string | null;
+    fechaModificacion: Date | null
 }

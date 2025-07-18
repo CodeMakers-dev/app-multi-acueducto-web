@@ -5,20 +5,24 @@ import { Table } from '@components/table/table';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TableColumn } from '@interfaces/ItableColumn';
-import { IFactura } from '@interfaces/Ifactura';
+import { IFactura, IfacturaResponse } from '@interfaces/Ifactura';
 import { FacturaService } from '../../service/factura.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { Navigation } from "@components/navigation/navigation";
+
 
 
 @Component({
   selector: 'app-bill',
-  imports: [Header, CommonModule, Table, Footer, RouterModule],
+  imports: [Header, CommonModule, Table, Footer, RouterModule, Navigation],
   templateUrl: './bill.html',
 })
 export class Bill implements OnInit {
+
+
 
   billColumns: TableColumn[] = [
     { key: 'codigo', label: 'Codigo', sortable: true },
@@ -26,12 +30,12 @@ export class Bill implements OnInit {
     { key: 'consumo', label: 'Consumo(m³)', sortable: true },
     { key: 'fechaEmisionTexto', label: 'Fecha emision', sortable: true },
     { key: 'fechaFinTexto', label: 'Fecha Fin', sortable: true },
-    { key: 'estado.nombre', label: 'Estado', sortable: true },
+    { key: 'estadoNombre', label: 'Estado', sortable: true },
     { key: 'consumoAnormal', label: 'Consumo anormal', sortable: false },
     { key: 'precioTexto', label: 'Total', sortable: true },
   ];
 
-  tableData: IFactura[] = [];
+  tableData: IfacturaResponse[] = [];
   totalRegisters: number = 0;
 
   currentPage: number = 1;
@@ -64,15 +68,14 @@ export class Bill implements OnInit {
       this.currentSortColumn,
       this.currentSortDirection
     ).subscribe(
-      (apiResponse: ApiResponse<IFactura[]>) => {
+      (apiResponse: ApiResponse<IfacturaResponse[]>) => {
         const facturas = apiResponse.response;
         const facturasConNombreCompleto = facturas.map(factura => {
-          const cliente = factura.empresaClienteContador?.cliente;
           const nombreCompleto = [
-            cliente?.nombre,
-            cliente?.segundoNombre,
-            cliente?.apellido,
-            cliente?.segundoApellido
+            factura.nombre,
+            factura.segundoNombre,
+            factura.apellido,
+            factura.segundoApellido
           ]
             .filter(part => !!part)
             .join(' ');
@@ -80,10 +83,10 @@ export class Bill implements OnInit {
           return {
             ...factura,
             clienteNombreCompleto: nombreCompleto,
-            consumoAnormal: factura.lectura?.consumoAnormal ? 'SI' : 'NO',
+            consumoAnormal: factura.consumoAnormal ? 'SI' : 'NO',
             fechaEmisionTexto: factura.fechaEmision?.toString().slice(0, 10),
             fechaFinTexto: factura.fechaFin?.toString().slice(0, 10),
-            precioTexto: `$${factura.precio?.toLocaleString()}`
+            precioTexto: `$${Number(factura.precio).toLocaleString()}`
           };
         });
 
@@ -95,6 +98,7 @@ export class Bill implements OnInit {
       }
     );
   }
+
 
   onPageChange(newPage: number): void {
     this.currentPage = newPage;
@@ -113,9 +117,6 @@ export class Bill implements OnInit {
     this.loadFacturas();
   }
 
-  addNewClient(): void {
-    console.log('Añadir nuevo cliente');
-  }
   viewClient(client: IFactura): void {
     console.log('Ver detalles de cliente:', client);
   }
@@ -153,20 +154,20 @@ export class Bill implements OnInit {
     FileSaver.saveAs(blob, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
   }
 
- deleteClient(id: number): void {
-   console.log('Eliminando factura con id:', id);
-   this.toastService.warning('Eliminar factura', '¿Estás seguro de que deseas eliminar esta factura?');
-   if (confirm('¿Estás seguro de que deseas eliminar esta factura?')) {
-     this.facturaService.deleteFacturaById(id).subscribe({
-       next: (response) => {
-         this.toastService.success('Eliminado', 'La factura ha sido eliminada correctamente.');
-         this.loadFacturas();
-       },
-       error: (err) => {
-         this.toastService.error('Error', 'Ocurrió un error al eliminar la factura.');
-         console.error('Error al eliminar factura:', err.message);
-       }
-     });
-   }
- }
+  deleteClient(id: number): void {
+    console.log('Eliminando factura con id:', id);
+    this.toastService.warning('Eliminar factura', '¿Estás seguro de que deseas eliminar esta factura?');
+    if (confirm('¿Estás seguro de que deseas eliminar esta factura?')) {
+      this.facturaService.deleteFacturaById(id).subscribe({
+        next: (response) => {
+          this.toastService.success('Eliminado', 'La factura ha sido eliminada correctamente.');
+          this.loadFacturas();
+        },
+        error: (err) => {
+          this.toastService.error('Error', 'Ocurrió un error al eliminar la factura.');
+          console.error('Error al eliminar factura:', err.message);
+        }
+      });
+    }
+  }
 }

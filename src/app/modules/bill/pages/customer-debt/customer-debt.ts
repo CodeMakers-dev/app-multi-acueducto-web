@@ -9,10 +9,11 @@ import { TableColumn } from '@interfaces/ItableColumn';
 import { DeudaService } from '../../service/deuda.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
+import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-customer-debt',
-  imports: [Header, CommonModule, Table, Footer, RouterModule],
+  imports: [Header, CommonModule, Table, Footer, RouterModule, Navigation],
   templateUrl: './customer-debt.html',
 })
 export class CustomerDebt implements OnInit {
