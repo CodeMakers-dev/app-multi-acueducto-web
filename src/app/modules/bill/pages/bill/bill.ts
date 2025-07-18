@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Header } from "@components/header/header";
-import { Footer } from "@components/footer/footer";
 import { Table } from '@components/table/table';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -10,12 +8,10 @@ import { FacturaService } from '../../service/factura.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
 import * as XLSX from 'xlsx';
-import * as FileSaver from 'file-saver';
-
 
 @Component({
   selector: 'app-bill',
-  imports: [Header, CommonModule, Table, Footer, RouterModule],
+  imports: [ CommonModule, Table, RouterModule],
   templateUrl: './bill.html',
 })
 export class Bill implements OnInit {
@@ -42,11 +38,8 @@ export class Bill implements OnInit {
   currentSortDirection: 'asc' | 'desc' = 'asc';
 
   protected readonly facturaService = inject(FacturaService);
-
   protected readonly router = inject(Router);
-
   protected readonly toastService = inject(ToastService);
-
 
   ngOnInit(): void {
     this.loadFacturas();
@@ -116,10 +109,12 @@ export class Bill implements OnInit {
   addNewClient(): void {
     console.log('Añadir nuevo cliente');
   }
+
   viewClient(client: IFactura): void {
     console.log('Ver detalles de cliente:', client);
   }
 
+  // Método nativo para descargar Excel sin librerías externas
   descargarHistorial(): void {
     const exportData = this.tableData.map((factura: any) => {
       const row: any = {};
@@ -145,28 +140,45 @@ export class Bill implements OnInit {
       type: 'array'
     });
 
-    const blob: Blob = new Blob([excelBuffer], {
-      type:
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-    });
-
-    FileSaver.saveAs(blob, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
+    // Descarga nativa sin file-saver
+    this.downloadFile(excelBuffer, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
   }
 
- deleteClient(id: number): void {
-   console.log('Eliminando factura con id:', id);
-   this.toastService.warning('Eliminar factura', '¿Estás seguro de que deseas eliminar esta factura?');
-   if (confirm('¿Estás seguro de que deseas eliminar esta factura?')) {
-     this.facturaService.deleteFacturaById(id).subscribe({
-       next: (response) => {
-         this.toastService.success('Eliminado', 'La factura ha sido eliminada correctamente.');
-         this.loadFacturas();
-       },
-       error: (err) => {
-         this.toastService.error('Error', 'Ocurrió un error al eliminar la factura.');
-         console.error('Error al eliminar factura:', err.message);
-       }
-     });
-   }
- }
+  // Método nativo para descargar archivos
+  private downloadFile(data: any, filename: string): void {
+    const blob = new Blob([data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    });
+
+    // Crear enlace temporal para descarga
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+
+    // Agregar al DOM, hacer clic y limpiar
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Liberar el objeto URL
+    window.URL.revokeObjectURL(url);
+  }
+
+  deleteClient(id: number): void {
+    console.log('Eliminando factura con id:', id);
+    this.toastService.warning('Eliminar factura', '¿Estás seguro de que deseas eliminar esta factura?');
+    if (confirm('¿Estás seguro de que deseas eliminar esta factura?')) {
+      this.facturaService.deleteFacturaById(id).subscribe({
+        next: (response) => {
+          this.toastService.success('Eliminado', 'La factura ha sido eliminada correctamente.');
+          this.loadFacturas();
+        },
+        error: (err) => {
+          this.toastService.error('Error', 'Ocurrió un error al eliminar la factura.');
+          console.error('Error al eliminar factura:', err.message);
+        }
+      });
+    }
+  }
 }

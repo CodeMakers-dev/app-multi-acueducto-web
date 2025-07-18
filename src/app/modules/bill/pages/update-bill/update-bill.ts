@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Header } from "@components/header/header";
-import { Footer } from "@components/footer/footer";
 import { ActivatedRoute } from '@angular/router';
 import { FacturaService } from '../../service/factura.service';
 import { IEstado, IFactura } from '@interfaces/Ifactura';
@@ -11,7 +9,7 @@ import { EstadoService } from '../../service/estado.service';
 @Component({
   selector: 'app-update-bill',
   standalone: true,
-  imports: [CommonModule, Header, Footer, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './update-bill.html',
   providers: [DatePipe]
 })

@@ -9,6 +9,7 @@ import { AuthService } from '../../service/auth.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { IAuthResponse } from '@interfaces/Iuser';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { EMPTY } from 'rxjs';
 
 type Creds = { user: string; pass: string };
 
@@ -20,21 +21,27 @@ type Creds = { user: string; pass: string };
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
-  private readonly toast = inject(ToastService);
+  private readonly toast  = inject(ToastService);
   private readonly router = inject(Router);
-  private readonly auth = inject(AuthService);
+  private readonly auth   = inject(AuthService);
 
   showPassword = false;
   username = signal('');
   password = signal('');
-  creds = signal<Creds>({ user: '', pass: '' });
+
+  creds = signal<Creds | undefined>(undefined);
+
+  attempted = signal(false);
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
-  readonly login = rxResource<ApiResponse<IAuthResponse>, Creds>({
-    stream: ({ params }) => this.auth.login(params.user, params.pass),
+  readonly login = rxResource<ApiResponse<IAuthResponse>, Creds | undefined>({
+    stream: ({ params }) => {
+      if (!params) return EMPTY;
+      return this.auth.login(params.user, params.pass);
+    },
     params: () => this.creds(),
     defaultValue: undefined,
   });
@@ -44,13 +51,17 @@ export class LoginComponent {
       this.toast.error('Error', 'Por favor, completa ambos campos');
       return;
     }
+    this.attempted.set(true);
     this.creds.set({ user: this.username(), pass: this.password() });
   }
 
   readonly loginFx = effect(() => {
+    if (!this.attempted()) return;
+
     switch (this.login.status()) {
       case 'loading':
         return;
+
       case 'resolved': {
         const resp = this.login.value()!;
         if (resp.code === 200 && resp.response?.token) {
@@ -64,6 +75,7 @@ export class LoginComponent {
         }
         break;
       }
+
       case 'error': {
         const err: any = this.login.error();
         const msg =
@@ -74,7 +86,6 @@ export class LoginComponent {
           err?.status === 401
             ? 'Credenciales incorrectas'
             : 'Error de conexión';
-
         this.toast.error(title, msg);
         break;
       }

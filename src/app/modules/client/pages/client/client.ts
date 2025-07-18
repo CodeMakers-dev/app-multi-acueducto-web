@@ -4,19 +4,63 @@ import { Table } from '@components/table/table';
 import { IPerson } from '@interfaces/Iperson';
 import { TableColumn } from '@interfaces/ItableColumn';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { Header } from '@components/header/header';
-import { Footer } from '@components/footer/footer';
 import { EnterpriseClientCounterService } from '../../service/enterpriseClientCounter.service';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { RouterModule } from '@angular/router';
 import { CorreoPersonaService } from '../../service/correoPersona.service';
 import { TelefonoPersonaService } from '../../service/telefonoPersona.service';
+import { PopupComponent } from "@shared/components/popUp";
 
 @Component({
   selector: 'app-client',
-  imports: [Header, CommonModule, Table, Footer,RouterModule],
-  templateUrl: './client.html',
-  styleUrl: './client.css'
+  imports: [CommonModule, Table, RouterModule, PopupComponent],
+  template: `
+  <div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Gestión de Clientes</h1>
+
+  <div class="mb-4 flex justify-between items-center">
+    <input type="text" placeholder="Buscar..." class="border p-2 rounded-md w-1/3" (input)="onSearchInput($event)" />
+    <button [routerLink]="['/client/create-client']"
+  class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
+  Añadir Nuevo Cliente
+</button>
+  </div>
+
+  <app-table [columns]="clientColumns" [data]="tableData" [pageSize]="pageSize" [currentPage]="currentPage"
+    [totalItems]="totalRegisters" [actionsTemplate]="actionsTemplate" (pageChange)="onPageChange($event)"
+    (sortChange)="onSortChange($event)">
+    <ng-template #actionsTemplate let-item>
+      <div class="flex items-center space-x-2">
+        <button (click)="viewClient(item)" class="text-blue-600 hover:text-blue-900 text-sm cursor-pointer">
+          <i class="fas fa-eye"></i>
+        </button>
+        <button (click)="editClient(item)" class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button (click)="deleteClient(item)" class="text-red-600 hover:text-red-900 text-sm cursor-pointer">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </ng-template>
+  </app-table>
+</div>
+
+
+    <!-- <button class="text-red-600" (click)="dialogOpen.set(true)">Eliminar</button> -->
+
+    <!-- Popup usando ng-content -->
+    <!-- <app-pop-up [open]="dialogOpen">
+      <h3 class="mb-5 text-lg text-gray-500">
+        ¿Seguro que querés eliminar el producto?
+      </h3>
+
+      <button class="px-5 py-2.5 bg-red-600 text-white rounded-lg me-3"
+              (click)="onConfirm()">Sí, eliminar</button>
+
+      <button class="px-5 py-2.5 border rounded-lg"
+              (click)="dialogOpen.set(false)">Cancelar</button>
+    </app-pop-up> -->
+`
 })
 export class Client implements OnInit {
 
@@ -48,9 +92,9 @@ export class Client implements OnInit {
 
   ngOnInit(): void {
     this.loadClients();
-    
+
   }
-  
+
   loadClients(): void {
   this.enterpriseClientCounterService.getAllEnterpriseClientCounters(
     this.currentPage,
@@ -119,7 +163,7 @@ export class Client implements OnInit {
   }
 
   deleteClient(client: IPerson): void {
-    console.log('Eliminar cliente:', client);
+    console.log('Eliminar cliente:', client.id);
   }
 
   viewClient(client: IPerson): void {

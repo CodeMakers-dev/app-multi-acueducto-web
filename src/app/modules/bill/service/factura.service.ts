@@ -12,7 +12,7 @@ import { IFactura } from "@interfaces/Ifactura";
 })
 export class FacturaService {
 
-    private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
+    private readonly apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
 
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
@@ -55,7 +55,7 @@ export class FacturaService {
             catchError(this.handleError)
         );
     }
-    
+
     updateFactura(factura: IFactura): Observable<ApiResponse<IFactura>> {
         return this.http.put<ApiResponse<IFactura>>(this.apiUrl, factura).pipe(
             catchError(this.handleError)

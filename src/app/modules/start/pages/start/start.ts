@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Header } from "../../../../core/components/header/header";
-import { Footer } from "../../../../core/components/footer/footer";
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-start',
-  imports: [Header, Footer, RouterModule],
+  imports: [RouterModule],
   templateUrl: './start.html',
   styleUrl: './start.css'
 })

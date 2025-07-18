@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Footer } from "@components/footer/footer";
-import { Header } from "@components/header/header";
 import { Table } from '@components/table/table';
 import { IDeudaCliente } from '@interfaces/IdeudaFactura';
 import { TableColumn } from '@interfaces/ItableColumn';
@@ -11,7 +9,7 @@ import { ApiResponse } from '@interfaces/Iresponse';
 
 @Component({
   selector: 'app-customer-debt',
-  imports: [Header, CommonModule, Table, Footer, RouterModule],
+  imports: [CommonModule, Table, RouterModule],
   templateUrl: './customer-debt.html',
 })
 export class CustomerDebt implements OnInit {
@@ -27,7 +25,7 @@ export class CustomerDebt implements OnInit {
     { key: 'plazoPagoNombre', label: 'N° de cuotas', sortable: true },
   ];
 
-  tableData: any[] = []; 
+  tableData: any[] = [];
   totalRegisters: number = 0;
 
   currentPage: number = 1;
@@ -62,7 +60,7 @@ export class CustomerDebt implements OnInit {
     (apiResponse: ApiResponse<IDeudaCliente[]>) => {
       const deudas = apiResponse.response;
 
-      console.log('Respuesta completa de deudas:', deudas); 
+      console.log('Respuesta completa de deudas:', deudas);
 
       const deudasTransformadas = deudas.map((deuda, index) => {
         const cliente = deuda.empresaClienteContador?.cliente;
@@ -91,7 +89,7 @@ export class CustomerDebt implements OnInit {
           plazoPagoNombre: deuda.plazoPago?.nombre ?? ''
         };
       });
-      console.log('Deudas transformadas:', deudasTransformadas); 
+      console.log('Deudas transformadas:', deudasTransformadas);
 
       this.totalRegisters = deudas.length;
       this.tableData = deudasTransformadas;
@@ -124,7 +122,7 @@ export class CustomerDebt implements OnInit {
     this.deudaService.deleteDeudaById(id).subscribe({
       next: (res) => {
         console.log('Deuda eliminada correctamente:', res);
-        this.loadDeuda(); 
+        this.loadDeuda();
       },
       error: (err) => {
         console.error('Error al eliminar la deuda:', err);

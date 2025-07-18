@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Footer } from "@components/footer/footer";
-import { Header } from "@components/header/header";
 import { DepartamentService } from '../../../auth/service/departament.service';
 import { CityService } from '../../../auth/service/city.service';
 import { CorregimientoService } from '../../../auth/service/corregimiento.service';
@@ -15,7 +13,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-client',
-  imports: [Footer, Header,FormsModule,ReactiveFormsModule,CommonModule],
+  imports: [FormsModule,ReactiveFormsModule,CommonModule],
   templateUrl: './create-client.html',
   styleUrl: './create-client.css'
 })
@@ -90,7 +88,7 @@ private initializeForm(): void {
         this.departaments = response.response;
       });
     }
-  
+
     loadAllCities(): void {
       this.cityService.getAllCitys().subscribe({
       next: (resp: ApiResponse<ICity[]>)  => {
@@ -106,7 +104,7 @@ private initializeForm(): void {
       }
       });
     }
-  
+
     loadAllCorregimiento(): void {
       this.corregimientoService.getAllCorregimientos().subscribe({
       next: (resp: ApiResponse<ICorregimiento[]>)  => {
@@ -122,7 +120,7 @@ private initializeForm(): void {
       }
       });
     }
-  
+
     onDepartamentChange(): void {
       console.log('selectedDepartamentId:', this.selectedDepartamentId);
       console.log(
@@ -132,7 +130,7 @@ private initializeForm(): void {
       this.selectCitiesId = null;
       this.selectCorregimientoId = null;
       this.filteredCorregimientos = [];
-  
+
       if (this.selectedDepartamentId) {
         this.filteredCities = this.cities.filter(
           (cyt) =>
@@ -144,11 +142,11 @@ private initializeForm(): void {
         this.filteredCities = [];
       }
     }
-  
+
     onCitiesChange(): void {
       const selectedCityId = this.registerForm.get('idCiudad')?.value;
       this.selectCorregimientoId = null;
-  
+
       if (selectedCityId) {
         this.filteredCorregimientos = this.corregimientos.filter(
           (cor) => cor.ciudad && String(cor.ciudad.id) === String(selectedCityId)

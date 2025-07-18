@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Footer } from "@components/footer/footer";
-import { Header } from "@components/header/header";
 import { Table } from '@components/table/table';
 import { TableColumn } from '@interfaces/ItableColumn';
 import { AbonoService } from '../../service/abono.service';
@@ -11,9 +9,9 @@ import { IAbonoFactura } from '@interfaces/IdeudaFactura';
 
 @Component({
   selector: 'app-credit-customer',
-  imports: [Header, CommonModule, Table, Footer, RouterModule],
+  imports: [CommonModule, Table, RouterModule],
   templateUrl: './credit-customer.html',
-  
+
 })
 export class CreditCustomer implements OnInit {
 
@@ -25,7 +23,7 @@ export class CreditCustomer implements OnInit {
   { key: 'valorTexto', label: 'Valor abono', sortable: true }
 ];
 
-  tableData: any[] = []; 
+  tableData: any[] = [];
   totalRegisters: number = 0;
 
   currentPage: number = 1;
