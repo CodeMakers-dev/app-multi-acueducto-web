@@ -1,0 +1,51 @@
+<app-header-header></app-header-header>
+<app-navigation [items]="[
+  { label: 'Inicio', route: '/start/start' },
+  { label: 'Lecturas', route: '/reading' },
+  { label: 'Editar Lectura'  }
+]"></app-navigation>
+
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-semibold text-center mb-6">Editar Lectura</h2>
+
+    <form (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto" *ngIf="lectura">
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Numero serial:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="lectura.contador.serial" name="serial" />
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Fecha de lectura:</label>
+            <input type="date" class="p-3 border rounded-md w-full" [(ngModel)]="lectura.fechaLectura" name="fechaLectura" />
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Numero de lectura(m³):</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="lectura.lectura" name="lectura" />
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Consumo anormal:</label>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="lectura.consumoAnormal"
+                name="consumoAnormal">
+                <option [ngValue]="true">Sí</option>
+                <option [ngValue]="false">No</option>
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Observacion :</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="lectura.descripcion" name="descripcion" />
+        </div>
+
+        <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
+            <button (click)="onSubmit()" type="submit"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
+                Actualizar Lectura
+            </button>
+        </div>
+    </form>
+</div>
+
+<app-footer-footer></app-footer-footer>

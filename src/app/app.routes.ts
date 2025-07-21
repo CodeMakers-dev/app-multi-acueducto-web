@@ -27,6 +27,10 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/bill/bill.routes').then(m => m.default)
   },
   {
+    path: 'reading',
+    loadChildren: () => import('./modules/reading/reading.routes').then(m => m.default)
+  },
+  {
     path: '**',
     redirectTo: '/home'
   }

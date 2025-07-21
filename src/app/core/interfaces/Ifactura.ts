@@ -48,8 +48,8 @@ export interface ILectura {
     id: number;
     contador: ICounter;
     lectura: string;
-    fechaLectura: Date;
-    consumoAnormal: boolean;
+    fechaLectura: string;
+    consumoAnormal: string;
     descripcion: string;
     activo: boolean;
     usuarioCreacion: string;

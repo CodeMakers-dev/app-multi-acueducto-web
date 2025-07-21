@@ -50,6 +50,11 @@
             </select>
         </div>
 
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Valor factura:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="factura.precio" name="consumo" />
+        </div>
+
         <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
             <button (click)="onSubmit()" type="submit"
                 class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">

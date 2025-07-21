@@ -25,9 +25,7 @@
         (sortChange)="onSortChange($event)">
         <ng-template #actionsTemplate let-item>
             <div class="flex items-center space-x-2">
-                <button (click)="viewClient(item)" class="text-blue-600 hover:text-blue-900 text-sm cursor-pointer">
-                    <i class="fas fa-eye"></i>
-                </button>
+                
                 <a [routerLink]="['/bill/update-bill', item.id]"
                     class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
                     <i class="fas fa-edit"></i>
