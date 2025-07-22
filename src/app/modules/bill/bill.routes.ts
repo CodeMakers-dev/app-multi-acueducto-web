@@ -5,11 +5,10 @@ export default [
     path: '',
     loadComponent: () => import('./pages/bill/bill').then(m => m.Bill)
   },
-  // {
-  //   path: 'update-bill/:id',
-  //   loadComponent: () => import('./pages/update-bill/update-bill').then(m => m.UpdateBill),
-  //    RenderMode: RenderMode.Prerender,
-  // },
+  {
+    path: 'update-bill/:id',
+    loadComponent: () => import('./pages/update-bill/update-bill').then(m => m.UpdateBill)
+  },
   {
     path: 'customer-debt',
     loadComponent: () => import('./pages/customer-debt/customer-debt').then(m => m.CustomerDebt)

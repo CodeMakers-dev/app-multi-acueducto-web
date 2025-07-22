@@ -27,10 +27,14 @@ export class BreadcrumbService {
     // Módulo de facturas/bills
     'bill': 'Facturas',
     'customer-debt': 'Deudas de Clientes',
-    'credit-customer': 'Créditos de Clientes',
+    'credit-customer': 'Abonos de Facturas',
     'create-debt': 'Crear Deuda',
-    'create-credit': 'Crear Crédito',
+    'create-credit': 'Crear Abono',
     'update-bill': 'Actualizar Factura',
+
+    // Módulo de lecturas
+    'reading': 'Lecturas',
+    'update-reading': 'Actualizar Lectura',
 
     // Módulo de autenticación
     'auth': 'Autenticación',

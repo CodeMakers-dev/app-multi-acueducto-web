@@ -1,4 +1,5 @@
 
+
 <div class="container mx-auto px-4 py-8">
     <h2 class="text-2xl font-semibold text-center mb-6">Editar Factura</h2>
 
@@ -42,6 +43,11 @@
                 <option [ngValue]="true">Sí</option>
                 <option [ngValue]="false">No</option>
             </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Valor factura:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="factura.precio" name="consumo" />
         </div>
 
         <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">

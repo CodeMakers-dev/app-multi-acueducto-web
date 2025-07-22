@@ -8,13 +8,14 @@ import { FacturaService } from '../../service/factura.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
 import * as XLSX from 'xlsx';
-
+import * as FileSaver from 'file-saver';
+import { Navigation } from "@components/navigation/navigation";
 
 
 
 @Component({
   selector: 'app-bill',
-  imports: [ CommonModule, Table,  RouterModule],
+  imports: [ CommonModule, Table,  RouterModule, Navigation],
   templateUrl: './bill.html',
 })
 export class Bill implements OnInit {
@@ -43,8 +44,11 @@ export class Bill implements OnInit {
   currentSortDirection: 'asc' | 'desc' = 'asc';
 
   protected readonly facturaService = inject(FacturaService);
+
   protected readonly router = inject(Router);
+
   protected readonly toastService = inject(ToastService);
+
 
   ngOnInit(): void {
     this.loadFacturas();
@@ -115,7 +119,6 @@ export class Bill implements OnInit {
     console.log('Ver detalles de cliente:', client);
   }
 
-  // Método nativo para descargar Excel sin librerías externas
   descargarHistorial(): void {
     const exportData = this.tableData.map((factura: any) => {
       const row: any = {};
@@ -141,8 +144,12 @@ export class Bill implements OnInit {
       type: 'array'
     });
 
-    // Descarga nativa sin file-saver
-    // this.downloadFile(excelBuffer, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
+    const blob: Blob = new Blob([excelBuffer], {
+      type:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+    });
+
+    FileSaver.saveAs(blob, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
   }
 
   deleteClient(id: number): void {

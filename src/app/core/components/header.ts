@@ -150,7 +150,7 @@ export class Header  {
     },
     {
       name: 'Lecturas',
-      link: '/contact',
+      link: '/reading',
       target: '_self',
     },
     {

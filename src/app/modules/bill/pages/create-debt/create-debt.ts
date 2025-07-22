@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { IDeudaCliente, IPlazoPago, ITipoDeuda } from '@interfaces/IdeudaFactura';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { EnterpriseClientCounterService } from '../../../client/service/enterpriseClientCounter.service';
@@ -16,7 +17,7 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-create-debt',
-  imports: [ FormsModule, ReactiveFormsModule, CommonModule, Navigation],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, Navigation],
   templateUrl: './create-debt.html',
 
 })

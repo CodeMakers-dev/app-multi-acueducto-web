@@ -6,23 +6,22 @@ import { TableColumn } from '@interfaces/ItableColumn';
 import { AbonoService } from '../../service/abono.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { IAbonoFactura } from '@interfaces/IdeudaFactura';
+import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-credit-customer',
-  imports: [CommonModule, Table, RouterModule],
+  imports: [ CommonModule, Table, RouterModule, Navigation],
   templateUrl: './credit-customer.html',
 
 })
 export class CreditCustomer implements OnInit {
 
-   abonoColumns: TableColumn[] = [
-
-  { key: 'codigoFactura', label: 'Código factura', sortable: true },
-  { key: 'valorDeudaTexto', label: 'Valor deuda', sortable: true },
-  { key: 'fechaAbonoTexto', label: 'Fecha abono', sortable: true },
-  { key: 'valorTexto', label: 'Valor abono', sortable: true }
-];
-
+  abonoColumns: TableColumn[] = [
+    { key: 'clienteFactura', label: 'Cliente', sortable: true },
+    { key: 'codigoFactura', label: 'Código factura', sortable: true },
+    { key: 'fechaAbonoTexto', label: 'Fecha abono', sortable: true },
+    { key: 'valorTexto', label: 'Valor abono', sortable: true }
+  ];
   tableData: any[] = [];
   totalRegisters: number = 0;
 
