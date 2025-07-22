@@ -9,11 +9,10 @@ import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { RouterModule } from '@angular/router';
 import { CorreoPersonaService } from '../../service/correoPersona.service';
 import { TelefonoPersonaService } from '../../service/telefonoPersona.service';
-import { PopupComponent } from "@shared/components/popUp";
 
 @Component({
   selector: 'app-client',
-  imports: [CommonModule, Table, RouterModule, PopupComponent],
+  imports: [CommonModule, Table, RouterModule],
   template: `
   <div class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-6">Gestión de Clientes</h1>
@@ -45,11 +44,8 @@ import { PopupComponent } from "@shared/components/popUp";
   </app-table>
 </div>
 
-
-    <!-- <button class="text-red-600" (click)="dialogOpen.set(true)">Eliminar</button> -->
-
-    <!-- Popup usando ng-content -->
-    <!-- <app-pop-up [open]="dialogOpen">
+   <!-- <button class="text-red-600" (click)="dialogOpen.set(true)">Eliminar</button>
+   <app-pop-up [open]="dialogOpen">
       <h3 class="mb-5 text-lg text-gray-500">
         ¿Seguro que querés eliminar el producto?
       </h3>
@@ -133,6 +129,10 @@ export class Client implements OnInit {
     }
   );
 }
+
+
+
+// http://localhost:8080/api/v1/Empresa/usuario/4
 
 
 

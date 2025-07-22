@@ -9,7 +9,7 @@ import { TableColumn } from '@interfaces/ItableColumn';
   styleUrl: './table.css'
 })
 export class Table implements OnInit {
-
+//  utilizar los input signal para la reactividad de la data
   @Input() columns: TableColumn[] = [];
   @Input() data: any[] = [];
   @Input() actionsTemplate: TemplateRef<any> | null = null;
@@ -21,7 +21,7 @@ export class Table implements OnInit {
   @Output() pageChange = new EventEmitter<number>();
   @Output() sortChange = new EventEmitter<{ column: string; direction: 'asc' | 'desc' }>();
 
-  
+
 
 
   currentSortColumn: string = '';
@@ -29,9 +29,9 @@ export class Table implements OnInit {
 
 
   public Math = Math;
-
+  //  implementarlo en el contructor
   ngOnInit(): void {
-    
+
     console.log('Table Component - ngOnInit - Received Data:', this.data);
     console.log('Table Component - ngOnInit - Received Columns:', this.columns);
     console.log('Table Component - ngOnInit - Total Items:', this.totalItems);
@@ -41,7 +41,7 @@ export class Table implements OnInit {
     }
   }
 
- 
+
 
   getNestedProperty(obj: any, path: string): any {
     // console.log(`Attempting to get property: ${path} from object:`, obj);
