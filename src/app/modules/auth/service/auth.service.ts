@@ -69,6 +69,10 @@ export class AuthService {
     this.router.navigate(['/home']);
   }
 
+  getUser() {
+    return this.userSig();
+  }
+
   fetchProfile() {
     return this.http.get<ApiResponse<Iuser>>(this.userUrl).pipe(
       mergeMap(res => {

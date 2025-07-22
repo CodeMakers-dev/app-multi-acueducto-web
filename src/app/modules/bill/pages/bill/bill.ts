@@ -8,21 +8,13 @@ import { FacturaService } from '../../service/factura.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
 import * as XLSX from 'xlsx';
-<<<<<<< HEAD
 
-@Component({
-  selector: 'app-bill',
-  imports: [ CommonModule, Table, RouterModule],
-=======
-import * as FileSaver from 'file-saver';
-import { Navigation } from "@components/navigation/navigation";
 
 
 
 @Component({
   selector: 'app-bill',
-  imports: [Header, CommonModule, Table, Footer, RouterModule, Navigation],
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
+  imports: [ CommonModule, Table,  RouterModule],
   templateUrl: './bill.html',
 })
 export class Bill implements OnInit {
@@ -119,13 +111,6 @@ export class Bill implements OnInit {
     this.loadFacturas();
   }
 
-<<<<<<< HEAD
-  addNewClient(): void {
-    console.log('Añadir nuevo cliente');
-  }
-
-=======
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
   viewClient(client: IFactura): void {
     console.log('Ver detalles de cliente:', client);
   }
@@ -157,33 +142,9 @@ export class Bill implements OnInit {
     });
 
     // Descarga nativa sin file-saver
-    this.downloadFile(excelBuffer, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
+    // this.downloadFile(excelBuffer, `Historial_Facturas_${new Date().toISOString()}.xlsx`);
   }
 
-<<<<<<< HEAD
-  // Método nativo para descargar archivos
-  private downloadFile(data: any, filename: string): void {
-    const blob = new Blob([data], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
-    });
-
-    // Crear enlace temporal para descarga
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-
-    // Agregar al DOM, hacer clic y limpiar
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Liberar el objeto URL
-    window.URL.revokeObjectURL(url);
-  }
-
-=======
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
   deleteClient(id: number): void {
     console.log('Eliminando factura con id:', id);
     this.toastService.warning('Eliminar factura', '¿Estás seguro de que deseas eliminar esta factura?');

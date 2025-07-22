@@ -1,13 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-<<<<<<< HEAD
-import { IDeudaCliente, ITipoDeuda } from '@interfaces/IdeudaFactura';
-=======
-import { Footer } from "@components/footer/footer";
-import { Header } from "@components/header/header";
 import { IDeudaCliente, IPlazoPago, ITipoDeuda } from '@interfaces/IdeudaFactura';
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { EnterpriseClientCounterService } from '../../../client/service/enterpriseClientCounter.service';
 import { TipoDeudaService } from '../../service/tipoDeuda.service';
@@ -22,11 +16,7 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-create-debt',
-<<<<<<< HEAD
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
-=======
-  imports: [Footer, Header, FormsModule, ReactiveFormsModule, CommonModule, Navigation],
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
+  imports: [ FormsModule, ReactiveFormsModule, CommonModule, Navigation],
   templateUrl: './create-debt.html',
 
 })
@@ -121,35 +111,6 @@ export class CreateDebt implements OnInit {
   }
 
   onSubmit(): void {
-<<<<<<< HEAD
-    // if (this.registerForm.valid) {
-    //   const rawForm = this.registerForm.value;
-    //   const currentUser = this.authService.getUser();
-    //   const nombreUsuario = currentUser?.nombre ?? 'desconocido';
-    //   const deuda: IDeudaCliente = {
-    //     ...rawForm,
-    //     valor: parseFloat(rawForm.valor),
-    //     activo: true,
-    //     usuarioCreacion: nombreUsuario,
-    //     fechaCreacion: new Date(),
-    //   };
-    //   this.deudaService.saveDeuda(deuda).subscribe({
-    //     next: (res) => {
-    //       this.showSuccessMessage = true;
-    //       setTimeout(() => {
-    //         this.showSuccessMessage = false;
-    //         this.router.navigate(['/bill/customer-debt']);
-    //       }, 2000);
-    //     },
-    //     error: (err) => {
-    //       console.error('Error al guardar deuda:', err);
-    //       alert('Ocurrió un error al guardar la deuda.');
-    //     }
-    //   });
-    // } else {
-    //   alert('Formulario inválido. Revisa los campos requeridos.');
-    // }
-=======
     if (this.registerForm.invalid) {
       this.toast.warning('Formulario inválido', 'Revisa los campos requeridos.');
       return;
@@ -181,7 +142,6 @@ export class CreateDebt implements OnInit {
         this.toast.error('Ocurrió un error al guardar la deuda.', 'Error');
       }
     });
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
   }
 
 }

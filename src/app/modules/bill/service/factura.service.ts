@@ -12,13 +12,8 @@ import { IFactura, IfacturaResponse } from "@interfaces/Ifactura";
 })
 export class FacturaService {
 
-<<<<<<< HEAD
-    private readonly apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
-
-=======
     private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
     private Url = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}/${END_POINT_SERVICE.GET_FACTURA_ALL}`;
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
@@ -83,12 +78,7 @@ export class FacturaService {
     }
 
 
-<<<<<<< HEAD
-
-}
-=======
     getFacturAll(): Observable<ApiResponse<IFactura[]>> {
         return this.http.get<ApiResponse<IFactura[]>>(this.Url);
     }
 }
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830

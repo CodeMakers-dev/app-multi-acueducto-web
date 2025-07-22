@@ -50,4 +50,9 @@ export class UserService {
   const url = `${this.apiUrl}/${END_POINT_SERVICE.PUT_UPD_PASS}/${id}`;
   return this.http.put<ApiResponse<any>>(url, data);
 }
+
+getUser(): Iuser | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
 }

@@ -8,8 +8,6 @@ import { TipoDeudaService } from '../../service/tipoDeuda.service';
 import { FacturaService } from '../../service/factura.service';
 import { PlazoPagoService } from '../../service/plazoPago.service';
 import { IDeudaCliente, IPlazoPago, ITipoDeuda } from '@interfaces/IdeudaFactura';
-import { Footer } from "@components/footer/footer";
-import { Header } from "@components/header/header";
 import { CommonModule } from '@angular/common';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { IFactura } from '@interfaces/Ifactura';
@@ -18,13 +16,13 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-update-debt',
-  imports: [CommonModule, Header, Footer, FormsModule, ReactiveFormsModule, Navigation],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, Navigation],
   templateUrl: './update-debt.html',
 })
 export class UpdateDebt implements OnInit {
   registerForm!: FormGroup;
   deudaId!: number;
-  
+
 
   empresaClienteContador: IEnterpriseClientCounter[] = [];
   tipoDeuda: ITipoDeuda[] = [];

@@ -6,21 +6,15 @@ import { TableColumn } from '@interfaces/ItableColumn';
 import { AbonoService } from '../../service/abono.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { IAbonoFactura } from '@interfaces/IdeudaFactura';
-import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-credit-customer',
-<<<<<<< HEAD
   imports: [CommonModule, Table, RouterModule],
-=======
-  imports: [Header, CommonModule, Table, Footer, RouterModule, Navigation],
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
   templateUrl: './credit-customer.html',
 
 })
 export class CreditCustomer implements OnInit {
 
-<<<<<<< HEAD
    abonoColumns: TableColumn[] = [
 
   { key: 'codigoFactura', label: 'Código factura', sortable: true },
@@ -29,14 +23,6 @@ export class CreditCustomer implements OnInit {
   { key: 'valorTexto', label: 'Valor abono', sortable: true }
 ];
 
-=======
-  abonoColumns: TableColumn[] = [
-    { key: 'clienteFactura', label: 'Cliente', sortable: true },
-    { key: 'codigoFactura', label: 'Código factura', sortable: true },
-    { key: 'fechaAbonoTexto', label: 'Fecha abono', sortable: true },
-    { key: 'valorTexto', label: 'Valor abono', sortable: true }
-  ];
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
   tableData: any[] = [];
   totalRegisters: number = 0;
 

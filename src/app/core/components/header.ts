@@ -12,7 +12,6 @@ import { BreadcrumbComponent } from "./breadcrumb";
 @Component({
   selector: 'app-header',
   imports: [CommonModule, FormsModule, Link, BreadcrumbComponent],
- // ...existing code...
 template: `
   <nav class="bg-white shadow-md border-b border-gray-300">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -146,7 +145,7 @@ export class Header  {
     },
     {
       name: 'Facturas',
-      link: '/services',
+      link: '/bill',
       target: '_self',
     },
     {

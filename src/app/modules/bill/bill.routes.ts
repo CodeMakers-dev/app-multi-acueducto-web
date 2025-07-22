@@ -26,12 +26,8 @@ export default [
     path: 'create-credit/:id',
     loadComponent: () => import('./pages/create-credit/create-credit').then(m => m.CreateCredit)
   },
-<<<<<<< HEAD
-] as Routes;
-=======
   {
     path: 'update-debt/:id',
     loadComponent: () => import('./pages/update-debt/update-debt').then(m => m.UpdateDebt)
   },
 ] as Routes;
->>>>>>> 2e9665dd6b0419140d14d4045e1c4a2436ad7830
