@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IImage } from '@interfaces/image/image';
 import { ILink } from '@interfaces/link/link';
 import { Image } from '@shared/components/image';
+import { Link } from "@shared/components/link";
 
 @Component({
   selector: 'app-footer',
-  imports: [Image],
+  imports: [Image, Link],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <footer class="bg-[linear-gradient(182deg,_rgba(3,53,152,1)_0%,_rgba(41,117,225,1)_100%)] text-white p-6">
@@ -20,10 +21,10 @@ import { Image } from '@shared/components/image';
           </p>
           <nav class="flex flex-col sm:flex-row justify-center items-center gap-6 md:gap-12">
             @for (item of linkList; track $index) {
-              <a [href]="item.link" [target]="item.target"
-                class="text-white hover:text-blue-200 transition-colors duration-300">
-                {{ item.name }}
-              </a>
+              <app-link [link]="item.link" class="text-white hover:text-blue-200 transition-colors duration-300"
+              >
+                    {{ item.name }}
+              </app-link>
             }
           </nav>
         </div>
@@ -33,9 +34,11 @@ import { Image } from '@shared/components/image';
         <div
           class="md:flex-auto md:flex-row-reverse mt-2 flex-row flex gap-[2.5rem]">
         @for (item of sociaMediaList; track $index) {
-          <a [href]="item.link" class="flex items-center gap-2">
-            <app-image [images]="item" [class]="'object-contain'"></app-image>
-          </a>
+            <app-link [link]="item.link" class="flex items-center gap-2"
+              >
+                  {{ item.name }}
+                    <app-image [images]="item" [class]="'object-contain'"></app-image>
+            </app-link>
         }
         </div>
         <div class="my-5 text-amber-50">

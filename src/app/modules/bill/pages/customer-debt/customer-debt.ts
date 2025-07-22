@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Footer } from "@components/footer/footer";
-import { Header } from "@components/header/header";
 import { Table } from '@components/table/table';
 import { IDeudaCliente } from '@interfaces/IdeudaFactura';
 import { TableColumn } from '@interfaces/ItableColumn';
@@ -13,7 +11,7 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-customer-debt',
-  imports: [Header, CommonModule, Table, Footer, RouterModule, Navigation],
+  imports: [CommonModule, Table, RouterModule, Navigation],
   templateUrl: './customer-debt.html',
 })
 export class CustomerDebt implements OnInit {

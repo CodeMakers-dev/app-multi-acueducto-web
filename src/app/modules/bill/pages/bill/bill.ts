@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Header } from "@components/header/header";
-import { Footer } from "@components/footer/footer";
 import { Table } from '@components/table/table';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -17,7 +15,7 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-bill',
-  imports: [Header, CommonModule, Table, Footer, RouterModule, Navigation],
+  imports: [ CommonModule, Table,  RouterModule, Navigation],
   templateUrl: './bill.html',
 })
 export class Bill implements OnInit {

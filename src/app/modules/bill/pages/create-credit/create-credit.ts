@@ -2,8 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Footer } from "@components/footer/footer";
-import { Header } from "@components/header/header";
+
 import { AbonoService } from '../../service/abono.service';
 import { IAbonoFactura } from '@interfaces/IdeudaFactura';
 import { AuthService } from '../../../auth/service/auth.service';
@@ -12,7 +11,7 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-create-credit',
-  imports: [CommonModule, Footer, Header, ReactiveFormsModule, Navigation],
+  imports: [CommonModule,  ReactiveFormsModule, Navigation],
   templateUrl: './create-credit.html',
 
 })

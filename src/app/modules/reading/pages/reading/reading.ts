@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Header } from "@components/header/header";
 import { Navigation } from "@components/navigation/navigation";
 import { Table } from '@components/table/table';
-import { Footer } from "@components/footer/footer";
 import { TableColumn } from '@interfaces/ItableColumn';
 import { ILectura } from '@interfaces/Ifactura';
 import { LecturaService } from '../../service/lectura.service';
@@ -13,13 +11,11 @@ import { ApiResponse } from '@interfaces/Iresponse';
 
 @Component({
   selector: 'app-reading',
-  imports: [Header, CommonModule, Table, RouterModule, Navigation, Footer],
+  imports: [CommonModule, Table, RouterModule, Navigation],
   templateUrl: './reading.html',
  
 })
 export class Reading implements OnInit {
-
-
 
   readingColumns: TableColumn[] = [
   { key: 'contador.serial', label: 'N°. serial (contador)', sortable: true },

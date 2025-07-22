@@ -2,15 +2,14 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Footer } from '@components/footer/footer';
-import { Header } from "@components/header/header";
+
 import { Navigation } from "@components/navigation/navigation";
 import { ILectura } from '@interfaces/Ifactura';
 import { LecturaService } from '../../service/lectura.service';
 
 @Component({
   selector: 'app-update-reading',
-  imports: [CommonModule, Header, Footer, FormsModule, Navigation],
+  imports: [CommonModule, FormsModule, Navigation],
   templateUrl: './update-reading.html',
   providers: [DatePipe]
 })
