@@ -9,13 +9,12 @@ import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
-import { Navigation } from "@components/navigation/navigation";
 
 
 
 @Component({
   selector: 'app-bill',
-  imports: [ CommonModule, Table,  RouterModule, Navigation],
+  imports: [ CommonModule, Table,  RouterModule],
   templateUrl: './bill.html',
 })
 export class Bill implements OnInit {

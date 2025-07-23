@@ -9,7 +9,7 @@ import { LecturaService } from '../../service/lectura.service';
 
 @Component({
   selector: 'app-update-reading',
-  imports: [CommonModule, FormsModule, Navigation],
+  imports: [CommonModule, FormsModule],
   templateUrl: './update-reading.html',
   providers: [DatePipe]
 })

@@ -11,7 +11,7 @@ import { ApiResponse } from '@interfaces/Iresponse';
 
 @Component({
   selector: 'app-reading',
-  imports: [CommonModule, Table, RouterModule, Navigation],
+  imports: [CommonModule, Table, RouterModule],
   templateUrl: './reading.html',
  
 })

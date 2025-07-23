@@ -13,7 +13,7 @@ import { PopupComponent } from "@shared/components/popUp";
 
 @Component({
   selector: 'app-client',
-  imports: [CommonModule, Table, RouterModule, PopupComponent],
+  imports: [CommonModule, Table, RouterModule],
   template: `
   <div class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-6">Gestión de Clientes</h1>

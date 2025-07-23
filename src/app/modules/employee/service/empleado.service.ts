@@ -5,25 +5,24 @@ import { Router } from "@angular/router";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
-import { IFactura, IfacturaResponse } from "@interfaces/Ifactura";
+import { IEmpleadoEmpresaResponse } from "@interfaces/Iemployee";
 
 @Injectable({
     providedIn: 'root'
 })
-export class FacturaService {
+export class EmpleadoService {
 
-    private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}`;
-    private Url = `${environment.apiUrl}/${END_POINT_SERVICE.GET_FACTURA}/${END_POINT_SERVICE.GET_FACTURA_ALL}`;
+    private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO}`;
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
-    getAllFactura(
+    getAllEmpleado(
         page: number,
         pageSize: number,
         searchTerm: string,
         sortColumn: string,
         sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IfacturaResponse[]>> {
+    ): Observable<ApiResponse<IEmpleadoEmpresaResponse[]>> {
 
         let params = new HttpParams();
         params = params.append('page', page.toString());
@@ -37,48 +36,28 @@ export class FacturaService {
             params = params.append('sortDirection', sortDirection);
         }
 
-        return this.http.get<ApiResponse<IfacturaResponse[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`, { params }).pipe(
+        return this.http.get<ApiResponse<IEmpleadoEmpresaResponse[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO_ALL}`, { params }).pipe(
             catchError(this.handleError)
         );
     }
-
-    deleteFacturaById(id: number): Observable<ApiResponse<any>> {
-        const url = `${this.apiUrl}/${id}`;
-        return this.http.delete<ApiResponse<any>>(url).pipe(
-            catchError(this.handleError)
-        );
-    }
-
-    getFacturaById(id: number): Observable<ApiResponse<IFactura>> {
-        const url = `${this.apiUrl}/${id}`;
-        return this.http.get<ApiResponse<IFactura>>(url).pipe(
-            catchError(this.handleError)
-        );
-    }
-
-    updateFactura(factura: IFactura): Observable<ApiResponse<IFactura>> {
-        return this.http.put<ApiResponse<IFactura>>(this.apiUrl, factura).pipe(
-            catchError(this.handleError)
-        );
-    }
-
-
     private handleError(error: any): Observable<never> {
-        let errorMessage = 'An unknown error occurred while loading factura.';
+        let errorMessage = 'An unknown error occurred while loading empleado.';
         if (error.error instanceof ErrorEvent) {
-            errorMessage = `Client Error: ${error.error.message}`;
+            errorMessage = `empleado Error: ${error.error.message}`;
         } else {
             errorMessage = `Server Error: ${error.status} - ${error.message || ''}`;
             if (error.error && error.error.message) {
                 errorMessage = `${errorMessage} - ${error.error.message}`;
             }
         }
-        console.error('Error in facturaService:', errorMessage);
+        console.error('Error in empleado:', errorMessage);
         return throwError(() => new Error(errorMessage));
     }
 
-
-    getFacturAll(): Observable<ApiResponse<IfacturaResponse[]>> {
-        return this.http.get<ApiResponse<IfacturaResponse[]>>(this.Url);
+    saveEmpleado(data: any): Observable<Map<string, any>> {
+        const url = `${environment.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO}/${END_POINT_SERVICE.GET_SAVE_EMPLEADO}`;
+        return this.http.post<Map<string, any>>(url, data).pipe(
+            catchError(this.handleError)
+        );
     }
 }
