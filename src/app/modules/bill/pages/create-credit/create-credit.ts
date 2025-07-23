@@ -11,7 +11,7 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-create-credit',
-  imports: [CommonModule,  ReactiveFormsModule, Navigation],
+  imports: [CommonModule,  ReactiveFormsModule],
   templateUrl: './create-credit.html',
 
 })

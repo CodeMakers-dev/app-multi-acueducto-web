@@ -11,8 +11,8 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-customer-debt',
-  imports: [CommonModule, Table, RouterModule, Navigation],
-  templateUrl: './customer-debt.html',
+  imports: [CommonModule, Table, RouterModule],
+  templateUrl: './customer-debt.html'
 })
 export class CustomerDebt implements OnInit {
 

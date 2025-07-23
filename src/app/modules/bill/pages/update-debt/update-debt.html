@@ -32,7 +32,7 @@
             <label class="mb-1 font-medium text-gray-700">Factura:</label>
             <select formControlName="factura" class="p-3 border rounded-md w-full" required>
                 <option [ngValue]="null" disabled>Seleccione factura...</option>
-                <option *ngFor="let fac of factura" [ngValue]="fac">{{ fac.codigo }}</option>
+                <option *ngFor="let fac of facturas" [ngValue]="fac">{{ fac.codigo }}</option>
             </select>
         </div>
 

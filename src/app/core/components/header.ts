@@ -155,7 +155,7 @@ export class Header  {
     },
     {
       name: 'Empleados',
-      link: '/about',
+      link: '/employee',
       target: '_self',
     },
         {

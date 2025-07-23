@@ -10,7 +10,7 @@ import { Navigation } from "@components/navigation/navigation";
 @Component({
   selector: 'app-update-bill',
   standalone: true,
-  imports: [CommonModule,  FormsModule, Navigation],
+  imports: [CommonModule,  FormsModule],
   templateUrl: './update-bill.html',
   providers: [DatePipe]
 })

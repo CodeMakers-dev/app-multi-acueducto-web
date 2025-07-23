@@ -10,7 +10,7 @@ import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-credit-customer',
-  imports: [ CommonModule, Table, RouterModule, Navigation],
+  imports: [ CommonModule, Table, RouterModule],
   templateUrl: './credit-customer.html',
 
 })
