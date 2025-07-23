@@ -37,4 +37,6 @@ export const END_POINT_SERVICE = {
 
    GET_ALL_LECTURA: 'all',
    GET_LECTURA: 'Lectura',
+
+   GET_ENTERPRISE: 'Empresa/usuario',
 }
