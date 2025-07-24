@@ -8,7 +8,7 @@ import { filter, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class BreadcrumbService {
-  private  readonly _breadcrumbs = signal<IBreadcrumb[]>([]);
+  private readonly _breadcrumbs = signal<IBreadcrumb[]>([]);
 
   breadcrumbs = this._breadcrumbs.asReadonly();
 
@@ -35,6 +35,10 @@ export class BreadcrumbService {
     // Módulo de lecturas
     'reading': 'Lecturas',
     'update-reading': 'Actualizar Lectura',
+
+    // Módulo de empleados
+    'employee': 'Empleados',
+    'create-employee': 'Crear Empleado',
 
     // Módulo de autenticación
     'auth': 'Autenticación',

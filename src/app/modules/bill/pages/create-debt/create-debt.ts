@@ -9,10 +9,12 @@ import { TipoDeudaService } from '../../service/tipoDeuda.service';
 import { DeudaService } from '../../service/deuda.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../auth/service/auth.service';
-import { IFactura } from '@interfaces/Ifactura';
+import { IFactura, IfacturaResponse } from '@interfaces/Ifactura';
 import { FacturaService } from '../../service/factura.service';
 import { PlazoPagoService } from '../../service/plazoPago.service';
 import { ToastService } from '@services/toast.service';
+import { ApiResponse } from '@interfaces/Iresponse';
+
 
 @Component({
   selector: 'app-create-debt',
@@ -34,6 +36,8 @@ export class CreateDebt implements OnInit {
   factura: IFactura[] = [];
   facturaName: string[] = [];
 
+  facturas: IfacturaResponse[] = [];
+
   plazoPago: IPlazoPago[] = [];
   plazoPagoName: string[] = [];
 
@@ -52,18 +56,19 @@ export class CreateDebt implements OnInit {
   protected readonly facturaService = inject(FacturaService);
   protected readonly toast = inject(ToastService);
 
-  ngOnInit(): void {
+ ngOnInit(): void {
     this.initializeForm();
     this.loadAllClientes();
     this.loadTipoDeuda();
     this.loadPlazoPago();
 
     this.registerForm.get('empresaClienteContador')?.valueChanges.subscribe(selectedCliente => {
-      if (selectedCliente && selectedCliente.cliente?.id) {
-        const clienteId = selectedCliente.cliente.id;
+        console.log('Cliente seleccionado:', selectedCliente);
+      if (selectedCliente && selectedCliente.id) {
+        const clienteId = selectedCliente.id; 
         this.loadFacturasPorCliente(clienteId);
       } else {
-        this.factura = [];
+        this.facturas = []; 
       }
     });
   }
@@ -79,14 +84,19 @@ export class CreateDebt implements OnInit {
     });
   }
 
-  loadFacturasPorCliente(clienteId: number): void {
-    this.facturaService.getFacturAll().subscribe((response) => {
-      const facturasFiltradas = response.response.filter(fac => fac.empresaClienteContador.cliente?.id === clienteId);
-      this.factura = facturasFiltradas;
-      this.facturaName = facturasFiltradas.map((factura) => factura.codigo);
+  loadFacturasPorCliente(empresaClienteContadorId: number): void {
+    this.facturaService.getFacturAll().subscribe((response: ApiResponse<IfacturaResponse[]>) => {
+      console.log('Facturas totales:', response.response);
+
+      const facturasFiltradas = response.response.filter(fac =>
+        fac.empresaClienteContadorId === empresaClienteContadorId
+      );
+
+      this.facturas = [...facturasFiltradas];
       console.log('Facturas filtradas por cliente:', facturasFiltradas);
     });
   }
+
 
   loadPlazoPago(): void {
     this.plazoPagoService.getAllPlazoPago().subscribe((response) => {
@@ -143,5 +153,5 @@ export class CreateDebt implements OnInit {
       }
     });
   }
-
 }
+

@@ -1,0 +1,56 @@
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-semibold text-center mb-6">Editar Empleado</h2>
+
+    <form (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto" *ngIf="empleado">
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Nombre completo:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="empleado.nombreCompleto"
+                name="nombreCompleto" placeholder="Nombre completo..." required />
+        </div>
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">N° identificación:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="empleado.numeroIdentificacion"
+                name="numeroIdentificacion" placeholder="N° identificación..." required />
+        </div>
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Código:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="empleado.codigo" name="codigo"
+                placeholder="Código..." required />
+        </div>
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Correo:</label>
+            <input type="email" class="p-3 border rounded-md w-full" [(ngModel)]="empleado.correo" name="correo"
+                placeholder="Correo..." required />
+        </div>
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Teléfono:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="empleado.telefono" name="telefono"
+                placeholder="Teléfono..." required />
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Estado:</label>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="empleado.activo" name="estado">
+                <option [ngValue]="true">Activo</option>
+                <option [ngValue]="false">Inactivo</option>
+            </select>
+        </div>
+
+        <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md shadow-md cursor-pointer">
+                Actualizar
+            </button>
+        </div>
+    </form>
+</div>

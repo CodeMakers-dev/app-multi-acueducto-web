@@ -8,7 +8,11 @@ import { FacturaService } from '../../service/factura.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
 import * as XLSX from 'xlsx';
-import FileSaver from 'file-saver';
+
+import * as FileSaver from 'file-saver';
+
+
+
 
 
 

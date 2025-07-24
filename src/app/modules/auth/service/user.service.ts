@@ -55,4 +55,9 @@ getUser(): Iuser | null {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+
+  sendEmailUsuario(data: any): Observable<ApiResponse<any>> {
+    const url = `${this.apiUrl}/${END_POINT_SERVICE.POST_SEND_EMAIL}`;
+    return this.http.post<ApiResponse<any>>(url, data)
+}
 }
