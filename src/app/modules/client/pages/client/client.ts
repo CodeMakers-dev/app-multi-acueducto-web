@@ -1,4 +1,3 @@
-import { Buttoon } from '@shared/components/button';
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
