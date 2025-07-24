@@ -7,7 +7,6 @@ import { AbonoService } from '../../service/abono.service';
 import { IAbonoFactura } from '@interfaces/IdeudaFactura';
 import { AuthService } from '../../../auth/service/auth.service';
 import { ToastService } from '@services/toast.service';
-import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-create-credit',
@@ -60,7 +59,7 @@ export class CreateCredit implements OnInit {
   this.abonoService.saveAbono(abono as IAbonoFactura).subscribe({
     next: () => {
       this.toast.success('Éxito', 'El abono se registró correctamente.');
-      this.router.navigate(['/bill/customer-debt']); 
+      this.router.navigate(['/bill/customer-debt']);
     },
     error: (err) => {
       console.error('Error al guardar el abono:', err);

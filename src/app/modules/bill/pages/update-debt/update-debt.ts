@@ -22,7 +22,7 @@ import { ApiResponse } from '@interfaces/Iresponse';
 export class UpdateDebt implements OnInit {
   registerForm!: FormGroup;
   deudaId!: number;
-  
+
 
   empresaClienteContador: IEnterpriseClientCounter[] = [];
   tipoDeuda: ITipoDeuda[] = [];

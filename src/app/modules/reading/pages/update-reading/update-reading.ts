@@ -3,7 +3,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { Navigation } from "@components/navigation/navigation";
 import { ILectura } from '@interfaces/Ifactura';
 import { LecturaService } from '../../service/lectura.service';
 
@@ -14,7 +13,7 @@ import { LecturaService } from '../../service/lectura.service';
   providers: [DatePipe]
 })
 export class UpdateReading implements OnInit {
-  
+
   lectura: ILectura | null = null;
 
   private readonly route = inject(ActivatedRoute);
@@ -30,7 +29,7 @@ export class UpdateReading implements OnInit {
           this.lectura = {
             ...lectura,
             fechaLectura: lectura.fechaLectura ? this.formatDateToInput(lectura.fechaLectura) : ''
-           
+
           };
         },
         error: (err) => {

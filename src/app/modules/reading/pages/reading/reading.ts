@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Navigation } from "@components/navigation/navigation";
 import { Table } from '@components/table/table';
 import { TableColumn } from '@interfaces/ItableColumn';
 import { ILectura } from '@interfaces/Ifactura';
@@ -13,7 +12,7 @@ import { ApiResponse } from '@interfaces/Iresponse';
   selector: 'app-reading',
   imports: [CommonModule, Table, RouterModule],
   templateUrl: './reading.html',
- 
+
 })
 export class Reading implements OnInit {
 
@@ -86,5 +85,5 @@ export class Reading implements OnInit {
     this.currentPage = 1;
     this.loadLecturas();
   }
-  
+
 }

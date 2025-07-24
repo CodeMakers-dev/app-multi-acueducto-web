@@ -13,8 +13,8 @@ import { IFactura, IfacturaResponse } from '@interfaces/Ifactura';
 import { FacturaService } from '../../service/factura.service';
 import { PlazoPagoService } from '../../service/plazoPago.service';
 import { ToastService } from '@services/toast.service';
-import { Navigation } from "@components/navigation/navigation";
 import { ApiResponse } from '@interfaces/Iresponse';
+
 
 @Component({
   selector: 'app-create-debt',
@@ -153,6 +153,5 @@ export class CreateDebt implements OnInit {
       }
     });
   }
-
-
 }
+
