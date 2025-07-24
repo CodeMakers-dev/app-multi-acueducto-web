@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICity } from '@interfaces/Icity';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
+import { ICorregimiento } from '@interfaces/icorregimiento';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { DepartamentService } from '../../../auth/service/departament.service';
 import { CityService } from '../../../auth/service/city.service';
@@ -11,9 +11,10 @@ import { TypeDocumentService } from '../../../client/service/typeDocument.servic
 import { IDepartament } from '@interfaces/Idepartament';
 import { ITipoDocumento } from '@interfaces/Iuser';
 import { EmpleadoService } from '../../service/empleado.service';
-import { IEmpleadoEmpresaRequest } from '@interfaces/Iemployee';
+import { IEmpleadoEmpresaRequest, IEmpleadoResponse } from '@interfaces/Iemployee';
 import { ToastService } from '@services/toast.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../../auth/service/user.service';
 
 @Component({
   selector: 'app-create-employee',
@@ -45,6 +46,7 @@ export class CreateEmployee implements OnInit {
   protected readonly empleadoService = inject(EmpleadoService);
   protected readonly toast = inject(ToastService);
   protected readonly router = inject(Router);
+  protected readonly userService = inject(UserService);
 
   ngOnInit(): void {
     this.initializeForm();
@@ -199,13 +201,39 @@ export class CreateEmployee implements OnInit {
       next: (res) => {
         console.log('✅ Empleado guardado correctamente:', res);
         this.toast.success('Éxito', 'El empleado se registró correctamente.');
+
+        const personaDTO = {
+          id: (res as any).id_persona,
+          nombre: (res as any).primer_nombre,
+          segundoNombre: (res as any).segundo_nombre,
+          apellido: (res as any).primer_apellido,
+          segundoApellido: (res as any).segundo_apellido,
+          numeroCedula: (res as any).numero_cedula,
+          activo: true
+        };
+        this.userService.sendEmailUsuario(personaDTO).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.toast.success('Correo enviado', 'Se ha enviado el correo al usuario.');
+            } else {
+              this.toast.warning('Advertencia', 'Empleado creado, pero el correo no se pudo enviar.');
+            }
+          },
+          error: (err) => {
+            console.error('Error al enviar correo:', err);
+            this.toast.error('Error al enviar el correo', 'Intente nuevamente o contacte a soporte.');
+          }
+        });
+
         this.router.navigate(['/employee']);
       },
       error: (err) => {
-        console.error('❌ Error al guardar el empleado:', err);
+        console.error(' Error al guardar el empleado:', err);
         this.toast.error('Error al guardar', 'No se pudo registrar el empleado. Intente más tarde.');
       }
     });
   }
+
+
 }
 

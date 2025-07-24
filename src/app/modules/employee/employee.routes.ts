@@ -9,5 +9,8 @@ export default [
     path: 'create-employee',
     loadComponent: () => import('./pages/create-employee/create-employee').then(m => m.CreateEmployee)
   },
-
+  {
+    path: 'update-employee/:id',
+    loadComponent: () => import('./pages/update-employee/update-employee').then(m => m.UpdateEmployee)
+  },
 ] as Routes;

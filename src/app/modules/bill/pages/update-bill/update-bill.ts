@@ -18,6 +18,7 @@ export class UpdateBill implements OnInit {
   estado: IEstado[] = [];
   estadoName: string[] = [];
   selectedEstadoId: number | null = null;
+  
   factura: IFactura | null = null;
 
   private readonly route = inject(ActivatedRoute);

@@ -4,7 +4,11 @@ export const END_POINT_SERVICE = {
    POST_UPD_PASS: 'update-password',
    PUT_UPD_PASS:'Password',
    PUT_IMG_USER:'imagen',
+   PUT_CORREGIMIENTO:'Corregimiento',
+
    GET_USER: 'Usuario',
+   POST_SEND_EMAIL: 'sendEmail',
+
 
    GET_ENT_CLI_COU: 'EmpresaClienteContador',
    GET_ALL_CLI: 'all',
@@ -19,6 +23,7 @@ export const END_POINT_SERVICE = {
    GET_FACTURA_ALL: 'all',
 
    GET_EMPLEADO: 'EmpleadoEmpresa',
+   PUT_UPD_EMPLEADO: 'update',
    GET_SAVE_EMPLEADO: 'save',
    GET_EMPLEADO_ALL: 'all',
 
