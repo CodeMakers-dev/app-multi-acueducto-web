@@ -6,11 +6,10 @@ import { TableColumn } from '@interfaces/ItableColumn';
 import { AbonoService } from '../../service/abono.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { IAbonoFactura } from '@interfaces/IdeudaFactura';
-import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-credit-customer',
-  imports: [ CommonModule, Table, RouterModule, Navigation],
+  imports: [ CommonModule, Table, RouterModule],
   templateUrl: './credit-customer.html',
 
 })

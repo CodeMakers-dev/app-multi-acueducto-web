@@ -21,7 +21,7 @@ import { ToastService } from '@services/toast.service';
 export class UpdateDebt implements OnInit {
   registerForm!: FormGroup;
   deudaId!: number;
-  
+
 
   empresaClienteContador: IEnterpriseClientCounter[] = [];
   tipoDeuda: ITipoDeuda[] = [];
@@ -106,9 +106,9 @@ export class UpdateDebt implements OnInit {
   }
 
   loadAllClientes(): void {
-    this.enterpriseClientCounterService.getAllCLiente().subscribe(response => {
-      this.empresaClienteContador = response.response;
-    });
+    // this.enterpriseClientCounterService.getAllCLiente().subscribe(response => {
+    //   this.empresaClienteContador = response.response;
+    // });
   }
 
  onSubmit(): void {

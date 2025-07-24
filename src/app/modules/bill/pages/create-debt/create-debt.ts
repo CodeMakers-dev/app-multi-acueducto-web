@@ -13,11 +13,10 @@ import { IFactura } from '@interfaces/Ifactura';
 import { FacturaService } from '../../service/factura.service';
 import { PlazoPagoService } from '../../service/plazoPago.service';
 import { ToastService } from '@services/toast.service';
-import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-create-debt',
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, Navigation],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './create-debt.html',
 
 })
