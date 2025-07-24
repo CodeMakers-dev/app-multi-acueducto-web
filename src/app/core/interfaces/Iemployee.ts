@@ -30,3 +30,12 @@ export interface IEmpleadoEmpresaRequest {
   usuario_creacion: string;
   id_empresa: number;
 }
+
+export interface IEmpleadoResponse {
+  id_persona: number;
+  primer_nombre: string;
+  segundo_nombre: string;
+  primer_apellido: string;
+  segundo_apellido: string;
+  numero_cedula: string;
+}

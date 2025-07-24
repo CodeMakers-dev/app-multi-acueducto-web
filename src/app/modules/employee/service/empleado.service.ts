@@ -60,4 +60,19 @@ export class EmpleadoService {
             catchError(this.handleError)
         );
     }
+  getEmpleadoById(id: number): Observable<ApiResponse<IEmpleadoEmpresaResponse>> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<ApiResponse<IEmpleadoEmpresaResponse>>(url).pipe(
+        catchError(this.handleError)
+    );
+}
+
+updateEmpleado(data: any): Observable<Record<string, any>> {
+  const url = `${environment.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO}/update`;
+  return this.http.put<Record<string, any>>(url, data).pipe(
+    catchError(this.handleError)
+  );
+}
+
+
 }
