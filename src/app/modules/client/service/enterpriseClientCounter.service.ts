@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.local';
 import { HttpClient } from '@angular/common/http';
-import {  map, Observable } from 'rxjs';
+import {  catchError, map, Observable, throwError } from 'rxjs';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { END_POINT_SERVICE, ENTERPRISE_CLIENT_COUNT } from '../../../environments/environment.variables';
+import { ENTERPRISE_CLIENT_COUNT } from '../../../environments/environment.variables';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { Router } from '@angular/router';
 import { IPerson } from '@interfaces/Iperson';
@@ -19,12 +19,12 @@ export class EnterpriseClientCounterService {
   protected readonly http= inject(HttpClient)
 
   getAllCLiente(): Observable<ApiResponse<IEnterpriseClientCounter[]>> {
-    const url = `${this.apiUrl}/${END_POINT_SERVICE.GET_ALL_CLI}`;
+    const url = `${this.apiUrl}/${ENTERPRISE_CLIENT_COUNT.GET_ALL_CLI}`;
       return this.http.get<ApiResponse<IEnterpriseClientCounter[]>>(url)
     }
 
     getAllClienteEnterprise(): Observable<IPerson[]> {
-    const url = `${this.apiUrl}/${END_POINT_SERVICE.GET_ALL_CLI}`;
+    const url = `${this.apiUrl}/${ENTERPRISE_CLIENT_COUNT.GET_ALL_CLI}`;
     return this.http.get<ApiResponse<IEnterpriseClientCounter[]>>(url).pipe(
       map((response: ApiResponse<IEnterpriseClientCounter[]>) => {
         return response.response.map(item => item.cliente);
@@ -46,10 +46,10 @@ export class EnterpriseClientCounterService {
     return throwError(() => new Error(errorMessage));
   }
 
-  getAllCLiente(): Observable<ApiResponse<IEnterpriseClientCounter[]>> {
-    const url = `${this.apiUrl}/${ENTERPRISE_CLIENT_COUNT.GET_ALL_CLI}`;
-      return this.http.get<ApiResponse<IEnterpriseClientCounter[]>>(url);
-    }
+  // getAllCLiente(): Observable<ApiResponse<IEnterpriseClientCounter[]>> {
+  //   const url = `${this.apiUrl}/${ENTERPRISE_CLIENT_COUNT.GET_ALL_CLI}`;
+  //     return this.http.get<ApiResponse<IEnterpriseClientCounter[]>>(url);
+  //   }
 
   getAllCounterByIdEnterprise(enterpriseId: number): Observable<ApiResponse<IEnterpriseClientCounter[]>> {
     const url = `${this.apiUrl}/${ENTERPRISE_CLIENT_COUNT.GET_ENT_BY_ID}/${enterpriseId}`;
