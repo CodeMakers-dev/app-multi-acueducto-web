@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment.local';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { END_POINT_SERVICE } from '../../../environments/environment.variables';
+import { END_POINT_SERVICE, ENTERPRISE_CLIENT_COUNT } from '../../../environments/environment.variables';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class EnterpriseClientCounterService {
 
-  private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_ENT_CLI_COU}`;
+  private apiUrl = `${environment.apiUrl}/${ENTERPRISE_CLIENT_COUNT.ENT_CLI_COU}`;
 
   protected readonly router= inject(Router)
   protected readonly http= inject(HttpClient)
@@ -57,7 +57,19 @@ export class EnterpriseClientCounterService {
   }
 
   getAllCLiente(): Observable<ApiResponse<IEnterpriseClientCounter[]>> {
-    const url = `${this.apiUrl}/${END_POINT_SERVICE.GET_ALL_CLI}`;
+    const url = `${this.apiUrl}/${ENTERPRISE_CLIENT_COUNT.GET_ALL_CLI}`;
       return this.http.get<ApiResponse<IEnterpriseClientCounter[]>>(url);
     }
+
+  getAllCounterByIdEnterprise(enterpriseId: number): Observable<ApiResponse<IEnterpriseClientCounter[]>> {
+    const url = `${this.apiUrl}/${ENTERPRISE_CLIENT_COUNT.GET_ENT_BY_ID}/${enterpriseId}`;
+    return this.http.get<ApiResponse<IEnterpriseClientCounter[]>>(url);
+  }
+
+  getEntClientCounterById(id: number): Observable<ApiResponse<IEnterpriseClientCounter>> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<ApiResponse<IEnterpriseClientCounter>>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

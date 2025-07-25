@@ -33,6 +33,11 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/reading/reading.routes')
           .then(m => m.default),
       },
+      {
+        path: 'counter',
+        loadChildren: () => import('./modules/counter/counter.routes')
+          .then(m => m.default),
+      },
     ],
   },
 

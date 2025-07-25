@@ -160,7 +160,7 @@ export class Header  {
     },
         {
       name: 'Contadores',
-      link: '/about',
+      link: '/counter',
       target: '_self',
     }
   ];
