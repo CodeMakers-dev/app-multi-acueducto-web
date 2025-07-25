@@ -39,8 +39,8 @@ export interface Action<T = any> {
   </div>
 </div>
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mx-4 sm:mx-6 lg:mx-8">
-  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 text-gray-400">
+    <thead class="text-xs text-gray-5o uppercase bg-gray-50 bg-gray-700 text-gray-400">
       <tr>
         @for (column of columns(); track column) {
           <th scope="col" class="px-6 py-3">{{ column }}</th>
@@ -54,11 +54,11 @@ export interface Action<T = any> {
       @if (filtered().length) {
         @for (row of filtered(); track trackById($index, row)) {
           <tr
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700
-                   hover:bg-gray-50 dark:hover:bg-gray-600"
+            class="bg-gray-900 border-b bg-gray-800 border-gray-700
+                   hover:bg-gray-50 hover:bg-gray-600"
           >
             @for (col of columns(); track col) {
-              <td class="px-6 py-4 text-gray-900 dark:text-white">{{ row[col] }}</td>
+              <td class="px-6 py-4 text-gray-900 text-white">{{ row[col] }}</td>
             }
             <td class="px-6 py-4 text-right">
               @if (actionTemplate()) {
@@ -68,7 +68,7 @@ export interface Action<T = any> {
                 />
               } @else {
                 <button
-                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  class="font-medium text-blue-600 text-blue-500 hover:underline"
                   (click)="onAction('edit', row)"
                 >
                   Edit
@@ -81,7 +81,7 @@ export interface Action<T = any> {
         <tr>
           <td
             [attr.colspan]="columns().length + 1"
-            class="text-center py-6 text-gray-400 dark:text-gray-500"
+            class="text-center py-6 text-gray-400 :text-gray-500"
           >
             Sin registros
           </td>

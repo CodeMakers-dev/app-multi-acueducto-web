@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment.local';
 import { HttpClient } from '@angular/common/http';
 import {  catchError, map, Observable, throwError } from 'rxjs';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { ENTERPRISE_CLIENT_COUNT } from '../../../environments/environment.variables';
+import { END_POINT_SERVICE, ENTERPRISE_CLIENT_COUNT } from '../../../environments/environment.variables';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
 import { Router } from '@angular/router';
 import { IPerson } from '@interfaces/Iperson';
