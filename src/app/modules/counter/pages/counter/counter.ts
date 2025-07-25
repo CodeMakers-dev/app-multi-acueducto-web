@@ -5,6 +5,8 @@ import { EnterpriseClientCounterService } from '../../../client/service/enterpri
 import { TableComponent } from '@components/table';
 import { Action } from '@components/table';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
+import { ApiResponse } from '@interfaces/Iresponse';
 
 @Component({
   selector: 'app-counter',
@@ -30,74 +32,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 })
 export class Counter {
 
-  idDef: string | null = localStorage.getItem('enterpriseId');
-
-  constructor() {
-    const enterpriseId = localStorage.getItem('enterpriseId');
-    console.log('ID de la empresa:', enterpriseId);
-    console.log('dataEnterpriseClientCounter---------------------------', this.dataEnterpriseClientCounter.value());
-  }
-
-
-  loadCountersByEnterprise(idEmpresa: number): void {
-    this.enterpriseClientCounterService.getAllCounterByIdEnterprise(idEmpresa).subscribe(
-      (apiResponse: ApiResponse<IEnterpriseClientCounter[]>) => {
-        const counters = apiResponse.response;
-        this.totalRegisters = counters.length;
-
-        console.log('Contadores obtenidos:', counters);
-
-        this.correoService.getAllCorreo().subscribe(correosResp => {
-          const correos = correosResp.response;
-
-          this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
-            const telefonos = telefonosResp.response;
-            counters.forEach(counter => {
-              const personaId = counter.cliente?.id;
-              const correosPersona = correos.filter(c => c.persona.id === personaId);
-              const telefonosPersona = telefonos.filter(t => t.persona.id === personaId);
-              counter.cliente.correo = correosPersona;
-              counter.cliente.telefono = telefonosPersona;
-              (counter as any).correoPrincipal = correosPersona[0]?.correo || 'Sin correo';
-              (counter as any).telefonoPrincipal = telefonosPersona[0]?.numero || 'Sin teléfono';
-            });
-            this.tableData = counters.map(counter => ({
-            ...counter,
-            clienteNombreCompleto: `${counter.cliente?.nombre || ''} ${counter.cliente?.apellido || ''} ${counter.cliente.segundoApellido || ''}`.trim()
-          }));
-        });
-      });
-    },
-      error => {
-        console.error('Error al cargar contadores por empresa:', error);
-      }
-    );
-  }
-
-  onPageChange(newPage: number): void {
-    this.currentPage = newPage;
-    this.loadCountersByEnterprise(1);
-  }
-
-  onSortChange(event: { column: string; direction: 'asc' | 'desc' }): void {
-    this.currentSortColumn = event.column;
-    this.currentSortDirection = event.direction;
-    this.loadCountersByEnterprise(1);
-  }
-
-  private readonly enterpriseClientCounterService = inject(EnterpriseClientCounterService);
-
-  dataEnterpriseClientCounter = rxResource({
-    stream: () => this.enterpriseClientCounterService.getAllCounterByIdEnterprise(5),
-  });
-
-  onToggle(row: any) {
-    row.activo = !row.activo;
-  }
-
-  handleTableAction(event: Action) {
-    alert(`Action: ${event.action} on row: ${JSON.stringify(event.row)}`);
-  }
+  
   
 //   contadorColumns = signal([
 //     'tipoContador',

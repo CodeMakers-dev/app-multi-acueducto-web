@@ -45,7 +45,12 @@ import { Router } from '@angular/router';
   `,
 })
 export class Client {
-  clienteColumns = signal(['codigo', 'nombre', 'numeroCedula', 'apellido']);
+  clienteColumns = signal([
+  { field: 'codigo', header: 'Código' },
+  { field: 'nombre', header: 'Nombre' },
+  { field: 'numeroCedula', header: 'Cédula' },
+  { field: 'apellido', header: 'Apellido' },
+]);
   clientData = computed(() => this.dataClientCounter.value() ?? []);
   title = 'Clientes';
 
@@ -59,6 +64,7 @@ export class Client {
 
   onToggle(row: any) {
     row.activo = !row.activo;
+    
   }
 
   handleTableAction(event: Action) {
