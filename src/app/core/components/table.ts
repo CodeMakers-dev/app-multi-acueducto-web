@@ -13,7 +13,7 @@ export interface Action<T = any> {
   template: `
 <div class="px-4 sm:px-6 lg:px-8 py-6 pb-0">
   <div class="mb-6">
-    <h1 class="text-2xl sm:text-3xl font-bold text-gray-700 mb-4">
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-700  mb-4">
       {{ title() }}
     </h1>
     <div class="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
@@ -21,9 +21,7 @@ export interface Action<T = any> {
         <input
           type="text"
           placeholder="Buscar..."
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg
-                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                 outline-none transition-colors"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg"
           (input)="onSearchInput($event)"
         />
       </div>
@@ -60,7 +58,7 @@ export interface Action<T = any> {
                    hover:bg-gray-50 dark:hover:bg-gray-600"
           >
             @for (col of columns(); track col) {
-              <td class="px-6 py-4">{{ row[col] }}</td>
+              <td class="px-6 py-4 text-gray-900 dark:text-white">{{ row[col] }}</td>
             }
             <td class="px-6 py-4 text-right">
               @if (actionTemplate()) {
@@ -83,7 +81,7 @@ export interface Action<T = any> {
         <tr>
           <td
             [attr.colspan]="columns().length + 1"
-            class="text-center py-6 text-gray-400"
+            class="text-center py-6 text-gray-400 dark:text-gray-500"
           >
             Sin registros
           </td>
