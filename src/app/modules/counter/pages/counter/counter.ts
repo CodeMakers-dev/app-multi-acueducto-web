@@ -91,7 +91,7 @@ export class Counter implements OnInit {
 
         console.log('Contadores obtenidos:', counters);
 
-        this.correoService.getAllTypeDocument().subscribe(correosResp => {
+        this.correoService.getAllCorreo().subscribe(correosResp => {
           const correos = correosResp.response;
 
           this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
@@ -105,7 +105,6 @@ export class Counter implements OnInit {
               (counter as any).correoPrincipal = correosPersona[0]?.correo || 'Sin correo';
               (counter as any).telefonoPrincipal = telefonosPersona[0]?.numero || 'Sin teléfono';
             });
-
             this.tableData = counters.map(counter => ({
             ...counter,
             clienteNombreCompleto: `${counter.cliente?.nombre || ''} ${counter.cliente?.apellido || ''} ${counter.cliente.segundoApellido || ''}`.trim()
