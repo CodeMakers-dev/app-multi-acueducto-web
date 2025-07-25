@@ -6,6 +6,8 @@ import { TableComponent } from '@components/table';
 import { Action } from '@components/table';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
+import { ApiResponse } from '@interfaces/Iresponse';
 
 @Component({
   selector: 'app-counter',
@@ -35,6 +37,79 @@ export class Counter {
   enterpriseId = signal<number | undefined>(
     Number(localStorage.getItem('enterpriseId')) || undefined
   );
+
+
+  
+  
+   contadorColumns = signal([
+     'tipoContador',
+    'direccion',
+     'serial',
+     'clienteNombreCompleto',
+     'correoPrincipal',
+    'telefonoPrincipal'
+   ]);
+   title = 'Contadores';
+  totalRegisters = 0;
+
+  tableData: any[] = [];
+
+  constructor(
+    private enterpriseClientCounterService: EnterpriseClientCounterService,
+     private correoService: CorreoPersonaService,
+     private telefonoService: TelefonoPersonaService
+  ) {}
+
+  ngOnInit(): void {
+     const idEmpresa = 5;
+    this.loadCountersByEnterprise(idEmpresa);
+  }
+
+   loadCountersByEnterprise(idEmpresa: number): void {
+     this.enterpriseClientCounterService
+       .getAllCounterByIdEnterprise(idEmpresa)
+      .subscribe({
+        next: (apiResponse) => {
+           const counters = apiResponse.response;
+           this.totalRegisters = counters.length;
+
+           this.correoService.getAllTypeDocument().subscribe(correosResp => {
+             const correos = correosResp.response;
+
+             this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
+               const telefonos = telefonosResp.response;
+
+               counters.forEach(counter => {
+                 const personaId = counter.cliente?.id;
+                 const correosPersona = correos.filter(c => c.persona.id === personaId);
+                 const telefonosPersona = telefonos.filter(t => t.persona.id === personaId);
+
+                 counter.cliente.correo = correosPersona;
+                 counter.cliente.telefono = telefonosPersona;
+
+                 (counter as any).correoPrincipal = correosPersona[0]?.correo || 'Sin correo';
+                (counter as any).telefonoPrincipal = telefonosPersona[0]?.numero || 'Sin teléfono';
+               });
+
+               this.tableData = counters.map(counter => ({
+                 ...counter,
+                 clienteNombreCompleto: `${counter.cliente?.nombre || ''} ${counter.cliente?.apellido || ''} ${counter.cliente?.segundoApellido || ''}`.trim()
+               }));
+             });
+          });
+        },
+      error: err => {
+          console.error('Error al cargar contadores por empresa:', err);
+         }
+       });
+  }
+
+  handleTableAction(event: Action<any>) {
+  const row = event.row;
+   if (event.action === 'edit') {
+     this.contador = { ...row };
+   }
+ }
 
   idDef: string | null = localStorage.getItem('enterpriseId');
   counterColumns = signal(['serial', 'tipoContador', 'direccion','cliente', 'cedula']);
@@ -83,5 +158,6 @@ editar(row: any ) {
     this.router.navigate(['/counter/actualizar-contador', row.id], { relativeTo: this.route });
     console.log('Editar contador con ID:', row.id);
   }
+
 
 }

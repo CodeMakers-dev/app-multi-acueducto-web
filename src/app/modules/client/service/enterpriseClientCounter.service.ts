@@ -62,4 +62,10 @@ export class EnterpriseClientCounterService {
       catchError(this.handleError)
     );
   }
+   updateEstado(data: { id_persona: number, activo: boolean, usuario_cambio: string }): Observable<Map<string, any>> {
+      const url = `${environment.apiUrl}/${ENTERPRISE_CLIENT_COUNT.ENT_CLI_COU}/${END_POINT_SERVICE.POST_UPD_ESTADO}`;
+      return this.http.post<Map<string, any>>(url, data).pipe(
+        catchError(this.handleError)
+      );
+    }
 }

@@ -68,24 +68,29 @@ export class CreateEmployee implements OnInit {
     });
   }
   private initializeForm(): void {
-    this.registerForm = this.fb.group({
-      tipoDocumento: [null, Validators.required],
-      numeroDocumento: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      primerApellido: ['', Validators.required],
-      segundoApellido: [''],
-      primerNombre: ['', Validators.required],
-      segundoNombre: [''],
-      idDepartamento: [null, Validators.required],
-      idCiudad: [null, Validators.required],
-      idCorregimiento: [null],
-      direccion: [''],
-      telefono: ['', Validators.required],
-      codigo: ['', Validators.required],
-      usuario_creacion: ['admin'], // o puedes cargarlo desde el token
-      id_empresa: [3] // esto podrías obtenerlo desde localStorage o AuthService
-    });
-  }
+  const usuarioCreacion = localStorage.getItem('nameUser') || 'admin';
+  const idEmpresa = localStorage.getItem('enterpriseId') 
+    ? +localStorage.getItem('enterpriseId')! 
+    : null;
+
+  this.registerForm = this.fb.group({
+    tipoDocumento: [null, Validators.required],
+    numeroDocumento: ['', Validators.required],
+    correo: ['', [Validators.required, Validators.email]],
+    primerApellido: ['', Validators.required],
+    segundoApellido: [''],
+    primerNombre: ['', Validators.required],
+    segundoNombre: [''],
+    idDepartamento: [null, Validators.required],
+    idCiudad: [null, Validators.required],
+    idCorregimiento: [null],
+    direccion: [''],
+    telefono: ['', Validators.required],
+    codigo: ['', Validators.required],
+    usuario_creacion: [usuarioCreacion], 
+    id_empresa: [idEmpresa, Validators.required] 
+  });
+}
   loadTypeDocument(): void {
     this.tipoDocumentoService.getAllTypeDocument().subscribe((response) => {
       console.log('Tipos de documento:', response.response);

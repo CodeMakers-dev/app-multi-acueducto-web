@@ -51,9 +51,7 @@ export class AuthService {
           if (res.code !== 200 || !res.response) {
             return of(res);
           }
-
           const { token, usuario } = res.response;
-
           if (this.isBrowser) {
             localStorage.setItem('token', token);
             console.log('Token almacenado:', token);
@@ -61,11 +59,12 @@ export class AuthService {
             console.log('Usuario almacenado:', usuario);
             localStorage.setItem('userId', usuario.id ? usuario.id.toString() : '');
             console.log('User ID almacenado:', usuario.id);
+             localStorage.setItem('nameUser', usuario.nombre ? usuario.nombre.toString() : '');
+            console.log('Nombre de usuario almacenado:', usuario.nombre);
+           
           }
-
           this.tokenSig.set(token);
           this.userSig.set(usuario);
-
           if (usuario.id) {
             return this.getByIdEnterprise(+usuario.id).pipe(
               tap((enterpriseId: number | null) => {
@@ -86,7 +85,6 @@ export class AuthService {
               map(() => res)
             );
           }
-
           return of(res);
         }),
         catchError((error) => {
