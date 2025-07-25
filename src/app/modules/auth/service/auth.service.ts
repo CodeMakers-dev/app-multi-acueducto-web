@@ -59,6 +59,9 @@ export class AuthService {
             console.log('Usuario almacenado:', usuario);
             localStorage.setItem('userId', usuario.id ? usuario.id.toString() : '');
             console.log('User ID almacenado:', usuario.id);
+             localStorage.setItem('nameUser', usuario.nombre ? usuario.nombre.toString() : '');
+            console.log('Nombre de usuario almacenado:', usuario.nombre);
+           
           }
           this.tokenSig.set(token);
           this.userSig.set(usuario);
