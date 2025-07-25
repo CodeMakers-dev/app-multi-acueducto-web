@@ -1,3 +1,4 @@
+import { IEnterprise } from "./Ienterprise";
 import { IPerson } from "./Iperson";
 import { IRol } from "./Irol";
 
