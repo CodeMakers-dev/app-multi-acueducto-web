@@ -6,6 +6,11 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
 import { IEmpleadoEmpresaResponse } from "@interfaces/Iemployee";
+import { ICorreoPerson } from '@interfaces/Iperson';
+import { ITelefonoPersona } from '@interfaces/ItelefonoPersona';
+import { forkJoin } from 'rxjs';
+import { CorreoPersonaService } from "../../client/service/correoPersona.service";
+import { TelefonoPersonaService } from "../../client/service/telefonoPersona.service";
 
 @Injectable({
     providedIn: 'root'
@@ -13,33 +18,13 @@ import { IEmpleadoEmpresaResponse } from "@interfaces/Iemployee";
 export class EmpleadoService {
 
     private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO}`;
+   
+    protected readonly correoService = inject(CorreoPersonaService)
+    protected readonly telefonoService = inject(TelefonoPersonaService)
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
-    getAllEmpleado(
-        page: number,
-        pageSize: number,
-        searchTerm: string,
-        sortColumn: string,
-        sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IEmpleadoEmpresaResponse[]>> {
-
-        let params = new HttpParams();
-        params = params.append('page', page.toString());
-        params = params.append('pageSize', pageSize.toString());
-
-        if (searchTerm) {
-            params = params.append('searchTerm', searchTerm);
-        }
-        if (sortColumn) {
-            params = params.append('sortColumn', sortColumn);
-            params = params.append('sortDirection', sortDirection);
-        }
-
-        return this.http.get<ApiResponse<IEmpleadoEmpresaResponse[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO_ALL}`, { params }).pipe(
-            catchError(this.handleError)
-        );
-    }
+    
     private handleError(error: any): Observable<never> {
         let errorMessage = 'An unknown error occurred while loading empleado.';
         if (error.error instanceof ErrorEvent) {
@@ -74,5 +59,24 @@ updateEmpleado(data: any): Observable<Record<string, any>> {
   );
 }
 
+ getAllEmpleados(): Observable<ApiResponse<IEmpleadoEmpresaResponse[]>> {
+    const url = `${this.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO_ALL}`;
+    return this.http.get<ApiResponse<IEmpleadoEmpresaResponse[]>>(url);
+  }
+  
+  getAllDatosEmpleadoCompleto(): Observable<{
+  empleados: ApiResponse<IEmpleadoEmpresaResponse[]>,
+  correos: ApiResponse<ICorreoPerson[]>,
+  telefonos: ApiResponse<ITelefonoPersona[]>
+}> {
+  const empleados$ = this.getAllEmpleados();
+  const correos$ = this.correoService.getAllCorreo();
+  const telefonos$ = this.telefonoService.getAllTelefono();
 
+  return forkJoin({
+    empleados: empleados$,
+    correos: correos$,
+    telefonos: telefonos$
+  });
+}
 }

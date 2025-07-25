@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment.local';
 import { END_POINT_SERVICE } from '../../../environments/environment.variables';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { IAuthResponse, Iuser } from '@interfaces/Iuser';
-import { mergeMap, Observable, of } from 'rxjs';
+import { catchError, map, mergeMap, Observable, of, tap, throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -40,46 +40,62 @@ export class AuthService {
     }
   }
 
-  login(email: string, password: string) {
-    return this.http
-      .post<ApiResponse<IAuthResponse>>(this.loginUrl, {
-        username: email,
-        password,
-      })
-      .pipe(
-        mergeMap((res) => {
-          if (res.code !== 200 || !res.response) return of(res);
+ login(email: string, password: string) {
+  return this.http
+    .post<ApiResponse<IAuthResponse>>(this.loginUrl, {
+      username: email,
+      password,
+    })
+    .pipe(
+      mergeMap((res: ApiResponse<IAuthResponse>) => {
+        if (res.code !== 200 || !res.response) {
+          return of(res);
+        }
 
-          const { token, usuario } = res.response;
+        const { token, usuario } = res.response;
 
-          if (this.isBrowser) {
-            localStorage.setItem('token', token);
-            localStorage.setItem('userObject', JSON.stringify(usuario));
-            localStorage.setItem('enterpriseId', usuario.id ? usuario.id.toString() : '');
-          }
+        if (this.isBrowser) {
+          localStorage.setItem('token', token);
+          console.log('Token almacenado:', token);
+          localStorage.setItem('userObject', JSON.stringify(usuario));
+          console.log('Usuario almacenado:', usuario);
+          localStorage.setItem('userId', usuario.id ? usuario.id.toString() : ''); 
+          console.log('ID de usuario almacenado:', usuario.id);
+        }
 
-          this.tokenSig.set(token);
-          this.userSig.set(usuario);
+        this.tokenSig.set(token);
+        this.userSig.set(usuario);
 
-          if (usuario.id) {
-            this.getByIdEnterprise(+usuario.id).subscribe({
-              next: (enterpriseId) => {
-                if (this.isBrowser) {
+        if (usuario.id) {
+          return this.getByIdEnterprise(+usuario.id).pipe(
+            tap((enterpriseId: number | null) => {
+              if (this.isBrowser) {
+                if (enterpriseId) {
                   localStorage.setItem('enterpriseId', enterpriseId.toString());
                   console.log('Enterprise ID almacenado:', enterpriseId);
+                } else {
+                  console.log('Usuario no está asociado a una empresa');
+                  localStorage.removeItem('enterpriseId');
                 }
-                this.enterpriseIdSig.set(enterpriseId);
-              },
-              error: (error) => {
-                console.error('Error al obtener enterprise ID:', error);
-              },
-            });
-          }
+              }
 
-          return of(res);
-        })
-      );
-  }
+              this.enterpriseIdSig.set(enterpriseId ?? null);
+            }),
+            map(() => res)
+          );
+        }
+
+        return of(res);
+      }),
+      catchError((error) => {
+        console.error('Error en login:', error);
+        return throwError(() => error);
+      })
+    );
+}
+
+
+
 
   logout() {
     if (this.isBrowser) {
@@ -93,11 +109,12 @@ export class AuthService {
     this.router.navigate(['/home']);
   }
 
-  getByIdEnterprise(userId: number): Observable<number> {
-    return this.http.get<number>(
-      `${this.apiUrl}/${END_POINT_SERVICE.GET_ENTERPRISE}/${userId}`
+ getByIdEnterprise(userId: number): Observable<number> {
+  return this.http.get<any>(`${this.apiUrl}/${END_POINT_SERVICE.GET_ENTERPRISE}/${userId}`)
+    .pipe(
+      map((res) => res.response.idEmpresa)  
     );
-  }
+}
 
   getUser() {
     return this.userSig();

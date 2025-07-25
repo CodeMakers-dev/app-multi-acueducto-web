@@ -106,6 +106,7 @@ export class Counter {
 //                 (counter as any).telefonoPrincipal = telefonosPersona[0]?.numero || 'Sin teléfono';
 //               });
 
+<<<<<<< HEAD
 //               this.tableData = counters.map(counter => ({
 //                 ...counter,
 //                 clienteNombreCompleto: `${counter.cliente?.nombre || ''} ${counter.cliente?.apellido || ''} ${counter.cliente?.segundoApellido || ''}`.trim()
@@ -125,4 +126,64 @@ export class Counter {
 //     this.contador = { ...row };
 //   }
 // }
+=======
+        this.correoService.getAllCorreo().subscribe(correosResp => {
+          const correos = correosResp.response;
+
+          this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
+            const telefonos = telefonosResp.response;
+            counters.forEach(counter => {
+              const personaId = counter.cliente?.id;
+              const correosPersona = correos.filter(c => c.persona.id === personaId);
+              const telefonosPersona = telefonos.filter(t => t.persona.id === personaId);
+              counter.cliente.correo = correosPersona;
+              counter.cliente.telefono = telefonosPersona;
+              (counter as any).correoPrincipal = correosPersona[0]?.correo || 'Sin correo';
+              (counter as any).telefonoPrincipal = telefonosPersona[0]?.numero || 'Sin teléfono';
+            });
+            this.tableData = counters.map(counter => ({
+            ...counter,
+            clienteNombreCompleto: `${counter.cliente?.nombre || ''} ${counter.cliente?.apellido || ''} ${counter.cliente.segundoApellido || ''}`.trim()
+          }));
+        });
+      });
+    },
+      error => {
+        console.error('Error al cargar contadores por empresa:', error);
+      }
+    );
+  }
+
+  onPageChange(newPage: number): void {
+    this.currentPage = newPage;
+    this.loadCountersByEnterprise(1);
+  }
+
+  onSortChange(event: { column: string; direction: 'asc' | 'desc' }): void {
+    this.currentSortColumn = event.column;
+    this.currentSortDirection = event.direction;
+    this.loadCountersByEnterprise(1);
+  }
+
+  onSearchInput(event: Event): void {
+    this.searchTerm = (event.target as HTMLInputElement).value;
+    this.currentPage = 1;
+    this.loadCountersByEnterprise(1);
+  }
+
+  viewContador(counter: IEnterpriseClientCounter): void {
+    console.log('Ver detalles del contador:', counter);
+  }
+
+  editContador(counter: IEnterpriseClientCounter): void {
+    if (counter.id) {
+      console.log('Editar contador:', counter.id);
+      this.router.navigate([`/actualizar-contador`, counter.id]);
+    }
+  }
+
+  deleteContador(counter: IEnterpriseClientCounter): void {
+    console.log('Eliminar contador:', counter?.contador?.id);
+  }
+>>>>>>> 535a2faa7586c58326444140056360097204b119
 }
