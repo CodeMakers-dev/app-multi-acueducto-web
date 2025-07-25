@@ -38,83 +38,17 @@ export class Counter {
     Number(localStorage.getItem('enterpriseId')) || undefined
   );
 
-
-  
-  
-   contadorColumns = signal([
-     'tipoContador',
-    'direccion',
-     'serial',
-     'clienteNombreCompleto',
-     'correoPrincipal',
-    'telefonoPrincipal'
-   ]);
-   title = 'Contadores';
-  totalRegisters = 0;
-
-  tableData: any[] = [];
-
-  constructor(
-    private enterpriseClientCounterService: EnterpriseClientCounterService,
-     private correoService: CorreoPersonaService,
-     private telefonoService: TelefonoPersonaService
-  ) {}
-
-  ngOnInit(): void {
-     const idEmpresa = 5;
-    this.loadCountersByEnterprise(idEmpresa);
-  }
-
-   loadCountersByEnterprise(idEmpresa: number): void {
-     this.enterpriseClientCounterService
-       .getAllCounterByIdEnterprise(idEmpresa)
-      .subscribe({
-        next: (apiResponse) => {
-           const counters = apiResponse.response;
-           this.totalRegisters = counters.length;
-
-           this.correoService.getAllTypeDocument().subscribe(correosResp => {
-             const correos = correosResp.response;
-
-             this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
-               const telefonos = telefonosResp.response;
-
-               counters.forEach(counter => {
-                 const personaId = counter.cliente?.id;
-                 const correosPersona = correos.filter(c => c.persona.id === personaId);
-                 const telefonosPersona = telefonos.filter(t => t.persona.id === personaId);
-
-                 counter.cliente.correo = correosPersona;
-                 counter.cliente.telefono = telefonosPersona;
-
-                 (counter as any).correoPrincipal = correosPersona[0]?.correo || 'Sin correo';
-                (counter as any).telefonoPrincipal = telefonosPersona[0]?.numero || 'Sin teléfono';
-               });
-
-               this.tableData = counters.map(counter => ({
-                 ...counter,
-                 clienteNombreCompleto: `${counter.cliente?.nombre || ''} ${counter.cliente?.apellido || ''} ${counter.cliente?.segundoApellido || ''}`.trim()
-               }));
-             });
-          });
-        },
-      error: err => {
-          console.error('Error al cargar contadores por empresa:', err);
-         }
-       });
-  }
-
-  handleTableAction(event: Action<any>) {
-  const row = event.row;
-   if (event.action === 'edit') {
-     this.contador = { ...row };
-   }
- }
-
   idDef: string | null = localStorage.getItem('enterpriseId');
-  counterColumns = signal(['serial', 'tipoContador', 'direccion','cliente', 'cedula']);
+  // counterColumns = signal(['serial', 'tipoContador', 'direccion','cliente', 'cedula']);
+    counterColumns = signal([
+  { field: 'serial', header: 'Serial' },
+  { field: 'tipoContador', header: 'Tipo Contador' },
+  { field: 'direccion', header: 'Direccion' },
+  { field: 'cliente', header: 'Cliente' },
+  { field: 'cedula', header: 'Cedula' }
+]);
   counterData = computed(() => this.dataEnterpriseClientCounter.value() ?? []);
-  title = 'Clientes';
+
 
   private readonly enterpriseClientCounterService = inject(EnterpriseClientCounterService);
   private readonly router = inject(Router);
