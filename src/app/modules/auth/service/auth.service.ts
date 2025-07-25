@@ -40,62 +40,61 @@ export class AuthService {
     }
   }
 
- login(email: string, password: string) {
-  return this.http
-    .post<ApiResponse<IAuthResponse>>(this.loginUrl, {
-      username: email,
-      password,
-    })
-    .pipe(
-      mergeMap((res: ApiResponse<IAuthResponse>) => {
-        if (res.code !== 200 || !res.response) {
-          return of(res);
-        }
+  login(email: string, password: string) {
+    return this.http
+      .post<ApiResponse<IAuthResponse>>(this.loginUrl, {
+        username: email,
+        password,
+      })
+      .pipe(
+        mergeMap((res: ApiResponse<IAuthResponse>) => {
+          if (res.code !== 200 || !res.response) {
+            return of(res);
+          }
 
-        const { token, usuario } = res.response;
+          const { token, usuario } = res.response;
 
-        if (this.isBrowser) {
-          localStorage.setItem('token', token);
-          console.log('Token almacenado:', token);
-          localStorage.setItem('userObject', JSON.stringify(usuario));
-          console.log('Usuario almacenado:', usuario);
-          localStorage.setItem('userId', usuario.id ? usuario.id.toString() : ''); 
-          console.log('ID de usuario almacenado:', usuario.id);
-        }
+          if (this.isBrowser) {
+            localStorage.setItem('token', token);
+            console.log('Token almacenado:', token);
+            localStorage.setItem('userObject', JSON.stringify(usuario));
+            console.log('Usuario almacenado:', usuario);
+            localStorage.setItem('userId', usuario.id ? usuario.id.toString() : '');
+            console.log('User ID almacenado:', usuario.id);
+          }
 
-        this.tokenSig.set(token);
-        this.userSig.set(usuario);
+          this.tokenSig.set(token);
+          this.userSig.set(usuario);
 
-        if (usuario.id) {
-          return this.getByIdEnterprise(+usuario.id).pipe(
-            tap((enterpriseId: number | null) => {
-              if (this.isBrowser) {
-                if (enterpriseId) {
-                  localStorage.setItem('enterpriseId', enterpriseId.toString());
-                  console.log('Enterprise ID almacenado:', enterpriseId);
+          if (usuario.id) {
+            return this.getByIdEnterprise(+usuario.id).pipe(
+              tap((enterpriseId: number | null) => {
+                if (enterpriseId !== null) {
+                  if (this.isBrowser) {
+                    localStorage.setItem('enterpriseId', enterpriseId.toString());
+                    console.log('Enterprise ID almacenado:', enterpriseId);
+                  }
+                  this.enterpriseIdSig.set(enterpriseId);
                 } else {
                   console.log('Usuario no está asociado a una empresa');
-                  localStorage.removeItem('enterpriseId');
+                  if (this.isBrowser) {
+                    localStorage.removeItem('enterpriseId');
+                  }
+                  this.enterpriseIdSig.set(null);
                 }
-              }
+              }),
+              map(() => res)
+            );
+          }
 
-              this.enterpriseIdSig.set(enterpriseId ?? null);
-            }),
-            map(() => res)
-          );
-        }
-
-        return of(res);
-      }),
-      catchError((error) => {
-        console.error('Error en login:', error);
-        return throwError(() => error);
-      })
-    );
-}
-
-
-
+          return of(res);
+        }),
+        catchError((error) => {
+          console.error('Error en login:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 
   logout() {
     if (this.isBrowser) {
@@ -109,12 +108,17 @@ export class AuthService {
     this.router.navigate(['/home']);
   }
 
- getByIdEnterprise(userId: number): Observable<number> {
-  return this.http.get<any>(`${this.apiUrl}/${END_POINT_SERVICE.GET_ENTERPRISE}/${userId}`)
-    .pipe(
-      map((res) => res.response.idEmpresa)  
+  getByIdEnterprise(userId: number): Observable<number | null> {
+    return this.http.get<any>(`${this.apiUrl}/${END_POINT_SERVICE.GET_ENTERPRISE}/${userId}`).pipe(
+      map((res) => res.response.idEmpresa),
+      catchError((error) => {
+        if (error.status === 404) {
+          return of(null);
+        }
+        return throwError(() => error);
+      })
     );
-}
+  }
 
   getUser() {
     return this.userSig();
@@ -135,7 +139,7 @@ export class AuthService {
   }
 
   // // Método adicional para obtener enterprise ID manualmente si es necesario => solo para el debug mi pez o forzarlo
-   getEnterpriseId(): number | null {
-     return this.enterpriseIdSig();
-   }
+  getEnterpriseId(): number | null {
+    return this.enterpriseIdSig();
+  }
 }
