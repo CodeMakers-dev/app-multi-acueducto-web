@@ -86,7 +86,7 @@ export class Employee {
     this.empleadoService.updateEstadoEmpleado({
       id_persona: row.personaId,
       activo: nuevoEstado,
-      usuario_cambio: 'admin'
+      usuario_cambio: localStorage.getItem('nameUser') || 'admin'
     }).subscribe({
       next: (response) => {
         row.activo = nuevoEstado;
