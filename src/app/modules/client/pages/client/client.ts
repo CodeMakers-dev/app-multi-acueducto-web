@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, computed } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   Action,
   TableComponent,
 } from '../../../../../app/core/components/table';
 import { EnterpriseClientCounterService } from '../../service/enterpriseClientCounter.service';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-client',
@@ -47,9 +49,9 @@ export class Client {
   clientData = computed(() => this.dataClientCounter.value() ?? []);
   title = 'Clientes';
 
-  protected readonly enterpriseClientCounterService = inject(
-    EnterpriseClientCounterService
-  );
+  protected readonly enterpriseClientCounterService = inject(EnterpriseClientCounterService);
+  protected readonly router = inject(Router);
+  protected readonly route = inject(ActivatedRoute);
 
   dataClientCounter = rxResource({
     stream: () => this.enterpriseClientCounterService.getAllClienteEnterprise(),
@@ -60,6 +62,9 @@ export class Client {
   }
 
   handleTableAction(event: Action) {
-    alert(`Action: ${event.action} on row: ${JSON.stringify(event.row)}`);
+    console.log('Action received:', event);
+    if (event.action === 'add') {
+      this.router.navigate(['create-client'], { relativeTo: this.route });
+    }
   }
 }
