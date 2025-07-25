@@ -1,107 +1,73 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { Table } from '@components/table/table';
-import { IEmpleadoEmpresaResponse } from '@interfaces/Iemployee';
-import { TableColumn } from '@interfaces/ItableColumn';
+import { Component, inject, signal, computed, effect } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import {
+  Action,
+  TableComponent,
+} from '../../../../../app/core/components/table';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { EmpleadoService } from '../../service/empleado.service';
-import { ToastService } from '@services/toast.service';
-import { ApiResponse } from '@interfaces/Iresponse';
-import { CorreoPersonaService } from '../../../client/service/correoPersona.service';
-import { TelefonoPersonaService } from '../../../client/service/telefonoPersona.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-employee',
-  imports: [CommonModule, Table, RouterModule],
-  templateUrl: './employee.html',
+  imports: [CommonModule, TableComponent, RouterModule],
+  template: `
+    <ng-template #toggleTpl let-row>
+             <a (click)="editar(row)" class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
+                    <i class="fas fa-edit"></i>
+                </a>
+    </ng-template>
+    <app-table-dynamic
+      [title]="title"
+      [columns]="employeeColumns()"
+      [datasource]="employeeData()"
+      [actionTemplate]="toggleTpl"
+      [showAddButton]="true"
+      [addButtonText]="'Agregar Empleado'"
+      (action)="handleTableAction($event)"
+    />
+  `,
 })
-export class Employee implements OnInit {
+export class Employee {
 
-  employeeColumns: TableColumn[] = [
-    { key: 'personaNombreCompleto', label: 'Nombre de empleado', sortable: true },
-    { key: 'numeroCedula', label: 'N°. Identificacion', sortable: true },
-    { key: 'codigo', label: 'Codigo', sortable: true },
-    { key: 'correoPrincipal', label: 'Correo', sortable: true },
-    { key: 'telefonoPrincipal', label: 'Telefono', sortable: true },
-    { key: 'activo', label: 'Estado', sortable: true },
-  ];
+  employeeColumns = signal(['personaNombreCompleto', 'numeroCedula', 'codigo', 'telefono', 'correoElectronico', 'activo']);
+  employeeData = computed(() => this.dataEmployeeCounter.value() ?? []);
+  title = 'Empleados';
 
-  tableData: IEmpleadoEmpresaResponse[] = [];
-  totalRegisters: number = 0;
-
-  currentPage: number = 1;
-  pageSize: number = 10;
-
-  searchTerm: string = '';
-  currentSortColumn: string = '';
-  currentSortDirection: 'asc' | 'desc' = 'asc';
 
   protected readonly empleadoService = inject(EmpleadoService);
-  protected readonly correoService = inject(CorreoPersonaService);
-  protected readonly telefonoService = inject(TelefonoPersonaService);
   protected readonly router = inject(Router);
-  protected readonly toastService = inject(ToastService);
+  protected readonly route = inject(ActivatedRoute);
 
 
-  ngOnInit(): void {
-    this.loadEmpleado();
+  dataEmployeeCounter = rxResource({
+    stream: () => this.empleadoService.getAllDatosEmpleadoCompleto().pipe(
+      map(data => {
+        return data.empleados.response.map(emp => ({
+          ...emp,
+          correoElectronico: data.correos.response.find(c => c.persona.id === emp.personaId)?.correo ?? '',
+          telefono: data.telefonos.response.find(t => t.persona.id === emp.personaId)?.numero ?? ''
+        }));
+      })
+    ),
+  });
+
+
+  onToggle(row: any) {
+    row.activo = !row.activo;
   }
 
-  loadEmpleado(): void {
-    this.empleadoService.getAllEmpleado(
-      this.currentPage,
-      this.pageSize,
-      this.searchTerm,
-      this.currentSortColumn,
-      this.currentSortDirection
-    ).subscribe(
-      (apiResponse: ApiResponse<IEmpleadoEmpresaResponse[]>) => {
-        const empleados = apiResponse.response;
-        this.totalRegisters = empleados.length;
-
-        this.correoService.getAllTypeDocument().subscribe(correosResp => {
-          const correos = correosResp.response;
-
-          this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
-            const telefonos = telefonosResp.response;
-
-            empleados.forEach(empleado => {
-              const personaId = empleado.personaId;
-
-              const correosPersona = correos.filter(c => c.persona.id === personaId);
-              const telefonosPersona = telefonos.filter(t => t.persona.id === personaId);
-
-              (empleado as any).correoPrincipal = correosPersona[0]?.correo || 'Sin correo';
-              (empleado as any).telefonoPrincipal = telefonosPersona[0]?.numero || 'Sin teléfono';
-              (empleado as any).activo = empleado.activo ? 'Activo' : 'Inactivo';
-            });
-
-            this.tableData = empleados;
-          });
-        });
-      },
-      error => {
-        console.error('Error al cargar los empleados:', error);
-      }
-    );
+  editar(row: any ) {
+    this.router.navigate(['/employee/update-employee/', row.id], { relativeTo: this.route });
   }
 
+ handleTableAction(event: Action) {
+    console.log('Action received:', event);
+    if (event.action === 'add') {
+      this.router.navigate(['/employee/create-employee'], { relativeTo: this.route });
+    }
+  }
 
-
-  onPageChange(newPage: number): void {
-    this.currentPage = newPage;
-    this.loadEmpleado();
-  }
-
-  onSortChange(event: { column: string; direction: 'asc' | 'desc' }): void {
-    this.currentSortColumn = event.column;
-    this.currentSortDirection = event.direction;
-    this.loadEmpleado();
-  }
-
-  onSearchInput(event: Event): void {
-    this.searchTerm = (event.target as HTMLInputElement).value;
-    this.currentPage = 1;
-    this.loadEmpleado();
-  }
 }
+

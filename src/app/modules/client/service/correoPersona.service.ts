@@ -16,7 +16,7 @@ export class CorreoPersonaService {
 
   constructor(private http: HttpClient) {}
 
-  getAllTypeDocument(): Observable<ApiResponse<ICorreoPerson[]>> {
+  getAllCorreo(): Observable<ApiResponse<ICorreoPerson[]>> {
     return this.http.get<ApiResponse<ICorreoPerson[]>>(this.apiUrl);
   }
 }
