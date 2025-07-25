@@ -34,10 +34,15 @@ export const routes: Routes = [
           .then(m => m.default),
       },
       {
-        path: 'employee',
-        loadChildren: () => import('./modules/employee/employee.routes')
+        path: 'counter',
+        loadChildren: () => import('./modules/counter/counter.routes')
           .then(m => m.default),
       },
+      {
+        path: 'employee',
+        loadChildren: () => import('./modules/employee/employee.routes')
+        .then(m => m.default),
+      }
     ],
   },
 
