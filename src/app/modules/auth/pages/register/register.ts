@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ICorregimiento } from '@interfaces/Icorregimiento';
 
+
 @Component({
   selector: 'app-register',
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule],

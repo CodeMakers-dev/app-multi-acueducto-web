@@ -10,8 +10,9 @@ import { PlazoPagoService } from '../../service/plazoPago.service';
 import { IDeudaCliente, IPlazoPago, ITipoDeuda } from '@interfaces/IdeudaFactura';
 import { CommonModule } from '@angular/common';
 import { IEnterpriseClientCounter } from '@interfaces/IenterpriseClientCounter';
-import { IFactura } from '@interfaces/Ifactura';
+import { IFactura, IfacturaResponse } from '@interfaces/Ifactura';
 import { ToastService } from '@services/toast.service';
+import { ApiResponse } from '@interfaces/Iresponse';
 
 @Component({
   selector: 'app-update-debt',
@@ -21,11 +22,12 @@ import { ToastService } from '@services/toast.service';
 export class UpdateDebt implements OnInit {
   registerForm!: FormGroup;
   deudaId!: number;
-  
+
 
   empresaClienteContador: IEnterpriseClientCounter[] = [];
   tipoDeuda: ITipoDeuda[] = [];
   factura: IFactura[] = [];
+  facturas: IfacturaResponse[] = [];
   plazoPago: IPlazoPago[] = [];
 
   private fb = inject(FormBuilder);
@@ -46,32 +48,42 @@ export class UpdateDebt implements OnInit {
     this.loadTipoDeuda();
     this.loadPlazoPago();
 
+    this.registerForm.get('empresaClienteContador')?.valueChanges.subscribe(selectedCliente => {
+      console.log('Cliente seleccionado (en valueChanges):', selectedCliente);
+      const empresaClienteContadorId = selectedCliente?.id;
+      if (empresaClienteContadorId) {
+        this.loadFacturasPorCliente(empresaClienteContadorId);
+      } else {
+        this.facturas = [];
+      }
+    });
     this.deudaService.getDeudaById(this.deudaId).subscribe({
       next: (data) => {
         console.log('Datos recibidos de la deuda:', data);
+        const deudaResponse = data.response;
         this.registerForm.patchValue({
-          empresaClienteContador: this.empresaClienteContador.find(c => c.id === data.response.empresaClienteContador.id),
-          tipoDeuda: this.tipoDeuda.find(t => t.id === data.response.tipoDeuda.id),
-          plazoPago: this.plazoPago.find(p => p.id === data.response.plazoPago.id),
-          fechaDeuda: data.response.fechaDeuda,
-          valor: data.response.valor,
-          descripcion: data.response.descripcion
+          fechaDeuda: deudaResponse.fechaDeuda,
+          valor: deudaResponse.valor,
+          descripcion: deudaResponse.descripcion
         });
-        const clienteId = data.response.empresaClienteContador?.cliente?.id;
-        if (clienteId) {
-          this.facturaService.getFacturAll().subscribe(response => {
-            this.factura = response.response.filter(fac => fac.empresaClienteContador?.cliente?.id === clienteId);
-            const facturaSeleccionada = this.factura.find(f => f.id === data.response.factura.id);
-            this.registerForm.patchValue({ factura: facturaSeleccionada });
-          });
+        const selectedEmpresaClienteContador = this.empresaClienteContador.find(c => c.id === deudaResponse.empresaClienteContador.id);
+        if (selectedEmpresaClienteContador) {
+          this.registerForm.get('empresaClienteContador')?.patchValue(selectedEmpresaClienteContador);
+          this.loadFacturasPorCliente(selectedEmpresaClienteContador.id, deudaResponse.factura.id);
+        }
+        const selectedTipoDeuda = this.tipoDeuda.find(t => t.id === deudaResponse.tipoDeuda.id);
+        if (selectedTipoDeuda) {
+          this.registerForm.get('tipoDeuda')?.patchValue(selectedTipoDeuda);
+        }
+        const selectedPlazoPago = this.plazoPago.find(p => p.id === deudaResponse.plazoPago.id);
+        if (selectedPlazoPago) {
+          this.registerForm.get('plazoPago')?.patchValue(selectedPlazoPago);
         }
       },
-      error: () => alert('Error cargando la deuda')
-    });
-
-    this.registerForm.get('empresaClienteContador')?.valueChanges.subscribe(cliente => {
-      const clienteId = cliente?.cliente?.id;
-      if (clienteId) this.loadFacturasPorCliente(clienteId);
+      error: (err) => {
+        console.error('Error cargando la deuda:', err);
+        this.toast.error('Error', 'Error cargando la deuda.');
+      }
     });
   }
 
@@ -87,64 +99,81 @@ export class UpdateDebt implements OnInit {
     });
   }
 
-  loadFacturasPorCliente(clienteId: number): void {
-    this.facturaService.getFacturAll().subscribe(response => {
-      this.factura = response.response.filter(fac => fac.empresaClienteContador?.cliente?.id === clienteId);
+
+  loadFacturasPorCliente(empresaClienteContadorId: number, facturaIdToSelect?: number): void {
+    this.facturaService.getFacturAll().subscribe((response: ApiResponse<IfacturaResponse[]>) => {
+      this.facturas = response.response.filter(fac => fac.empresaClienteContadorId === empresaClienteContadorId);
+      console.log('Facturas filtradas por cliente (loadFacturasPorCliente):', this.facturas);
+
+      if (facturaIdToSelect) {
+        const facturaSeleccionada = this.facturas.find(f => f.id === facturaIdToSelect);
+        if (facturaSeleccionada) {
+          this.registerForm.get('factura')?.patchValue(facturaSeleccionada);
+        }
+      }
     });
   }
 
   loadTipoDeuda(): void {
     this.tipoDeudaService.getAllTipoDeuda().subscribe(response => {
       this.tipoDeuda = response.response;
+      console.log('Tipos de deuda cargados:', this.tipoDeuda);
     });
   }
 
   loadPlazoPago(): void {
     this.plazoPagoService.getAllPlazoPago().subscribe(response => {
       this.plazoPago = response.response;
+      console.log('Plazos de pago cargados:', this.plazoPago);
     });
   }
 
   loadAllClientes(): void {
     this.enterpriseClientCounterService.getAllCLiente().subscribe(response => {
       this.empresaClienteContador = response.response;
+      console.log('Clientes cargados:', this.empresaClienteContador);
     });
   }
 
- onSubmit(): void {
-  if (this.registerForm.invalid) {
-    this.toast.warning('Formulario inválido', 'Por favor complete los campos correctamente.');
-    return;
-  }
-
-  const rawForm = this.registerForm.value;
-  const currentUser = this.authService.getUser();
-
-  if (!currentUser) {
-    console.error('Usuario no autenticado');
-    this.toast.error('Error', 'Debe iniciar sesión para actualizar la deuda.');
-    return;
-  }
-
-  const deuda: IDeudaCliente = {
-    ...rawForm,
-    id: this.deudaId,
-    valor: parseFloat(rawForm.valor),
-    usuarioModificacion: currentUser?.nombre ?? 'desconocido',
-    fechaModificacion: new Date()
-  };
-
-  this.deudaService.updateDeuda(deuda).subscribe({
-    next: () => {
-      this.toast.success('Éxito', 'La deuda se actualizó correctamente.');
-      this.router.navigate(['/bill/customer-debt']);
-    },
-    error: (err) => {
-      console.error('Error al actualizar deuda:', err);
-      this.toast.error('Error al actualizar', 'No se pudo actualizar la deuda. Intente más tarde.');
+  onSubmit(): void {
+    if (this.registerForm.invalid) {
+      this.toast.warning('Formulario inválido', 'Por favor complete los campos correctamente.');
+      return;
     }
-  });
-}
+
+    const rawForm = this.registerForm.value;
+    const currentUser = this.authService.getUser();
+
+    if (!currentUser) {
+      console.error('Usuario no autenticado');
+      this.toast.error('Error', 'Debe iniciar sesión para actualizar la deuda.');
+      return;
+    }
+
+    const deuda: IDeudaCliente = {
+      ...rawForm,
+      id: this.deudaId,
+      empresaClienteContador: rawForm.empresaClienteContador,
+      tipoDeuda: rawForm.tipoDeuda, 
+      factura: rawForm.factura, 
+      plazoPago: rawForm.plazoPago, 
+
+      valor: parseFloat(rawForm.valor),
+      usuarioModificacion: currentUser?.nombre ?? 'desconocido',
+      fechaModificacion: new Date()
+    };
+
+    this.deudaService.updateDeuda(deuda).subscribe({
+      next: () => {
+        this.toast.success('Éxito', 'La deuda se actualizó correctamente.');
+        this.router.navigate(['/bill/customer-debt']);
+      },
+      error: (err) => {
+        console.error('Error al actualizar deuda:', err);
+        this.toast.error('Error al actualizar', 'No se pudo actualizar la deuda. Intente más tarde.');
+      }
+    });
+  }
 
 
 

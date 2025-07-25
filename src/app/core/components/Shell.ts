@@ -11,22 +11,54 @@ import { Toast } from '@shared/components/toast';
   imports: [RouterOutlet, Header, Footer, Toast],
   template: `
     <div class="app-shell">
-      <app-header/>
-      <main class="app-shell__main">
-        <router-outlet/>
-      </main>
-      <app-footer/>
+      <!-- Radial Gradient Background -->
+      <div class="app-shell__background"></div>
+
+      <!-- Content -->
+      <div class="app-shell__content">
+        <app-header/>
+        <main class="app-shell__main">
+          <router-outlet/>
+        </main>
+        <app-footer/>
+      </div>
+
       <app-toast/>
     </div>
   `,
-  styles: [`
+styles: [`
     .app-shell {
-      display: grid;
+      position: relative;
       min-height: 100vh;
       min-height: 100dvh;
-      grid-template-rows: auto 1fr auto;
+      width: 100%;
     }
-    .app-shell__main { overflow-y: auto; }
+
+    .app-shell__background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      background: radial-gradient(125% 125% at 50% 10%, #fff 40%, #6366f1 100%);
+    }
+
+    .app-shell__content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .app-shell__main {
+      flex: 1;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: transparent;
+    }
   `],
 })
 export class AppShellComponent {}

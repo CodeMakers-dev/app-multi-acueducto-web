@@ -29,7 +29,7 @@
         <div class="flex flex-col">
             <select formControlName="factura" class="p-3 border rounded-md w-full" required>
                 <option [ngValue]="null" disabled>Factura...</option>
-                <option *ngFor="let fac of factura" [ngValue]="fac">{{ fac.codigo }}</option>
+                <option *ngFor="let fac of facturas" [ngValue]="fac">{{ fac.codigo }}</option>
             </select>
         </div>
 

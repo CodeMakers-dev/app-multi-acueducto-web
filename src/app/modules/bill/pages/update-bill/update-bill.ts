@@ -5,12 +5,11 @@ import { IEstado, IFactura } from '@interfaces/Ifactura';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EstadoService } from '../../service/estado.service';
-import { Navigation } from "@components/navigation/navigation";
 
 @Component({
   selector: 'app-update-bill',
   standalone: true,
-  imports: [CommonModule,  FormsModule, Navigation],
+  imports: [CommonModule,  FormsModule],
   templateUrl: './update-bill.html',
   providers: [DatePipe]
 })
@@ -18,6 +17,7 @@ export class UpdateBill implements OnInit {
   estado: IEstado[] = [];
   estadoName: string[] = [];
   selectedEstadoId: number | null = null;
+  
   factura: IFactura | null = null;
 
   private readonly route = inject(ActivatedRoute);

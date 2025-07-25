@@ -11,7 +11,7 @@ import { IPerson } from '@interfaces/Iperson';
 })
 export class PersonService {
 
-  private apiUrl = `${environment.apiUrl}`;
+  private readonly apiUrl = `${environment.apiUrl}`;
 
   protected readonly router= inject(Router)
   protected readonly http= inject(HttpClient)
