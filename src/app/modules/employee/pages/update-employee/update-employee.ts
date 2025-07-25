@@ -44,7 +44,7 @@ export class UpdateEmployee implements OnInit {
         const data = res.response;
         const personaId = data.personaId;
 
-        this.correoService.getAllTypeDocument().subscribe(correosResp => {
+        this.correoService.getAllCorreo().subscribe(correosResp => {
           const correo = correosResp.response.find(c => c.persona.id === personaId)?.correo || 'Sin correo';
 
           this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
