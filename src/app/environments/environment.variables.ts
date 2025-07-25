@@ -28,6 +28,7 @@ export const END_POINT_SERVICE = {
   PUT_UPD_EMPLEADO: 'update',
   GET_SAVE_EMPLEADO: 'save',
   GET_EMPLEADO_ALL: 'all',
+  POST_UPD_ESTADO: 'estado',
 
   GET_ALL_ESTADO: 'Estado/all',
 
