@@ -48,8 +48,17 @@ export const ENTERPRISE_CLIENT_COUNT = {
   GET_ENT_BY_ID: 'empresa',
 };
 
+export const COUNTER = {
+  COUNTER: 'Contador',
+  
+}
+
 export const TYPE_COUNTER = {
   TYPE_COUNTER: 'TipoContador',
-  GET_ALL_COUNT: 'all',
+  GET_ALL: 'all',
   GET_ENT_BY_ID: 'empresa',
+};
+
+export const ADDRESS = {
+  ADDRESS: 'Direccion'
 };

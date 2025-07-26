@@ -81,7 +81,7 @@ export class UpdateEmployee implements OnInit {
       correo: this.empleado.correo,
       telefono: this.empleado.telefono,
       estado: this.empleado.activo ? 'Activo' : 'Inactivo',
-      usuario_cambio: 'admin'
+      usuario_cambio: localStorage.getItem('nameUser') || 'admin'
     };
 
     console.log('📤 Payload a enviar:', payload);
