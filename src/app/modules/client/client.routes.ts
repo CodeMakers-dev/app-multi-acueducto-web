@@ -1,9 +1,10 @@
+
 import { Routes } from '@angular/router';
 
 export default [
   {
     path: '',
-    loadComponent: () => import('./pages/client/client').then(m => m.Client)
+    loadComponent: () =>   import('./pages/client-module/client').then(m => m.Client),
   },
   {
     path: 'create-client',

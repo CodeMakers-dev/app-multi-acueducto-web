@@ -17,7 +17,7 @@ import { map } from 'rxjs';
              <a (click)="editar(row)" class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
                     <i class="fas fa-edit"></i>
                 </a>
-                
+
     </ng-template>
     <ng-template #estadoTpl let-row>
   <label class="inline-flex items-center cursor-pointer">
@@ -45,6 +45,7 @@ import { map } from 'rxjs';
       [showAddButton]="true"
       [addButtonText]="'Agregar Empleado'"
       (action)="handleTableAction($event)"
+      
     />
   `,
 })
@@ -57,7 +58,7 @@ export class Employee {
   { field: 'correoElectronico', header: 'Correo Electrónico' },
   { field: 'estado', header: 'Estado' },
 ]);
-  
+
   employeeData = computed(() => this.dataEmployeeCounter.value() ?? []);
   title = 'Empleados';
 
