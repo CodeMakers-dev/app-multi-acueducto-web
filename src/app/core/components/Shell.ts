@@ -11,13 +11,10 @@ import { Toast } from '@shared/components/toast';
   imports: [RouterOutlet, Header, Footer, Toast],
   template: `
     <div class="app-shell">
-      <!-- Radial Gradient Background -->
       <div class="app-shell__background"></div>
-
-      <!-- Content -->
       <div class="app-shell__content">
         <app-header/>
-        <main class="app-shell__main pt-16">
+        <main class="app-shell__main pt-10">
           <router-outlet/>
         </main>
         <app-footer/>

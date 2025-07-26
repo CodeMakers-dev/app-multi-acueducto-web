@@ -10,8 +10,7 @@ import { ApiResponse } from '@interfaces/Iresponse';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ITipoDocumento } from '@interfaces/Iuser';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { ActivatedRoute , Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-client',
