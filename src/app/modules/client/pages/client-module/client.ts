@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, computed } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import {
   Action,
   TableComponent,
-} from '../../../../../app/core/components/table';
+} from '../../../../core/components/table';
 import { EnterpriseClientCounterService } from '../../service/enterpriseClientCounter.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -64,7 +64,7 @@ export class Client {
 
   onToggle(row: any) {
     row.activo = !row.activo;
-    
+
   }
 
   handleTableAction(event: Action) {

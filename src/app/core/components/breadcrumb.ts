@@ -9,7 +9,7 @@ import { BreadcrumbService } from '@services/breadcrumb.service';
   imports: [CommonModule, RouterModule],
   template: `
     @if (breadcrumbService.breadcrumbs().length > 0) {
-      <nav class="flex bg-gray-50 px-4 py-2" aria-label="Breadcrumb">
+      <nav class="flex bg-gray-50 px-4 py-2 mt-16" aria-label="Breadcrumb">
         <div class="max-w-screen-xl mx-auto w-full">
           <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             @for (item of breadcrumbService.breadcrumbs(); track $index) {

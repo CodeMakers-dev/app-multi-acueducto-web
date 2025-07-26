@@ -17,7 +17,7 @@ import { Toast } from '@shared/components/toast';
       <!-- Content -->
       <div class="app-shell__content">
         <app-header/>
-        <main class="app-shell__main">
+        <main class="app-shell__main pt-16">
           <router-outlet/>
         </main>
         <app-footer/>

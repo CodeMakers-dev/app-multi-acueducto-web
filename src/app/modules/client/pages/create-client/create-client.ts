@@ -10,6 +10,8 @@ import { ApiResponse } from '@interfaces/Iresponse';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ITipoDocumento } from '@interfaces/Iuser';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from 'express';
 
 @Component({
   selector: 'app-create-client',
@@ -39,6 +41,8 @@ export class CreateClient implements OnInit {
   protected readonly cityService = inject(CityService);
   protected readonly corregimientoService = inject(CorregimientoService);
   protected readonly tipoDocumentoService = inject (TypeDocumentService);
+  protected readonly router = inject(Router);
+  protected readonly route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.initializeForm();
@@ -156,5 +160,11 @@ private initializeForm(): void {
         this.filteredCorregimientos = [];
         console.log('filteredCorregimientos: []');
       }
+    }
+
+    saveClient() {
+      alert('Cliente guardado exitosamente');
+      console.log('Formulario de registro:', this.registerForm.value);
+      this.router.navigate([''], { relativeTo: this.route });
     }
 }
