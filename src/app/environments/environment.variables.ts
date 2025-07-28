@@ -46,6 +46,7 @@ export const ENTERPRISE_CLIENT_COUNT = {
   ENT_CLI_COU: 'EmpresaClienteContador',
   GET_ALL_CLI: 'all',
   GET_ENT_BY_ID: 'empresa',
+  POST_SAVE_CLI: 'save',
 };
 
 export const COUNTER = {
