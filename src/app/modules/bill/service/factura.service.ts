@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment.local";
 import { END_POINT_SERVICE } from "../../../environments/environment.variables";
 import { Router } from "@angular/router";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, throwError } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
 import { IFactura, IfacturaResponse } from "@interfaces/Ifactura";
@@ -17,27 +17,8 @@ export class FacturaService {
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
-    getAllFactura(
-        page: number,
-        pageSize: number,
-        searchTerm: string,
-        sortColumn: string,
-        sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IfacturaResponse[]>> {
-
-        let params = new HttpParams();
-        params = params.append('page', page.toString());
-        params = params.append('pageSize', pageSize.toString());
-
-        if (searchTerm) {
-            params = params.append('searchTerm', searchTerm);
-        }
-        if (sortColumn) {
-            params = params.append('sortColumn', sortColumn);
-            params = params.append('sortDirection', sortDirection);
-        }
-
-        return this.http.get<ApiResponse<IfacturaResponse[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`, { params }).pipe(
+    getAllBill(): Observable<ApiResponse<IfacturaResponse[]>> {
+        return this.http.get<ApiResponse<IfacturaResponse[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_FACTURA_ALL}`).pipe(
             catchError(this.handleError)
         );
     }

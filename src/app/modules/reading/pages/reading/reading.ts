@@ -35,8 +35,8 @@ import { map } from 'rxjs';
 export class Reading {
 
   readingColumns = signal([
-    { field: 'serial', header: 'Serial' },
-    { field: 'lectura', header: 'Lectura' },
+    { field: 'serial', header: 'Contador' },
+    { field: 'lectura', header: 'Lectura(m³)' },
     { field: 'fechaLectura', header: 'Fecha Lectura' },
     { field: 'consumoAnormal', header: 'Consumo Anormal' },
     { field: 'observacion', header: 'Observación' },
