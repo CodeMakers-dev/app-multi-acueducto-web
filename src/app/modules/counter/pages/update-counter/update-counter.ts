@@ -159,30 +159,26 @@ export class UpdateCounter {
       fechaModificacion: new Date().toISOString().slice(0, 19)
     };
 
-    console.log('📤 Payload dirección a enviar:', updatedAddress);
-    console.log('📤 Payload contador a enviar:', updatedCounter);
-
     this.addressService.updateAddress(updatedAddress).subscribe({
-  next: (addressResponse) => {
-    if (!addressResponse.success) { // ✅ Usar success en lugar de error
-      console.error('❌ Error en actualización de dirección:', addressResponse.message);
+    next: (addressResponse) => {
+    if (!addressResponse.success) {
       this.toast.error('Error al actualizar dirección', addressResponse.message || 'No se pudo actualizar la dirección.');
     } else {
-      console.log('✅ Dirección actualizada correctamente:', addressResponse);
+      console.log('Dirección actualizada correctamente:', addressResponse);
       
       this.counterService.updateCounter(updatedCounter).subscribe({
         next: (counterResponse) => {
-          if (!counterResponse.success) { // ✅ Usar success
-            console.error('❌ Error en actualización de contador:', counterResponse.message);
+          if (!counterResponse.success) {
+            console.error('Error en actualización de contador:', counterResponse.message);
             this.toast.error('Error al actualizar contador', counterResponse.message || 'No se pudo actualizar el contador.');
           } else {
-            console.log('✅ Contador actualizado correctamente:', counterResponse);
+            console.log('Contador actualizado correctamente:', counterResponse);
             this.toast.success('Éxito', 'El contador se actualizó correctamente.');
             this.router.navigate(['/counter']);
           }
         },
         error: (err) => {
-          console.error('❌ Error inesperado al actualizar contador:', err);
+          console.error('Error inesperado al actualizar contador:', err);
           this.toast.error('Error inesperado', 'No se pudo actualizar el contador. Intente más tarde.');
         }
       });
