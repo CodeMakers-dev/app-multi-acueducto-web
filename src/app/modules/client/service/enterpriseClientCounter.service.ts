@@ -68,4 +68,11 @@ export class EnterpriseClientCounterService {
         catchError(this.handleError)
       );
     }
+
+    saveClient(data: any): Observable<Map<string, any>> {
+    const url = `${environment.apiUrl}/${ENTERPRISE_CLIENT_COUNT.ENT_CLI_COU}/${ENTERPRISE_CLIENT_COUNT.POST_SAVE_CLI}`;
+    return this.http.post<Map<string, any>>(url, data).pipe(
+      catchError(this.handleError)
+    );
+  }
 }
