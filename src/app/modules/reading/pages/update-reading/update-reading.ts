@@ -1,10 +1,11 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ILectura } from '@interfaces/Ifactura';
-import { LecturaService } from '../../service/lectura.service';
+import { ToastService } from '@services/toast.service';
+import { ReadingService } from '../../service/reading.service';
 
 @Component({
   selector: 'app-update-reading',
@@ -17,13 +18,15 @@ export class UpdateReading implements OnInit {
   lectura: ILectura | null = null;
 
   private readonly route = inject(ActivatedRoute);
-  private readonly lecturaService = inject(LecturaService);
+  private readonly router = inject(Router);
+  private readonly readingService = inject(ReadingService);
+  protected readonly toastService = inject(ToastService);
 
   ngOnInit(): void {
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
-      this.lecturaService.getLecturaById(id).subscribe({
+      this.readingService.getLecturaById(id).subscribe({
         next: (res) => {
           const lectura = res.response;
           this.lectura = {
@@ -40,25 +43,41 @@ export class UpdateReading implements OnInit {
   }
 
   onSubmit(): void {
-  console.log('Submit ejecutado');
-  console.log('Lectura antes de enviar:', this.lectura);
-
-  if (this.lectura) {
-    this.lectura.fechaLectura = this.formatDateToString(this.lectura.fechaLectura);
-    this.lecturaService.updateLectura(this.lectura).subscribe({
-      next: (res) => {
-        console.log('Respuesta del servidor:', res);
-        alert('Lectura actualizada correctamente');
-      },
-      error: (err) => {
-        console.error('Error al actualizar la lectura:', err);
-        alert('Error al actualizar la lectura');
-      }
-    });
-  } else {
-    console.warn('No hay lectura cargada');
+  if (!this.lectura) {
+    this.toastService.warning('Advertencia', 'No hay lectura cargada.');
+    return;
   }
+
+  this.lectura.fechaLectura = this.formatDateToString(this.lectura.fechaLectura);
+
+  this.readingService.updateLectura(this.lectura).subscribe({
+    next: (res) => {
+      if (!res.success) {
+        console.error('Error al actualizar lectura:', res.message);
+        this.toastService.error(
+          'Error al actualizar lectura',
+          res.message || 'No se pudo actualizar la lectura.'
+        );
+      } else {
+        console.log('Lectura actualizada correctamente:', res);
+        this.toastService.success(
+          'Éxito',
+          'La lectura se actualizó correctamente.'
+        );
+        this.router.navigate(['/reading']);
+      }
+    },
+    error: (err) => {
+      console.error('Error inesperado al actualizar lectura:', err);
+      this.toastService.error(
+        'Error inesperado',
+        'No se pudo actualizar la lectura. Intente más tarde.'
+      );
+    }
+  });
 }
+
+
   private formatDateToInput(fecha: string | Date): string {
     const date = new Date(fecha);
     const year = date.getFullYear();
