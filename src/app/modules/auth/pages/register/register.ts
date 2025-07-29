@@ -15,7 +15,7 @@ import { EnterpriseService } from '../../service/enterprise.service';
 import { ICity } from '../../../../../app/core/interfaces/Icity';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
+import { ICorregimiento } from '@interfaces/icorregimiento';
 
 
 @Component({

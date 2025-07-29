@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICity } from '@interfaces/Icity';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
+import { ICorregimiento } from '@interfaces/icorregimiento';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { DepartamentService } from '../../../auth/service/departament.service';
 import { CityService } from '../../../auth/service/city.service';
@@ -69,8 +69,8 @@ export class CreateEmployee implements OnInit {
   }
   private initializeForm(): void {
   const usuarioCreacion = localStorage.getItem('nameUser') || 'admin';
-  const idEmpresa = localStorage.getItem('enterpriseId') 
-    ? +localStorage.getItem('enterpriseId')! 
+  const idEmpresa = localStorage.getItem('enterpriseId')
+    ? +localStorage.getItem('enterpriseId')!
     : null;
 
   this.registerForm = this.fb.group({
@@ -87,8 +87,8 @@ export class CreateEmployee implements OnInit {
     direccion: [''],
     telefono: ['', Validators.required],
     codigo: ['', Validators.required],
-    usuario_creacion: [usuarioCreacion], 
-    id_empresa: [idEmpresa, Validators.required] 
+    usuario_creacion: [usuarioCreacion],
+    id_empresa: [idEmpresa, Validators.required]
   });
 }
   loadTypeDocument(): void {
