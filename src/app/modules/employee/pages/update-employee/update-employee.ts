@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmpleadoService } from '../../service/empleado.service';
 import { CorreoPersonaService } from '../../../client/service/correoPersona.service';
-import { TelefonoPersonaService } from '../../../client/service/telefonoPersona.service';
+import { TelefonoGeneralService } from '../../../client/service/telefonoPersona.service';
 import { ToastService } from '@services/toast.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class UpdateEmployee implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly empleadoService = inject(EmpleadoService);
   protected readonly correoService = inject(CorreoPersonaService);
-  protected readonly telefonoService = inject(TelefonoPersonaService);
+  protected readonly telefonoService = inject(TelefonoGeneralService);
   protected readonly toast = inject(ToastService);
   protected readonly router = inject(Router);
 
@@ -43,13 +43,10 @@ export class UpdateEmployee implements OnInit {
       next: (res) => {
         const data = res.response;
         const personaId = data.personaId;
-
         this.correoService.getAllCorreo().subscribe(correosResp => {
-          const correo = correosResp.response.find(c => c.persona.id === personaId)?.correo || 'Sin correo';
-
+          const correo = correosResp.response.find(c => c.persona && c.persona.id === personaId)?.correo || 'Sin correo';
           this.telefonoService.getAllTelefono().subscribe(telefonosResp => {
-            const telefono = telefonosResp.response.find(t => t.persona.id === personaId)?.numero || 'Sin teléfono';
-
+            const telefono = telefonosResp.response.find(t => t.persona && t.persona.id === personaId)?.numero || 'Sin teléfono';
             this.empleado = {
               id: data.id,
               nombreCompleto: data.personaNombreCompleto,

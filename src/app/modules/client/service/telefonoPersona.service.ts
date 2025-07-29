@@ -6,18 +6,18 @@ import { Observable } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
 import { ITipoDocumento } from "@interfaces/Iuser";
 import { ICorreoPerson } from "@interfaces/Iperson";
-import { ITelefonoPersona } from "@interfaces/ItelefonoPersona";
+import { ITelefonoGeneral } from "@interfaces/ItelefonoGeneral";
 
 @Injectable({
   providedIn: 'root',
 })
-export class TelefonoPersonaService {
+export class TelefonoGeneralService {
 
   private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_ALL_TELEFONO_PER}`;
 
   constructor(private http: HttpClient) {}
 
-  getAllTelefono(): Observable<ApiResponse<ITelefonoPersona[]>> {
-    return this.http.get<ApiResponse<ITelefonoPersona[]>>(this.apiUrl);
+  getAllTelefono(): Observable<ApiResponse<ITelefonoGeneral[]>> {
+    return this.http.get<ApiResponse<ITelefonoGeneral[]>>(this.apiUrl);
   }
 }

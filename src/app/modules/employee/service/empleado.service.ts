@@ -7,10 +7,10 @@ import { catchError, Observable, throwError } from "rxjs";
 import { ApiResponse } from "@interfaces/Iresponse";
 import { IEmpleadoEmpresaResponse } from "@interfaces/Iemployee";
 import { ICorreoPerson } from '@interfaces/Iperson';
-import { ITelefonoPersona } from '@interfaces/ItelefonoPersona';
+import { ITelefonoGeneral } from '@interfaces/ItelefonoGeneral';
 import { forkJoin } from 'rxjs';
 import { CorreoPersonaService } from "../../client/service/correoPersona.service";
-import { TelefonoPersonaService } from "../../client/service/telefonoPersona.service";
+import { TelefonoGeneralService } from "../../client/service/telefonoPersona.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class EmpleadoService {
   private apiUrl = `${environment.apiUrl}/${END_POINT_SERVICE.GET_EMPLEADO}`;
 
   protected readonly correoService = inject(CorreoPersonaService)
-  protected readonly telefonoService = inject(TelefonoPersonaService)
+  protected readonly telefonoService = inject(TelefonoGeneralService)
   protected readonly router = inject(Router)
   protected readonly http = inject(HttpClient)
 
@@ -67,7 +67,7 @@ export class EmpleadoService {
   getAllDatosEmpleadoCompleto(): Observable<{
     empleados: ApiResponse<IEmpleadoEmpresaResponse[]>,
     correos: ApiResponse<ICorreoPerson[]>,
-    telefonos: ApiResponse<ITelefonoPersona[]>
+    telefonos: ApiResponse<ITelefonoGeneral[]>
   }> {
     const empleados$ = this.getAllEmpleados();
     const correos$ = this.correoService.getAllCorreo();

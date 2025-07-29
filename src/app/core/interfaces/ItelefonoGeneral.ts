@@ -1,7 +1,7 @@
 
 import { IPerson } from "./Iperson";
 
-export interface ITelefonoPersona {
+export interface ITelefonoGeneral {
     id: number;
     persona: IPerson;
     numero: string | null;
