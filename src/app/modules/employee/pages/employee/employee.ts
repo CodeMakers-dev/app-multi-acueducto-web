@@ -19,23 +19,29 @@ import { map } from 'rxjs';
                 </a>
 
     </ng-template>
-    <ng-template #estadoTpl let-row>
-  <label class="inline-flex items-center cursor-pointer">
-    <input
-      type="checkbox"
-      class="sr-only peer"
-      [checked]="row.activo"
-      (change)="onToggle(row)"
-    />
-    <div
-      class="relative w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full
-             peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-             after:content-[''] after:absolute after:top-[2px] after:start-[2px]
-             after:bg-white after:border-gray-300 after:border after:rounded-full
-             after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
-    ></div>
-  </label>
+   <ng-template #estadoTpl let-row>
+  <div class="flex items-center gap-2">
+    <label class="inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        class="sr-only peer"
+        [checked]="row.estado"
+        (change)="onToggle(row)"
+      />
+      <div
+        class="relative w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full
+              peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+              after:content-[''] after:absolute after:top-[2px] after:start-[2px]
+              after:bg-white after:border-gray-300 after:border after:rounded-full
+              after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+      ></div>
+    </label>
+    <span class="text-sm font-medium">
+      {{ row.estado ? 'Activo' : 'Inactivo' }}
+    </span>
+  </div>
 </ng-template>
+
     <app-table-dynamic
       [title]="title"
       [columns]="employeeColumns()"
@@ -51,13 +57,13 @@ import { map } from 'rxjs';
 })
 export class Employee {
   employeeColumns = signal([
-  { field: 'personaNombreCompleto', header: 'Nombre Completo' },
-  { field: 'numeroCedula', header: 'Cédula' },
-  { field: 'codigo', header: 'Código' },
-  { field: 'telefono', header: 'Teléfono' },
-  { field: 'correoElectronico', header: 'Correo Electrónico' },
-  { field: 'estado', header: 'Estado' },
-]);
+    { field: 'personaNombreCompleto', header: 'Nombre Completo' },
+    { field: 'numeroCedula', header: 'Cédula' },
+    { field: 'codigo', header: 'Código' },
+    { field: 'telefono', header: 'Teléfono' },
+    { field: 'correoElectronico', header: 'Correo Electrónico' },
+    { field: 'estado', header: 'Estado' },
+  ]);
 
   employeeData = computed(() => this.dataEmployeeCounter.value() ?? []);
   title = 'Empleados';
@@ -71,33 +77,44 @@ export class Employee {
   dataEmployeeCounter = rxResource({
     stream: () => this.empleadoService.getAllDatosEmpleadoCompleto().pipe(
       map(data => {
-        return data.empleados.response.map(emp => ({
-          ...emp,
-          correoElectronico: data.correos.response.find(c => c.persona.id === emp.personaId)?.correo ?? '',
-          telefono: data.telefonos.response.find(t => t.persona.id === emp.personaId)?.numero ?? ''
-        }));
+        console.log('📦 Datos recibidos del servicio:', data);
+        return (data?.empleados?.response ?? []).map(emp => {
+          const correo = data?.correos?.response?.find(c => c?.persona?.id === emp.personaId)?.correo ?? '';
+          const telefono = data?.telefonos?.response?.find(t => t?.persona?.id === emp.personaId)?.numero ?? '';
+          return {
+            id: emp.id,
+            personaId: emp.personaId,
+            personaNombreCompleto: emp.personaNombreCompleto,
+            numeroCedula: emp.numeroCedula,
+            codigo: emp.codigo,
+            correoElectronico: correo,
+            telefono: telefono,     
+            estado: emp.activo ?? true,
+          };
+        });
       })
     ),
   });
 
 
   onToggle(row: any) {
-    const nuevoEstado = !row.activo;
+  const nuevoEstado = !row.estado;
 
-    this.empleadoService.updateEstadoEmpleado({
-      id_persona: row.personaId,
-      activo: nuevoEstado,
-      usuario_cambio: localStorage.getItem('nameUser') || 'admin'
-    }).subscribe({
-      next: (response) => {
-        row.activo = nuevoEstado;
-      },
-      error: (err) => {
-        console.error('Error al cambiar estado del empleado:', err.message);
-        alert('❌ Ocurrió un error al actualizar el estado');
-      }
-    });
-  }
+  this.empleadoService.updateEstadoEmpleado({
+    id_persona: row.personaId,
+    activo: nuevoEstado,
+    usuario_cambio: localStorage.getItem('nameUser') || 'admin'
+  }).subscribe({
+    next: (response) => {
+      row.estado = nuevoEstado; // actualizar correctamente el campo usado en el template
+    },
+    error: (err) => {
+      console.error('Error al cambiar estado del empleado:', err.message);
+      alert('❌ Ocurrió un error al actualizar el estado');
+    }
+  });
+}
+
 
   editar(row: any) {
     this.router.navigate(['/employee/update-employee/', row.id], { relativeTo: this.route });
