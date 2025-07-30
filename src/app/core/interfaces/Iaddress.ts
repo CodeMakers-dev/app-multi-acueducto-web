@@ -1,5 +1,5 @@
 import { ICity } from "./Icity";
-import { ICorregimiento } from "@interfaces/Icorregimiento";
+import { ICorregimiento } from "@interfaces/icorregimiento";
 import { IDepartament } from "./Idepartament";
 
 export interface IAddress {

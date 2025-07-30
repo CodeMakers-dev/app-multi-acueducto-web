@@ -11,9 +11,9 @@ export const END_POINT_SERVICE = {
 
   GET_ALL_TIPO_DOCUMENTO: 'TipoDocumento/all',
 
-  GET_ALL_CORREO_PER: 'CorreoPersona/all',
+  GET_ALL_CORREO_PER: 'CorreoGeneral/all',
 
-  GET_ALL_TELEFONO_PER: 'TelefonoPersona/all',
+  GET_ALL_TELEFONO_PER: 'TelefonoGeneral/all',
 
   GET_FACTURA: 'Factura',
   GET_FACTURA_ALL: 'all',

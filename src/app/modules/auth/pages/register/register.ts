@@ -15,8 +15,12 @@ import { EnterpriseService } from '../../service/enterprise.service';
 import { ICity } from '../../../../../app/core/interfaces/Icity';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '@interfaces/Iresponse';
+<<<<<<< HEAD
 import { ICorregimiento } from '@interfaces/Icorregimiento';
 import { ToastService } from '@services/toast.service';
+=======
+import { ICorregimiento } from '@interfaces/icorregimiento';
+>>>>>>> 183fc8021eb99fbef17beda5ca20c24fb2820c61
 
 
 @Component({

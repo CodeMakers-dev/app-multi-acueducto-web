@@ -1,6 +1,7 @@
 import { IAddress } from "@interfaces/Iaddress";
 import { ITypeDocument } from "@interfaces/ItypeDocument";
-import { ITelefonoPersona } from "./ItelefonoPersona";
+import { ITelefonoGeneral } from "./ItelefonoGeneral";
+
 
 export interface IPerson {
   id: number;
@@ -18,7 +19,7 @@ export interface IPerson {
   fechaCreacion: Date;
   usuarioModificacion: string | null;
   fechaModificacion: Date | null;
-  telefono?: ITelefonoPersona[];
+  telefono?: ITelefonoGeneral[];
   correo?: ICorreoPerson[];
 }
 

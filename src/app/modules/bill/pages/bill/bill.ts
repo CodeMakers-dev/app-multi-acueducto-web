@@ -13,13 +13,61 @@ import * as FileSaver from 'file-saver';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { TableComponent } from '@components/table';
+import { PopupComponent } from "@shared/components/popUp";
 
 @Component({
   selector: 'app-bill',
-  imports: [ CommonModule, TableComponent,  RouterModule],
-  templateUrl: './bill.html',
+  imports: [CommonModule, TableComponent, RouterModule, PopupComponent],
+  template: `
+
+<div class="container mx-auto px-4 py-8">
+
+    <ng-template #actionsTemplate let-row>
+  <div class="flex items-center space-x-2">
+    <button (click)="handleTableAction({ action: 'edit', row })"
+      class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
+      <i class="fas fa-edit"></i>
+    </button>
+   <button (click)="onDelete(row.id)"
+      class="text-red-600 hover:text-red-900 text-sm cursor-pointer">
+      <i class="fas fa-trash"></i>
+    </button>
+  </div>
+</ng-template>
+
+<app-table-dynamic
+  [title]="title()"
+  [columns]="billColumns()"
+  [datasource]="tableData()"
+  [actionTemplate]="actionsTemplate"
+  [showAddButton]="true"
+  [addButtonText]="'Deuda Clientes'"
+  (action)="handleTableAction($event)">
+</app-table-dynamic>
+
+<div class="flex justify-end mt-6">
+  <button (click)="downloadHistory()" class="mr-3 md:mr-8 bg-green-600 text-white px-4 py-2 rounded-md cursor-pointer">
+    <i class="fas fa-file-excel"></i> Descargar historial
+  </button>
+</div>
+
+</div>
+
+<app-pop-up
+  [open]="showDeleteConfirm"
+  [isConfirmation]="true"
+  [title]="'Eliminar Factura'"
+  [message]="'¿Está seguro que desea eliminar esta factura? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  (confirmAction)="confirmDelete()">
+</app-pop-up>
+`
 })
 export class Bill {
+
+  showDeleteConfirm = signal(false);
+  itemToDelete: number | null = null;
 
   billColumns = signal([
     { field: 'codigo', header: 'Código' },
@@ -89,14 +137,22 @@ export class Bill {
 }
 
   onDelete(id: number): void {
-    if (confirm('¿Desea eliminar esta factura?')) {
-      this.billService.deleteFacturaById(id).subscribe({
+    this.itemToDelete = id;
+    this.showDeleteConfirm.set(true);
+  }
+
+
+  confirmDelete(): void {
+    if (this.itemToDelete !== null) {
+      this.billService.deleteFacturaById(this.itemToDelete).subscribe({
         next: () => {
           this.toastService.success('Eliminado', 'Factura eliminada correctamente.');
           this.dataBills.reload?.();
+          this.itemToDelete = null;
         },
         error: () => {
           this.toastService.error('Error', 'No se pudo eliminar la factura.');
+          this.itemToDelete = null;
         },
       });
     }

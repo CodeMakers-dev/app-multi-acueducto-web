@@ -4,7 +4,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   selector: 'app-Welcome',
   standalone: true,
   template: `
-    <section class="pt-2.5 py-12 lg:py-10 bg-transparent">
+    <section class="pt-5 py-12 lg:py-10 bg-transparent">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center mb-8 lg:mb-2">
           <div
