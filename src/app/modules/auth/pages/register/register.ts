@@ -15,7 +15,12 @@ import { EnterpriseService } from '../../service/enterprise.service';
 import { ICity } from '../../../../../app/core/interfaces/Icity';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '@interfaces/Iresponse';
+<<<<<<< HEAD
+import { ICorregimiento } from '@interfaces/Icorregimiento';
+import { ToastService } from '@services/toast.service';
+=======
 import { ICorregimiento } from '@interfaces/icorregimiento';
+>>>>>>> 183fc8021eb99fbef17beda5ca20c24fb2820c61
 
 
 @Component({
@@ -47,6 +52,7 @@ export class Register implements OnInit {
   protected readonly cityService = inject(CityService);
   protected readonly corregimientoService = inject(CorregimientoService);
   protected readonly enterpriseService = inject(EnterpriseService);
+  protected readonly toast = inject(ToastService);
 
   ngOnInit(): void {
     this.initializeForm();
@@ -78,6 +84,8 @@ export class Register implements OnInit {
       descripcionDireccion: [''],
       nit: ['', [Validators.required]],
       codigoEmpresa: ['', [Validators.required]],
+      correo: ['', [Validators.required]],
+      telefono: ['', [Validators.required]]
     });
   }
 
@@ -172,6 +180,8 @@ export class Register implements OnInit {
         nombreEmpresa: formData.nombreEmpresa,
         nit: formData.nit,
         codigoEmpresa: formData.codigoEmpresa,
+        correo: formData.correo,
+        telefono: formData.telefono,
         idDepartamento: formData.idDepartamento,
         idCiudad: formData.idCiudad,
         idCorregimiento: formData.idCorregimiento || null,
@@ -181,32 +191,25 @@ export class Register implements OnInit {
       console.log('Datos a enviar para registrar empresa:', empresaData);
 
       this.enterpriseService.registerEnterprise(empresaData).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          console.log('Registro de empresa exitoso:', response);
-          // Swal.fire({
-          //   icon: 'success',
-          //   title: 'Empresa registrada exitosamente',
-          //   text: 'Usuario por activar',
-          //   timer: 1500,
-          //   showConfirmButton: false,
-          // });
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 1500);
-        },
+      next: (response) => {
+        this.isLoading = false;
+        console.log('Registro de empresa exitoso:', response);
+
+        this.toast.success('Empresa registrada', 'Registro exitoso. Usuario por activar.');
+
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
+      },
         error: (err) => {
-          this.isLoading = false;
-          console.error('Error al registrar empresa:', err);
-          // Swal.fire({
-          //   icon: 'error',
-          //   title: 'Error',
-          //   text: `Error al registrar empresa: ${
-          //     err.message || 'Error desconocido'
-          //   }`,
-          //   showConfirmButton: true,
-          // });
-        },
+        this.isLoading = false;
+        console.error('Error al registrar empresa:', err);
+
+        this.toast.error(
+          'Error al registrar empresa',
+          err?.error?.message || err?.message || 'Ocurrió un error inesperado.'
+        );
+      },
       });
     }
   }

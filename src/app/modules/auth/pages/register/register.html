@@ -51,7 +51,19 @@
               class="w-full px-4 py-2 text-lg bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500" />
           </div>
 
-          <div class="flex flex-wrap gap-4"> <div class="w-full sm:w-[calc(50%-8px)]"> <select
+          <div class="w-full">
+            <input type="text" placeholder="Correo..." formControlName="correo"
+              class="w-full px-4 py-2 text-lg bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500" />
+          </div>
+
+          <div class="w-full">
+            <input type="text" placeholder="Teléfono..." formControlName="telefono"
+              class="w-full px-4 py-2 text-lg bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500" />
+          </div>
+
+          <div class="flex flex-wrap gap-4"> 
+            <div class="w-full sm:w-[calc(50%-8px)]">
+              <select
                 formControlName="idDepartamento"
                 class="w-full px-4 py-2 text-lg bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500"
                 required>
@@ -62,7 +74,8 @@
               </select>
             </div>
 
-            <div class="w-full sm:w-[calc(50%-8px)]"> <select
+            <div class="w-full sm:w-[calc(50%-8px)]">
+              <select
                 formControlName="idCiudad"
                 (change)="onCitiesChange()"
                 class="w-full px-4 py-2 text-lg bg-gray-100 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500"
@@ -119,13 +132,9 @@
               type="submit"
               [disabled]="registerForm.invalid || isLoading"
               [class.opacity-50]="registerForm.invalid || isLoading"
-              class="cursor-pointer w-auto px-12 py-3 bg-[#3388f5] hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors disabled:cursor-not-allowed flex items-center justify-center mx-auto"
+              class="cursor-pointer w-auto px-12 py-2 bg-[#3388f5] hover:bg-blue-700 text-white text-xl font-medium rounded-md transition-colors disabled:cursor-not-allowed flex items-center justify-center mx-auto"
             >
-              @if(!isLoading){
-                <span>Enviar</span>
-              } @if(isLoading){
-                <i class="fas fa-spinner fa-spin mr-2"></i> Enviando...
-              }
+              Enviar
             </button>
           </div>
         </form>

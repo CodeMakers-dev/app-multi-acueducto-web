@@ -13,8 +13,6 @@ import { map } from 'rxjs';
   selector: 'app-reading',
   imports: [CommonModule, TableComponent, RouterModule],
   template: `
-    <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-6">Gestión de Lecturas</h1>
 
     <ng-template #toggleTpl let-row>
         <a (click)="edit(row)" class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
@@ -23,12 +21,12 @@ import { map } from 'rxjs';
     </ng-template>
 
     <app-table-dynamic
+      [title]="title()"
         [datasource]="readingData()"
         [columns]="readingColumns()"
         [actionTemplate]="toggleTpl"
     />
       
-</div>
 
   `
 })
@@ -46,6 +44,8 @@ export class Reading {
     const arr = this.dataReading.value() ?? [];
     return [...arr].sort((a, b) => a.id - b.id);
   });
+
+  title = signal('Gestión de Lecturas');
 
   protected readonly readingService = inject(ReadingService);
   protected readonly router = inject(Router);

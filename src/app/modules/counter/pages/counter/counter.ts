@@ -10,14 +10,10 @@ import { map } from 'rxjs';
   selector: 'app-counter',
   imports: [CommonModule, RouterModule, TableComponent],
   template: `
-    <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold text-gray-800 mb-6">
-        Gestión de Contadores
-      </h1>
 
       <ng-template #toggleTpl let-row>
         <a
-          (click)="editar(row)"
+          (click)="edit(row)"
           class="text-green-600 hover:text-green-900 text-sm cursor-pointer"
         >
           <i class="fas fa-edit"></i>
@@ -25,11 +21,11 @@ import { map } from 'rxjs';
       </ng-template>
 
       <app-table-dynamic
+        [title]="title()"
         [datasource]="counterData()"
         [columns]="counterColumns()"
         [actionTemplate]="toggleTpl"
       />
-    </div>
   `,
 })
 export class Counter {
@@ -46,6 +42,7 @@ export class Counter {
     { field: 'cedula', header: 'Cedula' },
   ]);
   counterData = computed(() => this.dataEnterpriseClientCounter.value() ?? []);
+  title = signal('Gestión de Contadores');
 
   private readonly enterpriseClientCounterService = inject(
     EnterpriseClientCounterService
@@ -95,7 +92,7 @@ export class Counter {
     },
   });
 
-  editar(row: any) {
+  edit(row: any) {
     this.router.navigate(['/counter/actualizar-contador', row.id], {
       relativeTo: this.route,
     });
