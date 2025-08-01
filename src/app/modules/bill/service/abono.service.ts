@@ -18,27 +18,8 @@ export class AbonoService {
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
-    getAllAbono(
-        page: number,
-        pageSize: number,
-        searchTerm: string,
-        sortColumn: string,
-        sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IAbonoFactura[]>> {
-
-        let params = new HttpParams();
-        params = params.append('page', page.toString());
-        params = params.append('pageSize', pageSize.toString());
-
-        if (searchTerm) {
-            params = params.append('searchTerm', searchTerm);
-        }
-        if (sortColumn) {
-            params = params.append('sortColumn', sortColumn);
-            params = params.append('sortDirection', sortDirection);
-        }
-
-        return this.http.get<ApiResponse<IAbonoFactura[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_ABONO_ALL}`, { params }).pipe(
+    getAllAbono(): Observable<ApiResponse<IAbonoFactura[]>> {
+        return this.http.get<ApiResponse<IAbonoFactura[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_ABONO_ALL}`).pipe(
             catchError(this.handleError)
         );
     }

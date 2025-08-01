@@ -20,7 +20,6 @@ import { PopupComponent } from "@shared/components/popUp";
   imports: [CommonModule, TableComponent, RouterModule, PopupComponent],
   template: `
 
-<div class="container mx-auto px-4 py-8">
 
     <ng-template #actionsTemplate let-row>
   <div class="flex items-center space-x-2">
@@ -51,7 +50,6 @@ import { PopupComponent } from "@shared/components/popUp";
   </button>
 </div>
 
-</div>
 
 <app-pop-up
   [open]="showDeleteConfirm"
