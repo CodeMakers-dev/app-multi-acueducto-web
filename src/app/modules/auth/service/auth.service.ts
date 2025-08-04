@@ -61,7 +61,8 @@ export class AuthService {
             console.log('User ID almacenado:', usuario.id);
              localStorage.setItem('nameUser', usuario.nombre ? usuario.nombre.toString() : '');
             console.log('Nombre de usuario almacenado:', usuario.nombre);
-           
+           localStorage.setItem('idrol',usuario.rol.id ? usuario.rol.id.toString() : '');
+           console.log('Rol de usuario autenticado:', usuario.rol.id);
           }
           this.tokenSig.set(token);
           this.userSig.set(usuario);
@@ -136,7 +137,7 @@ export class AuthService {
     );
   }
 
-  // // Método adicional para obtener enterprise ID manualmente si es necesario => solo para el debug mi pez o forzarlo
+  
   getEnterpriseId(): number | null {
     return this.enterpriseIdSig();
   }

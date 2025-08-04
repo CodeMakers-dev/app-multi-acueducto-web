@@ -47,6 +47,7 @@ export const ENTERPRISE_CLIENT_COUNT = {
   GET_ALL_CLI: 'all',
   GET_ENT_BY_ID: 'empresa',
   POST_SAVE_CLI: 'save',
+  DELETE_CLI: 'delete'
 };
 
 export const COUNTER = {

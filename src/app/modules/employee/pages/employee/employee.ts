@@ -106,7 +106,7 @@ export class Employee {
     usuario_cambio: localStorage.getItem('nameUser') || 'admin'
   }).subscribe({
     next: (response) => {
-      row.estado = nuevoEstado; // actualizar correctamente el campo usado en el template
+      row.estado = nuevoEstado; 
     },
     error: (err) => {
       console.error('Error al cambiar estado del empleado:', err.message);
