@@ -1,144 +1,106 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Table } from '@components/table/table';
 import { IDeudaCliente } from '@interfaces/IdeudaFactura';
 import { TableColumn } from '@interfaces/ItableColumn';
 import { DeudaService } from '../../service/deuda.service';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
+import { TableComponent } from '@components/table';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-customer-debt',
-  imports: [CommonModule, Table, RouterModule],
+  imports: [CommonModule, TableComponent, RouterModule],
   templateUrl: './customer-debt.html',
 })
-export class CustomerDebt implements OnInit {
+export class CustomerDebt {
 
-  debtColumns: TableColumn[] = [
-    { key: 'clienteNombreCompleto', label: 'Cliente', sortable: true },
-    { key: 'facturaCodigo', label: 'Factura', sortable: true },
-    { key: 'fechaDeudaTexto', label: 'Fecha deuda', sortable: true },
-    { key: 'descripcion', label: 'Descripción', sortable: true },
-    { key: 'tipoDeudaNombre', label: 'Tipo deuda', sortable: true },
-    { key: 'valorTexto', label: 'Valor', sortable: true },
-    { key: 'activo', label: 'Estado', sortable: true },
-    { key: 'plazoPagoNombre', label: 'N° de cuotas', sortable: true },
-  ];
-
-  tableData: any[] = [];
-  totalRegisters: number = 0;
-
-  currentPage: number = 1;
-  pageSize: number = 10;
-
-  searchTerm: string = '';
-  currentSortColumn: string = '';
-  currentSortDirection: 'asc' | 'desc' = 'asc';
+  debtColumns = signal<{ field: string; header: string }[]>([
+    { field: 'clienteNombreCompleto', header: 'Cliente' },
+    { field: 'facturaCodigo', header: 'Factura' },
+    { field: 'fechaDeudaTexto', header: 'Fecha deuda' },
+    { field: 'descripcion', header: 'Descripción' },
+    { field: 'tipoDeudaNombre', header: 'Tipo deuda' },
+    { field: 'valorTexto', header: 'Valor' },
+    { field: 'activo', header: 'Estado' },
+    { field: 'plazoPagoNombre', header: 'N° de cuotas' }
+  ]);
 
   protected readonly deudaService = inject(DeudaService);
+  protected readonly toastService = inject(ToastService);
   protected readonly router = inject(Router);
-  protected readonly toast = inject(ToastService);
+  protected readonly route = inject(ActivatedRoute);
 
-  ngOnInit(): void {
-    this.loadDeuda();
+  constructor() {
+    effect(() => {
+      console.log(
+        'Data loaded______:',
+        this.dataDebts.value()
+      );
+    });
   }
 
-  redirigirCrearAbono(idDeuda: number): void {
-    this.router.navigate(['/bill/create-credit', idDeuda]);
+  dataDebts = rxResource({
+    stream: () => this.deudaService.getAllDeuda(
+    ).pipe(
+      map((apiRes: ApiResponse<IDeudaCliente[]>) =>
+        apiRes.response.map(deuda => ({
+          id: deuda.id,
+          clienteNombreCompleto: [
+            deuda.empresaClienteContador?.cliente?.nombre ?? '',
+            deuda.empresaClienteContador?.cliente?.segundoNombre ?? '',
+            deuda.empresaClienteContador?.cliente?.apellido ?? '',
+            deuda.empresaClienteContador?.cliente?.segundoApellido ?? ''
+          ].filter(Boolean).join(' '),
+          facturaCodigo: deuda.factura?.codigo ?? '',
+          fechaDeudaTexto: new Date(deuda.fechaDeuda!).toLocaleDateString('es-CO'),
+          descripcion: deuda.descripcion ?? '',
+          tipoDeudaNombre: deuda.tipoDeuda?.nombre ?? '',
+          valorTexto: `$${parseFloat(deuda.valor).toLocaleString('es-CO')}`,
+          activo: deuda.activo ? 'PENDIENTE' : 'PAGO',
+          plazoPagoNombre: deuda.plazoPago?.nombre ?? ''
+        }))
+      )
+    )
+  });
+
+  debtData = computed(() => this.dataDebts.value() ?? []);
+  title = signal('Deuda de clientes');
+
+
+  handleTableAction(event: { action: string; row?: any }) {
+  switch (event.action) {
+    case 'edit':
+      this.router.navigate(['/bill/update-debt', event.row.id]);
+      break;
+    case 'delete':
+      this.confirmDelete(event.row?.id);
+      break;
+    case 'add':
+      this.irAbonoFactura();
+      break;
   }
-  editarDeuda(id: number): void {
-    this.router.navigate(['/bill/update-debt', id]);
-  }
-  irAbonoFactura() {
-    this.router.navigate(['/bill/credit-customer']);
-  }
-  createdebt() {
-    this.router.navigate(['/bill/create-debt']);
-  }
-
-  loadDeuda(): void {
-    this.deudaService.getAllDeuda(
-      this.currentPage,
-      this.pageSize,
-      this.searchTerm,
-      this.currentSortColumn,
-      this.currentSortDirection
-    ).subscribe(
-      (apiResponse: ApiResponse<IDeudaCliente[]>) => {
-        const deudas = apiResponse.response;
-
-        console.log('Respuesta completa de deudas:', deudas);
-
-        const deudasTransformadas = deudas.map((deuda, index) => {
-          const cliente = deuda.empresaClienteContador?.cliente;
-
-          const nombreCompleto = [
-            cliente?.nombre,
-            cliente?.segundoNombre,
-            cliente?.apellido,
-            cliente?.segundoApellido
-          ]
-            .filter(part => !!part)
-            .join(' ');
-
-          console.log(`Deuda [${index}]:`, {
-            factura: deuda.factura,
-            codigoFactura: deuda.factura?.codigo,
-          });
-
-          return {
-            ...deuda,
-            clienteNombreCompleto: nombreCompleto,
-            tipoDeudaNombre: deuda.tipoDeuda?.nombre ?? '',
-            fechaDeudaTexto: deuda.fechaDeuda?.toString().slice(0, 10),
-            valorTexto: `$${parseFloat(deuda.valor).toLocaleString('es-CO')}`,
-            facturaCodigo: deuda.factura?.codigo ?? '',
-            plazoPagoNombre: deuda.plazoPago?.nombre ?? '',
-            activo: deuda.activo ? 'PENDIENTE' : 'PAGO'
-          };
-        });
-        console.log('Deudas transformadas:', deudasTransformadas);
-
-        this.totalRegisters = deudas.length;
-        this.tableData = deudasTransformadas;
-      },
-      error => {
-        console.error('Error al cargar las deudas:', error);
-      }
-    );
-  }
+}
 
 
-  onPageChange(newPage: number): void {
-    this.currentPage = newPage;
-    this.loadDeuda();
-  }
-
-  onSortChange(event: { column: string; direction: 'asc' | 'desc' }): void {
-    this.currentSortColumn = event.column;
-    this.currentSortDirection = event.direction;
-    this.loadDeuda();
-  }
-
-  onSearchInput(event: Event): void {
-    this.searchTerm = (event.target as HTMLInputElement).value;
-    this.currentPage = 1;
-    this.loadDeuda();
-  }
-  eliminarDeuda(id: number): void {
-    if (confirm('¿Estás seguro de eliminar esta deuda?')) {
+  confirmDelete(id: number) {
+    if (confirm('¿Eliminar deuda?')) {
       this.deudaService.deleteDeudaById(id).subscribe({
-        next: (res) => {
-          console.log('Deuda eliminada correctamente:', res);
-          this.loadDeuda();
+        next: () => {
+          this.toastService.success('Éxito', 'Deuda eliminada');
+          this.dataDebts.reload?.();
         },
-        error: (err) => {
-          console.error('Error al eliminar la deuda:', err);
-        }
+        error: () => this.toastService.error('Error', 'No se pudo eliminar')
       });
     }
   }
+
+  createdebt() { this.router.navigate(['/bill/create-debt']); }
+  irAbonoFactura() { this.router.navigate(['/bill/credit-customer']); }
+  redirigirCrearAbono(id: number) { this.router.navigate(['/bill/create-credit', id]); }
 
 
 }
