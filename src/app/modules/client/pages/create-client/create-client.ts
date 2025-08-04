@@ -11,12 +11,12 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { ITipoDocumento } from '@interfaces/Iuser';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute , Router} from '@angular/router';
+import { ToastService } from '@services/toast.service';
 
 @Component({
   selector: 'app-create-client',
   imports: [FormsModule,ReactiveFormsModule,CommonModule],
   templateUrl: './create-client.html',
-  styleUrl: './create-client.css'
 })
 export class CreateClient implements OnInit {
   registerForm!: FormGroup;
@@ -42,6 +42,7 @@ export class CreateClient implements OnInit {
   protected readonly tipoDocumentoService = inject (TypeDocumentService);
   protected readonly router = inject(Router);
   protected readonly route = inject(ActivatedRoute);
+  protected readonly toast = inject(ToastService);
 
   ngOnInit(): void {
     this.initializeForm();
@@ -66,6 +67,7 @@ private initializeForm(): void {
     this.registerForm = this.fb.group({
       tipoDocumento: [null, Validators.required],
       numeroDocumento: ['', Validators.required],
+      telefono:['', Validators.required],
       correo: ['', [Validators.required, Validators.email]],
       primerApellido: ['', Validators.required],
       segundoApellido: [''],
@@ -75,7 +77,6 @@ private initializeForm(): void {
       idCiudad: [null, Validators.required],
       idCorregimiento: [null],
       direccion: [''],
-      serialContador: ['']
     });
   }
    loadTypeDocument(): void {
@@ -161,9 +162,14 @@ private initializeForm(): void {
       }
     }
 
-    saveClient() {
-      alert('Cliente guardado exitosamente');
-      console.log('Formulario de registro:', this.registerForm.value);
-      this.router.navigate([''], { relativeTo: this.route });
-    }
+ nextClient() {
+  if (this.registerForm.valid) {
+    const personaData = this.registerForm.value;
+    sessionStorage.setItem('personaData', JSON.stringify(personaData));
+    this.router.navigate(['/counter/create-counter']);
+  } else {
+    this.toast.error('Completa todos los campos requeridos antes de continuar', 'Formulario inválido');
+    this.registerForm.markAllAsTouched(); 
+  }
+}
 }

@@ -22,6 +22,7 @@ export interface IAuthResponse {
   id: string;
   token: string;
   usuario: Iuser;
+  rol: string;
 }
 
 export interface IUpdatePassword {
