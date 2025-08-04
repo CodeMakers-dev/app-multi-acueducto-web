@@ -18,27 +18,8 @@ export class DeudaService {
     protected readonly router = inject(Router)
     protected readonly http = inject(HttpClient)
 
-    getAllDeuda(
-        page: number,
-        pageSize: number,
-        searchTerm: string,
-        sortColumn: string,
-        sortDirection: 'asc' | 'desc'
-    ): Observable<ApiResponse<IDeudaCliente[]>> {
-
-        let params = new HttpParams();
-        params = params.append('page', page.toString());
-        params = params.append('pageSize', pageSize.toString());
-
-        if (searchTerm) {
-            params = params.append('searchTerm', searchTerm);
-        }
-        if (sortColumn) {
-            params = params.append('sortColumn', sortColumn);
-            params = params.append('sortDirection', sortDirection);
-        }
-
-        return this.http.get<ApiResponse<IDeudaCliente[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_DEUDA_ALL}`, { params }).pipe(
+    getAllDeuda(): Observable<ApiResponse<IDeudaCliente[]>> {
+        return this.http.get<ApiResponse<IDeudaCliente[]>>(`${this.apiUrl}/${END_POINT_SERVICE.GET_DEUDA_ALL}`).pipe(
             catchError(this.handleError)
         );
     }
