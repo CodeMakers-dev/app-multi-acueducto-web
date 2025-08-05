@@ -8,6 +8,7 @@ import {
 import { rxResource } from '@angular/core/rxjs-interop';
 import { EmpleadoService } from '../../service/empleado.service';
 import { map } from 'rxjs';
+import { ToastService } from '@services/toast.service';
 
 @Component({
   selector: 'app-employee',
@@ -20,27 +21,27 @@ import { map } from 'rxjs';
 
     </ng-template>
    <ng-template #estadoTpl let-row>
-  <div class="flex items-center gap-2">
-    <label class="inline-flex items-center cursor-pointer">
-      <input
-        type="checkbox"
-        class="sr-only peer"
-        [checked]="row.estado"
-        (change)="onToggle(row)"
-      />
-      <div
-        class="relative w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full
-              peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-              after:content-[''] after:absolute after:top-[2px] after:start-[2px]
-              after:bg-white after:border-gray-300 after:border after:rounded-full
-              after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
-      ></div>
-    </label>
-    <span class="text-sm font-medium">
-      {{ row.estado ? 'Activo' : 'Inactivo' }}
-    </span>
-  </div>
-</ng-template>
+    <div class="flex items-center gap-2">
+      <label class="inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          class="sr-only peer"
+          [checked]="row.estado"
+          (change)="onToggle(row)"
+        />
+        <div
+          class="relative w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full
+                peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+                after:content-[''] after:absolute after:top-[2px] after:start-[2px]
+                after:bg-white after:border-gray-300 after:border after:rounded-full
+                after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+        ></div>
+      </label>
+      <span class="text-sm font-medium">
+        {{ row.estado ? 'Activo' : 'Inactivo' }}
+      </span>
+    </div>
+  </ng-template>
 
     <app-table-dynamic
       [title]="title"
@@ -51,7 +52,6 @@ import { map } from 'rxjs';
       [showAddButton]="true"
       [addButtonText]="'Agregar Empleado'"
       (action)="handleTableAction($event)"
-      
     />
   `,
 })
@@ -62,7 +62,7 @@ export class Employee {
     { field: 'codigo', header: 'Código' },
     { field: 'telefono', header: 'Teléfono' },
     { field: 'correoElectronico', header: 'Correo Electrónico' },
-    { field: 'estado', header: 'Estado' },
+    { field: 'estado', header: 'Estado', template: 'estadoTpl' },
   ]);
 
   employeeData = computed(() => this.dataEmployeeCounter.value() ?? []);
@@ -72,7 +72,7 @@ export class Employee {
   protected readonly empleadoService = inject(EmpleadoService);
   protected readonly router = inject(Router);
   protected readonly route = inject(ActivatedRoute);
-
+  protected readonly toastService = inject(ToastService);
 
   dataEmployeeCounter = rxResource({
     stream: () => this.empleadoService.getAllDatosEmpleadoCompleto().pipe(
@@ -105,16 +105,17 @@ export class Employee {
     activo: nuevoEstado,
     usuario_cambio: localStorage.getItem('nameUser') || 'admin'
   }).subscribe({
-    next: (response) => {
-      row.estado = nuevoEstado; 
+    next: (response) => {      
+      row.estado = nuevoEstado;
+      this.toastService.success('Éxito', 'Estado actualizado correctamente');
     },
     error: (err) => {
       console.error('Error al cambiar estado del empleado:', err.message);
-      alert('❌ Ocurrió un error al actualizar el estado');
+      row.estado = !nuevoEstado;
+      this.toastService.error('Error', 'Ocurrió un error al actualizar el estado');
     }
   });
 }
-
 
   editar(row: any) {
     this.router.navigate(['/employee/update-employee/', row.id], { relativeTo: this.route });

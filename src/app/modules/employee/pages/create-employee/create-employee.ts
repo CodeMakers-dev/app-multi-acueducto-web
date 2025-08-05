@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICity } from '@interfaces/Icity';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { DepartamentService } from '../../../auth/service/departament.service';
 import { CityService } from '../../../auth/service/city.service';
@@ -15,6 +14,7 @@ import { IEmpleadoEmpresaRequest, IEmpleadoResponse } from '@interfaces/Iemploye
 import { ToastService } from '@services/toast.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../auth/service/user.service';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 
 @Component({
   selector: 'app-create-employee',

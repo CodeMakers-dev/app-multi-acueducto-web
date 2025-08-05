@@ -33,12 +33,36 @@ import { PopupComponent } from "@shared/components/popUp";
     </div>
   </ng-template>
 
+  <ng-template #estadoTpl let-row>
+    <div class="flex items-center gap-2">
+      <label class="inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          class="sr-only peer"
+          [checked]="row.estado"
+          (change)="onToggle(row)"
+        />
+        <div
+          class="relative w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full
+                peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+                after:content-[''] after:absolute after:top-[2px] after:start-[2px]
+                after:bg-white after:border-gray-300 after:border after:rounded-full
+                after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+        ></div>
+      </label>
+      <span class="text-sm font-medium">
+        {{ row.estado ? 'Activo' : 'Inactivo' }}
+      </span>
+    </div>
+  </ng-template>
+
  
   <app-table-dynamic
     [title]="title"
     [columns]="clienteColumns()"
     [datasource]="clientData()"
     [actionTemplate]="actionsTemplate"
+    [columnTemplates]="{ estado: estadoTpl }"
     [showAddButton]="true"
     [addButtonText]="'Agregar Cliente'"
     (action)="onTableAction($event)">
@@ -62,8 +86,6 @@ export class Client {
   showDeleteConfirm = signal(false);
   itemToDelete: number | null = null;
 
-  protected readonly toastService = inject(ToastService);
-
   clienteColumns = signal([
     { field: 'idContador', header: 'ID Contador' },
     { field: 'codigoVereda', header: 'Vereda' },
@@ -73,7 +95,7 @@ export class Client {
     { field: 'telefono', header: 'Teléfono' },
     { field: 'direccion', header: 'Dirección' },
     { field: 'correo', header: 'Correo' },
-    { field: 'estado', header: 'Estado' },
+    { field: 'estado', header: 'Estado', template: 'estadoTpl' },
   ]);
 
   clientData = computed(() => this.dataClientCounter.value() ?? []);
@@ -87,6 +109,7 @@ export class Client {
   protected readonly enterpriseClientCounterService = inject(EnterpriseClientCounterService);
   protected readonly router = inject(Router);
   protected readonly route = inject(ActivatedRoute);
+  protected readonly toastService = inject(ToastService);
 
   dataClientCounter = rxResource({
     stream: () => this.enterpriseClientCounterService.getAllClienteEnterprise().pipe(
@@ -116,9 +139,25 @@ export class Client {
   });
 
   onToggle(row: any) {
-    row.activo = !row.activo;
-    this.toastService.success('Éxito', 'Estado actualizado correctamente');
-  }
+  const nuevoEstado = !row.estado;
+
+  this.enterpriseClientCounterService.updateEstado({
+    id_persona: row.id,
+    activo: nuevoEstado,
+    usuario_cambio: localStorage.getItem('nameUser') || 'admin'
+  }).subscribe({
+    next: (response) => {      
+      row.estado = nuevoEstado;
+      this.toastService.success('Éxito', 'Estado actualizado correctamente');
+    },
+    error: (err) => {
+      console.error('Error al cambiar estado del empleado:', err.message);
+      row.estado = !nuevoEstado;
+      this.toastService.error('Error', 'Ocurrió un error al actualizar el estado');
+    }
+  });
+}
+
   onDelete(id: number): void {
     this.itemToDelete = id;
     this.showDeleteConfirm.set(true);

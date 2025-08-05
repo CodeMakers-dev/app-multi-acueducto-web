@@ -59,7 +59,16 @@ export interface Action<T = any> {
                        hover:bg-gray-50 hover:bg-gray-600"
               >
                 @for (col of columns(); track col) {
-                  <td class="px-6 py-4 text-gray-900 text-white">{{ row[col.field] }}</td>
+                  <td class="px-6 py-4 text-gray-900 text-white">
+                    @if (columnTemplates()[col.field]; as templateRef) {
+                      <ng-container
+                        [ngTemplateOutlet]="templateRef"
+                        [ngTemplateOutletContext]="{ $implicit: row }"
+                      />
+                    } @else {
+                      {{ row[col.field] }}
+                    }
+                  </td>
                 }
                 <td class="px-6 py-4 text-right">
                   @if (actionTemplate()) {
