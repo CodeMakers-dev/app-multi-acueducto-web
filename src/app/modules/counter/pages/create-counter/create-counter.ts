@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICity } from '@interfaces/Icity';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
 import { IDepartament } from '@interfaces/Idepartament';
 import { ITypeCounter } from '@interfaces/ItypeCounter';
 import { DepartamentService } from '../../../auth/service/departament.service';
@@ -15,6 +14,7 @@ import { EnterpriseClientCounterService } from '../../../client/service/enterpri
 import { AuthService } from '../../../auth/service/auth.service';
 import { ToastService } from '@services/toast.service';
 import { UserService } from '../../../auth/service/user.service';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 
 @Component({
   selector: 'app-create-counter',
