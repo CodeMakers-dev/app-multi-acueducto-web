@@ -13,6 +13,7 @@ import { DepartamentService } from '../../../auth/service/departament.service';
 import { CityService } from '../../../auth/service/city.service';
 import { CorregimientoService } from '../../../auth/service/corregimiento.service';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../../auth/service/auth.service';
 
 
 @Component({
@@ -63,6 +64,7 @@ export class UpdateClient implements OnInit {
   private readonly departamentService = inject(DepartamentService);
   private readonly cityService = inject(CityService);
   private readonly corregimientoService = inject(CorregimientoService);
+  protected readonly authService = inject(AuthService);
 
   ngOnInit(): void {
     Promise.all([
@@ -165,6 +167,9 @@ export class UpdateClient implements OnInit {
       return;
     }
 
+     const usuario = this.authService.getUser();
+    const nombreUsuario = usuario?.nombre || 'sin_usuario';
+
     const payload = {
       id_empresa_cliente_contador: this.cliente.id,
       primer_nombre: this.extraerNombre(0),
@@ -178,7 +183,7 @@ export class UpdateClient implements OnInit {
       descripcion_direccion: this.cliente.direccion,
       correo: this.cliente.correo,
       telefono: this.cliente.telefono,
-      usuario_cambio: 'admin_sistema'
+      usuario_cambio: nombreUsuario
     };
 
     this.clientService.updateClient(payload).subscribe({
