@@ -116,9 +116,16 @@ export class EnterpriseClientCounterService {
   );
 }
 
-getClienteById(id: number): Observable<ApiResponse<IEnterpriseClientCounter>> {
+  getClienteById(id: number): Observable<ApiResponse<IEnterpriseClientCounter>> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<ApiResponse<IEnterpriseClientCounter>>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+   updateClient(data: any): Observable<any> {
+    const url = `${environment.apiUrl}/${ENTERPRISE_CLIENT_COUNT.ENT_CLI_COU}/${ENTERPRISE_CLIENT_COUNT.UPDATE_CLI}`;
+    return this.http.post<any>(url, data).pipe(
       catchError(this.handleError)
     );
   }
