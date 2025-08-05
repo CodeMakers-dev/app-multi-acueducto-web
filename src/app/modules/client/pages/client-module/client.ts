@@ -123,6 +123,8 @@ export class Client {
             idpersona: clienteItem.id,
             id: clienteItem.cliente?.id,
             idContador: clienteItem.contador?.serial ?? '',
+            codigoDepart: clienteItem.cliente?.direccion?.departamentoId?.nombre ?? '',
+            codigoMuni: clienteItem.cliente?.direccion?.ciudadId?.nombre ?? '',
             codigoVereda: clienteItem.cliente?.direccion?.corregimientoId?.nombre ?? '',
             numeroIdentificacion: clienteItem.cliente?.numeroCedula ?? '',
             razonSocial: clienteItem.empresa?.nombre ?? '',

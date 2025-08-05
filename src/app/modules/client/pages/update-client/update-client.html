@@ -10,14 +10,32 @@
                 [(ngModel)]="cliente.idContador" name="idContador" placeholder="ID del contador" readonly />
         </div>
 
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Departamento:</label>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="cliente.codigoDepart" name="codigoDepart"
+                (change)="onDepartamentChange()" required>
 
+                <option *ngFor="let dept of departaments" [value]="dept.id">{{ dept.nombre }}</option>
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Municipio:</label>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="cliente.codigoMuni" name="codigoMuni"
+                (change)="onCitiesChange()" required>
+
+                <option *ngFor="let city of filteredCities" [value]="city.id">{{ city.nombre }}</option>
+            </select>
+        </div>
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">Vereda:</label>
-            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="cliente.codigoVereda"
-                name="codigoVereda" placeholder="Nombre de la vereda" required />
-        </div>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="cliente.codigoVereda" name="codigoVereda"
+                required>
 
+                <option *ngFor="let vereda of filteredCorregimientos" [value]="vereda.id">{{ vereda.nombre }}</option>
+            </select>
+        </div>
 
         <div class="flex flex-col">
             <label class="mb-1 font-medium text-gray-700">N° Identificación:</label>
