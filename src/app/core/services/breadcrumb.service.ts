@@ -23,6 +23,7 @@ export class BreadcrumbService {
     // Módulo de clientes
     'client': 'Clientes',
     'create-client': 'Crear Cliente',
+    'update-client': 'Actualizar cliente',
 
     // Módulo de facturas/bills
     'bill': 'Facturas',
@@ -39,6 +40,10 @@ export class BreadcrumbService {
     // Módulo de empleados
     'employee': 'Empleados',
     'create-employee': 'Crear Empleado',
+
+    // Modulo de contador
+    'create-counter': 'Crear contador',
+    'update-counter': 'Actualizar contador',
 
     // Módulo de autenticación
     'auth': 'Autenticación',
