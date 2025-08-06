@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Table } from '@components/table/table';
 import { IDeudaCliente } from '@interfaces/IdeudaFactura';
 import { TableColumn } from '@interfaces/ItableColumn';
 import { DeudaService } from '../../service/deuda.service';
