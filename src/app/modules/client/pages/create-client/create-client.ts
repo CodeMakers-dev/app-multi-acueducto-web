@@ -12,6 +12,7 @@ import { ITipoDocumento } from '@interfaces/Iuser';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute , Router} from '@angular/router';
 import { ToastService } from '@services/toast.service';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 
 @Component({
   selector: 'app-create-client',

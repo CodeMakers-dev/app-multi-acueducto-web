@@ -71,6 +71,7 @@ export class UpdateEmployee implements OnInit {
     const payload = {
       id_empleado: this.empleado.id,
       numero_cedula: this.empleado.numeroIdentificacion,
+      codigo: this.empleado.codigo,
       primer_nombre: partes[0] || '',
       segundo_nombre: partes[1] || '',
       primer_apellido: partes[2] || '',

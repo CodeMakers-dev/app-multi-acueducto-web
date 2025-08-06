@@ -15,6 +15,7 @@ import { IEmpleadoEmpresaRequest, IEmpleadoResponse } from '@interfaces/Iemploye
 import { ToastService } from '@services/toast.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../../auth/service/user.service';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 
 @Component({
   selector: 'app-create-employee',

@@ -15,6 +15,7 @@ import { EnterpriseClientCounterService } from '../../../client/service/enterpri
 import { AuthService } from '../../../auth/service/auth.service';
 import { ToastService } from '@services/toast.service';
 import { UserService } from '../../../auth/service/user.service';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 
 @Component({
   selector: 'app-create-counter',

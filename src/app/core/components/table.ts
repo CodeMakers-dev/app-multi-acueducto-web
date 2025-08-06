@@ -96,7 +96,6 @@ export interface Action<T = any> {
   </table>
 </div>
 
-
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
