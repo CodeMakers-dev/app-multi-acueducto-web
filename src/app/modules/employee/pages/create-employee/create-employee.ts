@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ICity } from '@interfaces/Icity';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
+import { ICorregimiento } from '@interfaces/icorregimiento';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { DepartamentService } from '../../../auth/service/departament.service';
 import { CityService } from '../../../auth/service/city.service';

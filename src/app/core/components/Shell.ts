@@ -14,7 +14,7 @@ import { Toast } from '@shared/components/toast';
       <div class="app-shell__background"></div>
       <div class="app-shell__content">
         <app-header/>
-        <main class="app-shell__main pt-10">
+        <main class="app-shell__main pt-10  bg-white dark:bg-gray-900">
           <router-outlet/>
         </main>
         <app-footer/>
@@ -54,7 +54,6 @@ styles: [`
       flex: 1;
       min-height: 100vh;
       min-height: 100dvh;
-      background: transparent;
     }
   `],
 })

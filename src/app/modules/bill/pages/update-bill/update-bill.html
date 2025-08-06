@@ -1,60 +1,63 @@
 
 
-<div class="container mx-auto px-4 py-8">
-    <h2 class="text-2xl font-semibold text-center mb-6">Editar Factura</h2>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 flex items-center justify-center py-4">
+    <div class="max-w-3xl w-full mx-auto p-6">
+        <form (ngSubmit)="onSubmit()" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg dark:shadow-gray-700/50 border border-gray-200 dark:border-gray-700" *ngIf="factura">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-900 dark:text-white">Editar Factura</h2>
 
-    <form (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto" *ngIf="factura">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Código:</label>
-            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="factura.codigo" name="codigo" />
-        </div>
+                <div class="flex flex-col">
+                    <label class="mb-1 font-medium text-gray-700 dark:text-white">Código:</label>
+                    <input type="text" class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" [(ngModel)]="factura.codigo" name="codigo" />
+                </div>
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Fecha de emisión:</label>
-            <input type="date" class="p-3 border rounded-md w-full" [(ngModel)]="factura.fechaEmision"
-                name="fechaEmision" />
-        </div>
+                <div class="flex flex-col">
+                    <label class="mb-1 font-medium text-gray-700 dark:text-white">Fecha de emisión:</label>
+                    <input type="date" class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" [(ngModel)]="factura.fechaEmision"
+                        name="fechaEmision" />
+                </div>
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Consumo (m³):</label>
-            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="factura.consumo" name="consumo" />
-        </div>
+                <div class="flex flex-col">
+                    <label class="mb-1 font-medium text-gray-700 dark:text-white">Consumo (m³):</label>
+                    <input type="text" class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" [(ngModel)]="factura.consumo" name="consumo" />
+                </div>
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Fecha fin:</label>
-            <input type="date" class="p-3 border rounded-md w-full" [(ngModel)]="factura.fechaFin" name="fechaFin" />
-        </div>
+                <div class="flex flex-col">
+                    <label class="mb-1 font-medium text-gray-700 dark:text-white">Fecha fin:</label>
+                    <input type="date" class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" [(ngModel)]="factura.fechaFin" name="fechaFin" />
+                </div>
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Estado:</label>
-            <select class="p-3 border rounded-md w-full" [(ngModel)]="factura.estado.id" name="estadoId">
-                <option *ngFor="let est of estado" [ngValue]="est.id">
-                    {{ est.nombre }}
-                </option>
-            </select>
-        </div>
+                <div class="flex flex-col">
+                    <label class="mb-1 font-medium text-gray-700 dark:text-white">Estado:</label>
+                    <select class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" [(ngModel)]="factura.estado.id" name="estadoId">
+                        <option *ngFor="let est of estado" [ngValue]="est.id">
+                            {{ est.nombre }}
+                        </option>
+                    </select>
+                </div>
 
+                <div class="flex flex-col">
+                    <label class="mb-1 font-medium text-gray-700 dark:text-white">Consumo anormal:</label>
+                    <select class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" [(ngModel)]="factura.lectura.consumoAnormal"
+                        name="consumoAnormal">
+                        <option [ngValue]="true">Sí</option>
+                        <option [ngValue]="false">No</option>
+                    </select>
+                </div>
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Consumo anormal:</label>
-            <select class="p-3 border rounded-md w-full" [(ngModel)]="factura.lectura.consumoAnormal"
-                name="consumoAnormal">
-                <option [ngValue]="true">Sí</option>
-                <option [ngValue]="false">No</option>
-            </select>
-        </div>
+                <div class="flex flex-col">
+                    <label class="mb-1 font-medium text-gray-700 dark:text-white">Valor factura:</label>
+                    <input type="text" class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200" [(ngModel)]="factura.precio" name="consumo" />
+                </div>
 
-        <div class="flex flex-col">
-            <label class="mb-1 font-medium text-gray-700">Valor factura:</label>
-            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="factura.precio" name="consumo" />
-        </div>
-
-        <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
-            <button (click)="onSubmit()" type="submit"
-                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md shadow-md cursor-pointer">
-                Actualizar Factura
-            </button>
-        </div>
-    </form>
+                <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
+                    <button (click)="onSubmit()" type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md shadow-md dark:shadow-gray-700/50 cursor-pointer transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                        Actualizar Factura
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>

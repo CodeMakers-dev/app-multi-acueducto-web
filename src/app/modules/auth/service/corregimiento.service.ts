@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment.local';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ApiResponse } from '@interfaces/Iresponse';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
+import { ICorregimiento } from '@interfaces/icorregimiento';
 
 @Injectable({
   providedIn: 'root'
