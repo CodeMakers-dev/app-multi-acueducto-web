@@ -42,6 +42,11 @@ export const routes: Routes = [
         path: 'employee',
         loadChildren: () => import('./modules/employee/employee.routes')
         .then(m => m.default),
+      },
+      {
+        path: 'enterprise',
+        loadChildren: () => import('./modules/enterprise/enterprise.routes')
+        .then(m => m.default),
       }
     ],
   },

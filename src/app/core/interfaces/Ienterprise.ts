@@ -15,3 +15,18 @@ export interface IEnterprise {
     usuarioActualizacion: string;
     fechaModificacion: Date;
 }
+
+export interface IEnterpriseResponse {
+    id: number;
+
+    nombre: string;
+    nit: string;
+    codigo: string;
+    activo: boolean;
+
+    departamento: string;
+    ciudad: string;
+    corregimiento: string;
+    descripcionDireccion: string;
+   
+}
