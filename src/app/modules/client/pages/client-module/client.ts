@@ -99,7 +99,7 @@ export class Client {
   ]);
 
   clientData = computed(() => this.dataClientCounter.value() ?? []);
-  title = 'Clientes';
+  title = 'Gestion de clientes';
 
   constructor() {
     effect(() => {

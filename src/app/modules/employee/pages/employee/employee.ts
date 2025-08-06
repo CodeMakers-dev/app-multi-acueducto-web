@@ -66,7 +66,7 @@ export class Employee {
   ]);
 
   employeeData = computed(() => this.dataEmployeeCounter.value() ?? []);
-  title = 'Empleados';
+  title = 'Gestion de empleados';
 
 
   protected readonly empleadoService = inject(EmpleadoService);
