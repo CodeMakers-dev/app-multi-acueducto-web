@@ -63,9 +63,7 @@ import { Iuser } from '@interfaces/Iuser';
     } @else {
       <div></div>
     }
-
     <div class="flex items-center md:order-2 gap-2 md:space-x-0 rtl:space-x-reverse">
-
       <button id="theme-toggle" type="button"
         class="text-gray-500 dark:text-gray-400 inline-flex items-center justify-center
                hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4
@@ -82,7 +80,6 @@ import { Iuser } from '@interfaces/Iuser';
         </svg>
         <span class="sr-only">Toggle dark mode</span>
       </button>
-
       @if (isAuth()) {
         <button
           id="dropdownAvatarNameButton"
@@ -97,7 +94,6 @@ import { Iuser } from '@interfaces/Iuser';
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
           </svg>
         </button>
-
         <div id="dropdownAvatarName" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
           <div class="px-4 py-3 text-sm text-gray-900 dark:text-white" *ngIf="user() as u">
             <div class="font-medium">{{ u.persona.nombre }} {{ u.persona.apellido }}</div>
@@ -124,7 +120,6 @@ import { Iuser } from '@interfaces/Iuser';
             </button>
           </div>
         </div>
-
         <button
           type="button"
           data-collapse-toggle="navbar-user"
@@ -140,7 +135,6 @@ import { Iuser } from '@interfaces/Iuser';
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
         </button>
-
       } @else {
         <div class="flex items-center space-x-2">
           <app-link
@@ -157,11 +151,9 @@ import { Iuser } from '@interfaces/Iuser';
           </app-link>
         </div>
       }
-
     </div>
   </div>
 </nav>
-
 
 
 @if (isAuth()) {
