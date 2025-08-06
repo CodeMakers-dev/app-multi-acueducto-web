@@ -162,12 +162,12 @@ import { Iuser } from '@interfaces/Iuser';
 
 `,
 })
-export class Header  {
+export class Header {
 
   public readonly authService = inject(AuthService);
-  private readonly sanitizer   = inject(DomSanitizer);
-  private readonly router      = inject(Router);
-  private readonly toast       = inject(ToastService);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
   private readonly userService = inject(UserService);
   readonly isAuth = this.authService.isLoggedIn;
   readonly user = this.authService.user as Signal<Iuser | null>;
@@ -194,7 +194,7 @@ export class Header  {
   }
 
   private bytesToDataURL(bytes: number[]): string {
-    const blob   = new Blob([new Uint8Array(bytes)], { type: 'image/jpeg' });
+    const blob = new Blob([new Uint8Array(bytes)], { type: 'image/jpeg' });
     const reader = new FileReader();
     return new Promise<string>((res) => {
       reader.onloadend = () => res(reader.result as string);
@@ -246,19 +246,24 @@ export class Header  {
       link: '/employee',
       target: '_self',
     },
-        {
+    {
       name: 'Contadores',
       link: '/counter',
+      target: '_self',
+    },
+     {
+      name: 'Empresas',
+      link: '/enterprise',
       target: '_self',
     }
   ];
 
-      isScrolled = false;
+  isScrolled = false;
 
-    @HostListener('window:scroll', [])
-    onWindowScroll(): void {
-      this.isScrolled = window.scrollY > 0;
-    }
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.isScrolled = window.scrollY > 0;
+  }
 
 
 }

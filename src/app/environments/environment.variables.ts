@@ -40,6 +40,10 @@ export const END_POINT_SERVICE = {
   GET_LECTURA: 'Lectura',
 
   GET_ENTERPRISE: 'Empresa/usuario',
+  GET_ALL_ENTERPRISE:'Empresa/all',
+  GET_ENTER:'Empresa',
+  UPDATE_EMPRESA:'updateEmpresa',
+  UPDATE_ESTADO: 'update',
 };
 
 export const ENTERPRISE_CLIENT_COUNT = {

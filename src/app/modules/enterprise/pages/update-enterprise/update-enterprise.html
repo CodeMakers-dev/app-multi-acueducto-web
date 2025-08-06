@@ -1,0 +1,61 @@
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-semibold text-center mb-6">Editar Empresa</h2>
+
+    <form (ngSubmit)="onSubmit()" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto" *ngIf="empresa">
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Nombre empresa:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="empresa.nombre" name="nombre"
+                placeholder="nombre de empresa" required />
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Nit empresa:</label>
+            <input type="text" class="p-3 border rounded-md w-full " [(ngModel)]="empresa.nit" name="nit"
+                placeholder="nit de empresa" required />
+        </div>
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Codigo empresa:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="empresa.codigo" name="codigo"
+                placeholder="codigo empresa" required />
+        </div>
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Departamento:</label>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="empresa.departamento" name="codigoDepart"
+                (change)="onDepartamentChange()" required>
+                <option [ngValue]="null" disabled>Seleccione departamento</option>
+                <option *ngFor="let dept of departaments" [ngValue]="dept.id">{{ dept.nombre }}</option>
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Municipio:</label>
+            <select class="p-3 border rounded-md w-full" [(ngModel)]="empresa.ciudad" name="codigoMuni"
+                (change)="onCitiesChange()" required>
+
+                <option *ngFor="let city of filteredCities" [value]="city.id">{{ city.nombre }}</option>
+            </select>
+        </div>
+
+
+        <div class="flex flex-col">
+            <label class="mb-1 font-medium text-gray-700">Dirección:</label>
+            <input type="text" class="p-3 border rounded-md w-full" [(ngModel)]="empresa.direccion" name="direccion"
+                placeholder="Dirección de residencia" required />
+        </div>
+
+
+
+        <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
+            <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md shadow-md cursor-pointer">
+                Actualizar Empresa
+            </button>
+        </div>
+    </form>
+</div>
