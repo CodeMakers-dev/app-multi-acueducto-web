@@ -13,7 +13,7 @@ import { Iuser } from '@interfaces/Iuser';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, FormsModule, Link, BreadcrumbComponent, RouterLink],
+  imports: [CommonModule, FormsModule, Link, RouterLink],
   template: `
 <nav
   [ngClass]="{
