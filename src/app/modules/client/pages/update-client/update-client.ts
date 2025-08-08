@@ -8,7 +8,7 @@ import { ToastService } from '@services/toast.service';
 import { EnterpriseClientCounterService } from '../../service/enterpriseClientCounter.service';
 import { IDepartament } from '@interfaces/Idepartament';
 import { ICity } from '@interfaces/Icity';
-import { ICorregimiento } from '@interfaces/icorregimiento';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 import { DepartamentService } from '../../../auth/service/departament.service';
 import { CityService } from '../../../auth/service/city.service';
 import { CorregimientoService } from '../../../auth/service/corregimiento.service';

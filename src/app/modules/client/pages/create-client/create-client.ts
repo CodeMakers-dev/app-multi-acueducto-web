@@ -5,7 +5,7 @@ import { CorregimientoService } from '../../../auth/service/corregimiento.servic
 import { TypeDocumentService } from '../../service/typeDocument.service';
 import { IDepartament } from '@interfaces/Idepartament';
 import { ICity } from '@interfaces/Icity';
-import { ICorregimiento } from '@interfaces/icorregimiento';
+import { ICorregimiento } from '@interfaces/Icorregimiento';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ITipoDocumento } from '@interfaces/Iuser';

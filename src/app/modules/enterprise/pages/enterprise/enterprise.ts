@@ -139,7 +139,7 @@ export class Enterprise {
   }
 
   editar(row: any) {
-    const id = row?.id;
+    const id = row?.id_empresa;
     if (id) {
       this.router.navigate(['/enterprise/update-enterprise/', id], { relativeTo: this.route });
     } else {
