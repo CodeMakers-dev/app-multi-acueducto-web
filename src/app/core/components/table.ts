@@ -60,9 +60,15 @@ export interface Action<T = any> {
                    dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors"
           >
             @for (col of columns(); track col) {
-              <!-- Texto adaptativo: negro en modo claro, gris claro en modo oscuro -->
               <td class="px-6 py-4 text-gray-900 dark:text-gray-300 font-medium">
-                {{ row[col.field] }}
+                @if (columnTemplates()[col.field]; as templateRef) {
+                  <ng-container
+                    [ngTemplateOutlet]="templateRef"
+                    [ngTemplateOutletContext]="{ $implicit: row, row: row }"
+                  ></ng-container>
+                } @else {
+                  {{ row[col.field] }}
+                }
               </td>
             }
             <td class="px-6 py-4 text-right">
