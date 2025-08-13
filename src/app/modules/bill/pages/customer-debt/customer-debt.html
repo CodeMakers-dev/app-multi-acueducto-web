@@ -1,11 +1,5 @@
 
 
-  <div class="mb-4 flex items-center justify-start ml-4 space-x-2">
-    <button (click)="createdebt()" class="bg-green-600 w-10 h-10 rounded-full text-white flex justify-center items-center cursor-pointer hover:bg-green-700">
-      <i class="fas fa-plus"></i>
-    </button>
-  </div>
-
   <ng-template #actionsTemplate let-row>
     <div class="flex items-center space-x-2">
       <button (click)="handleTableAction({ action: 'edit', row })"
@@ -30,6 +24,7 @@
   [actionTemplate]="actionsTemplate"
   [showAddButton]="true"
   [addButtonText]="'Abono factura'"
+  [showSecondaryButton]="true"
+  (secondaryButtonAction)="createdebt()"
   (action)="handleTableAction($event)">
-</app-table-dynamic>
-
+  </app-table-dynamic>
