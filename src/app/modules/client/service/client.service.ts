@@ -12,4 +12,5 @@ export class ClientService {
   async getIds(): Promise<string[]> {
     return Array.from({ length: 100 }, (_, i) => (i + 1).toString());
   }
+  
 }

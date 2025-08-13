@@ -255,7 +255,13 @@ export class Header {
       name: 'Empresas',
       link: '/enterprise',
       target: '_self',
-    }
+    },
+    {
+      name: 'Contalibilidad',
+      link: '/accounting',
+      target: '_self',
+    },
+
   ];
 
   isScrolled = false;
