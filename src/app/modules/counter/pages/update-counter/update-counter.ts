@@ -16,60 +16,66 @@ import { TypeCounterService } from '../../service/typeCounter.service';
   selector: 'app-update-counter',
   imports: [CommonModule, FormsModule],
   template: `
-  <div class="container mx-auto px-4 py-8">
-  <h2 class="text-2xl font-semibold text-center mb-6">Editar Contador</h2>
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200 flex items-center justify-center py-4">
+    <div class="max-w-3xl w-full mx-auto p-6">
+        @if (contador) {
+            <form #f="ngForm" (ngSubmit)="onSubmit()" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg dark:shadow-gray-700/50 border border-gray-200 dark:border-gray-700">
+                <h2 class="text-2xl font-semibold text-center mb-6 text-gray-900 dark:text-white">Editar Contador</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex flex-col">
+                        <label class="mb-1 font-medium text-gray-700 dark:text-white">Tipo de Contador:</label>
+                        @let types = getCounterType.value();
+                        @if (types.length) {
+                            <select
+                                [(ngModel)]="selectedTipoContadorId"
+                                name="tipoContador"
+                                class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                            >
+                                @for (types of types; track types.id) {
+                                    <option [value]="types.id">{{ types.nombre }}</option>
+                                }
+                            </select>
+                        } @else {
+                            <p class="p-3 text-gray-500">Cargando tipos...</p>
+                        }
+                    </div>
 
-  @if (contador) {
-    <form #f="ngForm" (ngSubmit)="onSubmit()"
-          class="mx-auto max-w-md grid grid-cols-2 gap-4">
-      
-      <div class="col-span-1">
-  <label class="font-medium mb-1 block">Tipo de Contador:</label>
+                    <div class="flex flex-col">
+                        <label class="mb-1 font-medium text-gray-700 dark:text-white">Número de Serie:</label>
+                        <input
+                            type="text"
+                            [(ngModel)]="contador.serial"
+                            name="serial"
+                            class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                        />
+                    </div>
 
-  @let types = getCounterType.value();
-  
-  @if (types.length) {
-    <select
-  [(ngModel)]="selectedTipoContadorId"
-  name="tipoContador"
-  class="w-full p-3 border rounded-md"
->
-  @for (types of types; track types.id) {
-    <option [value]="types.id">{{ types.nombre }}</option>
-  }
-</select>
-  } @else {
-    <p class="text-gray-500">Cargando tipos...</p>
-  }
-</div>
+                    <div class="flex flex-col">
+                        <label class="mb-1 font-medium text-gray-700 dark:text-white">Dirección:</label>
+                        <input
+                            type="text"
+                            [(ngModel)]="contador.descripcion.descripcion"
+                            name="direccionDescripcion"
+                            class="p-3 border border-gray-300 dark:border-gray-600 rounded-md w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                        />
+                    </div>
 
-      <div class="col-span-1">
-        <label class="font-medium mb-1 block">Número de Serie:</label>
-        <input type="text"
-               [(ngModel)]="contador.serial"
-               name="serial"
-               class="w-full p-3 border rounded-md" />
-      </div>
+                    <div class="col-span-1"></div>
 
-      <div class="col-span-1">
-        <label class="font-medium mb-1 block">Dirección:</label>
-        <input type="text"
-               [(ngModel)]="contador.descripcion.descripcion"
-               name="direccionDescripcion"
-               class="w-full p-3 border rounded-md" />
-      </div>
-
-      <div class="col-span-1"></div>
-
-      <div class="col-span-2 flex justify-center mt-4">
-        <button type="submit"
-                [disabled]="f.invalid"
-                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-          Actualizar
-        </button>
-      </div>
-    </form>
-  }
+                    <div class="col-span-1 sm:col-span-2 flex justify-center mt-4">
+                        <button
+                            type="submit"
+                            [disabled]="f.invalid"
+                            class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md shadow-md dark:shadow-gray-700/50 cursor-pointer transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-2"
+                        >
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        }
+    </div>
 </div>
   `
 })

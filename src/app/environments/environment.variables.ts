@@ -77,3 +77,8 @@ export const TYPE_COUNTER = {
 export const ADDRESS = {
   ADDRESS: 'Direccion'
 };
+
+export const PRODUCT_CATEGORY = {
+  PRODUCT_CATEGORY: 'CategoriaProducto',
+  GET_ALL: 'all',
+}

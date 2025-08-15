@@ -6,37 +6,47 @@ import { InventarioService } from '../../service/inventario.service';
 import { ToastService } from '@services/toast.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { IInventario } from '@interfaces/Iaccounting';
+import { IInventario, IProducto } from '@interfaces/Iaccounting';
+import { ProductoService } from '../../service/producto.service';
+import { FormsModule } from '@angular/forms';
+import { ProductCategoryService } from '../../service/productCategory.service';
 
 @Component({
   selector: 'app-inventory',
-  imports: [CommonModule, RouterModule, TableComponent],
-  template: `
-  <ng-template #actionsTemplate let-row>
-    <div class="flex items-center space-x-4">
-      <button (click)="editar(row)"
-        class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
-        <i class="fas fa-edit"></i>
-      </button>
-      <button (click)="onDelete(row.id)"
-      class="text-red-600 hover:text-red-900 text-sm cursor-pointer">
-      <i class="fas fa-trash"></i>
-    </button>
-    </div>
-  </ng-template>
-  <app-table-dynamic
-    [title]="title"
-    [columns]="inventarioColumns()"
-    [datasource]="inventarioData()"
-    [actionTemplate]="actionsTemplate"
-    (action)="onTableAction($event)"
-    >
-  </app-table-dynamic> 
-`,
+  imports: [CommonModule, RouterModule, TableComponent, FormsModule],
+  templateUrl: './inventory.html',
 })
 export class Inventory {
+  enterpriseId = signal<number | undefined>(
+    Number(localStorage.getItem('enterpriseId')) || undefined
+  );
+
   showDeleteConfirm = signal(false);
   itemToDelete: number | null = null;
+
+  showSuggestions = signal(false);
+
+  searchTerm = signal('');
+
+  showNewProductPopup = signal(false);
+
+    newProductData = {
+    categoriaId: '',
+    codigo: '',
+    nombre: '',
+    descripcion: ''
+  };
+  
+  filteredProducts = computed(() => {
+    const products = this.dataProductByEnterprise.value() ?? [];
+    const term = this.searchTerm().toLowerCase();
+    if (!term) {
+      return products;
+    }
+    return products.filter(
+      (p: { nombre: string }) => p.nombre.toLowerCase().includes(term)
+    );
+  });
 
   inventarioColumns = signal([
     { field: 'nombre', header: 'Producto' },
@@ -47,55 +57,143 @@ export class Inventory {
   ]);
 
   inventarioData = computed(() => this.dataInventarioCounter.value() ?? []);
-  title = 'Gestion de Inventario';
 
+  formData = {
+  productoId: '',
+  cantidad: null,
+  valorUnidad: null,
+  porcentaje: '',
+  iva: false
+  };
+
+  categories = signal([]);
 
   constructor() {
+    const enterpriseId = Number(localStorage.getItem('enterpriseId'));
     effect(() => {
       console.log('InventarioData__________>', this.inventarioData());
+      console.log('ProductoData__________>', this.dataProductByEnterprise.value());
     });
   }
 
   protected readonly inventarioService = inject(InventarioService);
+  protected readonly productoService = inject(ProductoService);
+  protected readonly productCategory = inject(ProductCategoryService);
   protected readonly router = inject(Router);
   protected readonly route = inject(ActivatedRoute);
   protected readonly toastService = inject(ToastService);
 
   dataInventarioCounter = rxResource({
-  stream: () =>
-    this.inventarioService.getInventarioByEnterprise().pipe(
-      map((data: { response: IInventario[] }) => {
-        return data.response.map((empresaItem) => ({
-          id: empresaItem.id,
-          nombre: empresaItem.nombre,
-          cantidad: empresaItem.cantidad,
-          precioUnitario: `$ ${empresaItem.precioUnitario}`,
-          porcentaje: `% ${empresaItem.porcentaje}`,
-          precioVenta: `$ ${empresaItem.precioVenta}`,
+    stream: () =>
+      this.inventarioService.getInventarioByEnterprise().pipe(
+        map((data: { response: IInventario[] }) => {
+          return data.response.map((empresaItem) => ({
+            id: empresaItem.id,
+            nombre: empresaItem.nombre,
+            cantidad: empresaItem.cantidad,
+            precioUnitario: `$ ${empresaItem.precioUnitario}`,
+            porcentaje: `% ${empresaItem.porcentaje}`,
+            precioVenta: `$ ${empresaItem.precioVenta}`,
+          }));
+        })
+      ),
+  });
+  
+  dataProductByEnterprise = rxResource({
+  stream: () => {
+    const id = this.enterpriseId();
+    if (!id) {
+      throw new Error('Enterprise ID is required');
+    }
+
+    return this.productoService.getProductByIdEnterprise(id).pipe(
+      map((data: { response: IProducto[] }) => {
+        return data.response.map((productoItem) => ({
+          id: productoItem.id,
+          nombre: productoItem.nombre
+          }));
+        })
+      );
+    }
+  });
+
+  dataProductCategory = rxResource({
+    stream: () => this.productCategory.getAllProductCategory().pipe(
+      map((data: { response: IProducto[] }) => {
+        return data.response.map((categoryItem) => ({
+          id: categoryItem.id,
+          nombre: categoryItem.nombre
         }));
       })
     )
-});
+  });
 
-editar(row: any) {
+  editar(row: any) {
     const id = row?.id;
     if (id) {
-      this.router.navigate(['/inventory/update-inventory/', id], { relativeTo: this.route });
+      this.router.navigate(['/inventory/update-inventory/', id], {
+        relativeTo: this.route,
+      });
     } else {
       this.toastService.error('Error', 'ID de producto no válido.');
     }
   }
 
   onTableAction(event: Action) {
-      if (event.action === 'add') {
-        this.router.navigate(['create-inventory'], { relativeTo: this.route });
-      } else if (event.action === 'edit' && event.row) {
-        this.editar(event.row);
-      }
+    if (event.action === 'add') {
+      this.router.navigate(['create-inventory'], { relativeTo: this.route });
+    } else if (event.action === 'edit' && event.row) {
+      this.editar(event.row);
     }
+  }
 
-      onDelete(id: number): void {
+  onDelete(id: number): void {
     this.itemToDelete = id;
     this.showDeleteConfirm.set(true);
+  }
+
+  openNewProductPopup() {
+    this.showNewProductPopup.set(true);
+  }
+
+  closeNewProductPopup() {
+    this.showNewProductPopup.set(false);
+    this.newProductData = {
+      categoriaId: '',
+      codigo: '',
+      nombre: '',
+      descripcion: ''
+    };
+  }
+  
+  createNewProduct() {
+    console.log('Nuevo producto a crear:', this.newProductData);
+    this.toastService.success('Éxito', 'Producto creado (simulado).');
+    this.closeNewProductPopup();
+  }
+
+  agregarProducto() {
+  }
+
+  guardarProducto() {
+    console.log('Datos del formulario:', this.formData);
+  }
+
+  calcularValorVentaUnit(): number | null {
+    const { valorUnidad, porcentaje } = this.formData;
+    if (valorUnidad == null || porcentaje == null || porcentaje === '') {
+      return null;
+    }
+    const porcentajeNumerico = parseFloat(String(porcentaje));
+    if (isNaN(porcentajeNumerico)) {
+      return null;
+    }
+    return valorUnidad + (valorUnidad * (porcentajeNumerico / 100));
+  }
+
+  selectProduct(producto: { id: number; nombre: string }) {
+    this.formData.productoId = producto.id.toString();
+    this.searchTerm.set(producto.nombre);
+    this.showSuggestions.set(false);
   }
 }
