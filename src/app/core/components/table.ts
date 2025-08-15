@@ -132,8 +132,8 @@ export class TableComponent {
   showSecondaryButton = input<boolean>(false);
   secondaryButtonText = input<string>('');
   secondaryButtonIcon = input<string>('fas fa-plus');
-  secondaryButtonColor = input<string>('green-200');
-  secondaryButtonHover = input<string>('green-400');
+  secondaryButtonColor = input<string>('green-400');
+  secondaryButtonHover = input<string>('green-600');
   secondaryButtonAction = output<void>();
 
   onSearchInput(event: Event) {
