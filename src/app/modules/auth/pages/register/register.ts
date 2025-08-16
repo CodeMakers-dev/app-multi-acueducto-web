@@ -16,7 +16,7 @@ import { ICity } from '../../../../../app/core/interfaces/Icity';
 import { CommonModule } from '@angular/common';
 import { ApiResponse } from '@interfaces/Iresponse';
 import { ToastService } from '@services/toast.service';
-import { ICorregimiento } from '@interfaces/Icorregimiento';
+import { ICorregimiento } from '@interfaces/icorregimiento';
 
 
 @Component({

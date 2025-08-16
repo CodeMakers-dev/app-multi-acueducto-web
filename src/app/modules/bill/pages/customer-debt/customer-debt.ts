@@ -13,7 +13,37 @@ import { map } from 'rxjs';
 @Component({
   selector: 'app-customer-debt',
   imports: [CommonModule, TableComponent, RouterModule],
-  templateUrl: './customer-debt.html',
+  template: `
+    <ng-template #actionsTemplate let-row>
+    <div class="flex items-center space-x-2">
+      <button (click)="handleTableAction({ action: 'edit', row })"
+        class="text-green-600 hover:text-green-900 text-sm">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button (click)="redirigirCrearAbono(row.id)"
+        class="text-yellow-600 hover:text-yellow-900 text-sm">
+        <i class="fas fa-coins"></i>
+      </button>
+      <button (click)="handleTableAction({ action: 'delete', row })"
+        class="text-red-600 hover:text-red-900 text-sm">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  </ng-template>
+
+  <app-table-dynamic
+  [title]="title()"
+  [columns]="debtColumns()"
+  [datasource]="debtData()"
+  [actionTemplate]="actionsTemplate"
+  [showAddButton]="true"
+  [addButtonText]="'Abono factura'"
+  [showSecondaryButton]="true"
+  (secondaryButtonAction)="createdebt()"
+  (action)="handleTableAction($event)">
+  </app-table-dynamic>
+
+  `
 })
 export class CustomerDebt {
 
@@ -41,6 +71,15 @@ export class CustomerDebt {
       );
     });
   }
+
+
+  /** commentNg
+ * @author [PipeChavarro]
+ *
+ * @remarks
+ * El componente no debería realizar ninguna lógica para mostrar la data; toda la lógica de transformación debe hacerse en el backend.
+ * Si existe alguna lógica que no se pueda realizar desde el backend, debe implementarse en el service de Angular, no en el componente.
+ */
 
   dataDebts = rxResource({
     stream: () => this.deudaService.getAllDeuda(
