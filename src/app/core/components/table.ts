@@ -9,7 +9,6 @@ import {
   computed,
 } from '@angular/core';
 
-/** Evento emitido al hacer clic en "add" o "edit". */
 export interface Action<T = any> {
   action: string;
   row?: T;
@@ -21,7 +20,6 @@ export interface Action<T = any> {
   imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- ────── ENCABEZADO: título, buscador, selector de filas y botón "Agregar" ────── -->
     <div class="px-4 sm:px-6 lg:px-8 py-6 pb-0">
       <div class="mb-6">
         <h1
@@ -33,7 +31,6 @@ export interface Action<T = any> {
         <div
           class="flex flex-col sm:flex-row sm:items-center gap-4 justify-between"
         >
-          <!-- buscador -->
           <div class="w-full max-w-sm">
             <input
               type="text"
@@ -43,7 +40,6 @@ export interface Action<T = any> {
             />
           </div>
 
-          <!-- selector de filas por página -->
           <div class="flex items-center gap-4">
             <select
               class="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600"
@@ -59,7 +55,6 @@ export interface Action<T = any> {
             >
           </div>
 
-          <!-- botón "Agregar" -->
           @if (showAddButton()) {
             <button
               class="bg-blue-200 hover:bg-blue-400 text-gray-700 font-bold py-3 px-6 rounded-lg shadow-lg shadow-neutral-400 hover:text-white transform transition-all duration-500 ease-in-out hover:scale-110 hover:brightness-110 hover:animate-pulse active:animate-bounce flex items-center gap-2 whitespace-nowrap cursor-pointer"
@@ -87,7 +82,6 @@ export interface Action<T = any> {
       </div>
     </div>
 
-    <!-- ────── TABLA ────── -->
     <div
       class="relative overflow-x-auto shadow-md sm:rounded-lg mx-4 sm:mx-6 lg:mx-8 bg-white dark:bg-gray-900"
     >
@@ -154,18 +148,14 @@ export interface Action<T = any> {
           }
         </tbody>
       </table>
-
-      <!-- ────── PIE: información y paginador ────── -->
       <div
         class="flex flex-col sm:flex-row items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400 text-sm"
       >
-        <!-- info "Showing x to y of n entries" -->
         <span>
           Showing {{ startEntry() }} to {{ endEntry() }} of
           {{ filtered().length }} entries
         </span>
 
-        <!-- paginador -->
         <nav class="mt-3 sm:mt-0 inline-flex items-center gap-1">
           <button
             class="px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -199,7 +189,6 @@ export interface Action<T = any> {
   `,
 })
 export class TableComponent {
-  /* ────────────── @Inputs ──────────────── */
   columns = input<{ field: string; header: string }[]>([]);
   title = input<string>('');
   datasource = input<any[]>([]);
@@ -207,19 +196,19 @@ export class TableComponent {
   showAddButton = input<boolean>(false);
   addButtonText = input<string>('Agregar');
   columnTemplates = input<Record<string, TemplateRef<any>>>({});
-
-  /* ────────────── @Output ──────────────── */
+  showSecondaryButton = input<boolean>(false);
+  secondaryButtonText = input<string>('Crear');
   action = output<Action>();
+  secondaryButtonAction = output<void>();
 
-  /* ────────────── Búsqueda ──────────────── */
+
   private readonly search = signal<string>('');
   onSearchInput(event: Event) {
     const value = (event.target as HTMLInputElement | null)?.value ?? '';
     this.search.set(value);
-    this.pageIndex.set(0); // reinicia a la primera página al buscar
+    this.pageIndex.set(0);
   }
 
-  /* ────────────── Paginación ──────────────── */
   readonly pageSizeOptions = [5, 10, 25, 50];
   readonly pageSize = signal<number>(this.pageSizeOptions[0]);
   readonly pageIndex = signal<number>(0);
@@ -227,7 +216,7 @@ export class TableComponent {
   onPageSizeChange(event: Event) {
     const value = Number((event.target as HTMLSelectElement).value);
     this.pageSize.set(value);
-    this.pageIndex.set(0); // vuelve a página 1 al cambiar tamaño
+    this.pageIndex.set(0);
   }
 
   prevPage() {
@@ -242,7 +231,6 @@ export class TableComponent {
     this.pageIndex.set(i);
   }
 
-  /* ────────────── Datos filtrados y "slice" por página ──────────────── */
   readonly filtered = computed(() => {
     const term = this.search().toLowerCase().trim();
     if (!term) return this.datasource() ?? [];
@@ -255,7 +243,6 @@ export class TableComponent {
     );
   });
 
-  /** páginas totales (≥ 1 para que siempre haya paginador) */
   readonly totalPages = computed(() =>
     Math.max(
       1,
@@ -263,17 +250,14 @@ export class TableComponent {
     ),
   );
 
-  /** subconjunto de filas que se muestran en la página actual */
   readonly pagedRows = computed(() => {
     const start = this.pageIndex() * this.pageSize();
     return this.filtered().slice(start, start + this.pageSize());
   });
 
-  /** rango para *ngFor con los botones 1…n */
   createRange = (n: number) =>
     Array.from({ length: n }, (_, i) => i);
 
-  /** índices mostrados en el texto "Showing x to y of n" */
   readonly startEntry = computed(() =>
     this.filtered().length ? this.pageIndex() * this.pageSize() + 1 : 0,
   );
@@ -284,11 +268,9 @@ export class TableComponent {
     ),
   );
 
-  /* ────────────── Acción add/edit ──────────────── */
   onAction(type: string, row: any) {
     this.action.emit({ action: type, row });
   }
 
-  /* ────────────── trackBy ──────────────── */
   trackById = (_: number, row: any) => row.id ?? _;
 }
