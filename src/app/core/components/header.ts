@@ -13,7 +13,7 @@ import { Iuser } from '@interfaces/Iuser';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, FormsModule, Link, BreadcrumbComponent, RouterLink],
+  imports: [CommonModule, FormsModule, Link],
   template: `
 <nav
   [ngClass]="{
@@ -23,46 +23,14 @@ import { Iuser } from '@interfaces/Iuser';
   class="fixed top-0 left-0 right-0 z-[9999] bg-white/70 dark:bg-gray-900/60 backdrop-blur-md border-b transition-all duration-300"
 >
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2.5">
-
-    @if (isAuth()) {
       <div id="navbar-user" class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
         <ul
           class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 dark:border-gray-800
                  rounded-lg bg-gray-50 dark:bg-gray-800/30 md:space-x-8 rtl:space-x-reverse
                  md:flex-row md:mt-0 md:border-0 md:bg-transparent md:dark:bg-transparent"
         >
-          @for (item of linkListHeader; track $index) {
-            <button
-              [routerLink]="item.link"
-              class="overflow-hidden relative w-32 p-2 h-12 bg-transparent
-                     text-gray-700 dark:text-gray-200 border-none rounded-md text-xl font-bold
-                     cursor-pointer relative z-10 group flex items-center justify-center"
-            >
-              {{ item.name }}
-              <span
-                class="absolute w-36 h-32 -top-8 -left-2 bg-gray-400 dark:bg-gray-500/70
-                       rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform
-                       group-hover:duration-500 duration-1000 origin-left"></span>
-              <span
-                class="absolute w-36 h-32 -top-8 -left-2 bg-gray-800 dark:bg-gray-700
-                       rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform
-                       group-hover:duration-700 duration-700 origin-left"></span>
-              <span
-                class="absolute w-36 h-32 -top-8 -left-2 bg-gray-900 dark:bg-gray-900
-                       rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform
-                       group-hover:duration-1000 duration-500 origin-left"></span>
-              <span
-                class="text-white group-hover:opacity-100 group-hover:duration-1000
-                       duration-100 opacity-0 absolute inset-0 flex items-center justify-center z-10">
-                {{ item.name }}
-              </span>
-            </button>
-          }
         </ul>
       </div>
-    } @else {
-      <div></div>
-    }
     <div class="flex items-center md:order-2 gap-2 md:space-x-0 rtl:space-x-reverse">
       <button id="theme-toggle" type="button"
         class="text-gray-500 dark:text-gray-400 inline-flex items-center justify-center
@@ -80,7 +48,6 @@ import { Iuser } from '@interfaces/Iuser';
         </svg>
         <span class="sr-only">Toggle dark mode</span>
       </button>
-      @if (isAuth()) {
         <button
           id="dropdownAvatarNameButton"
           data-dropdown-toggle="dropdownAvatarName"
@@ -135,30 +102,9 @@ import { Iuser } from '@interfaces/Iuser';
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
         </button>
-      } @else {
-        <div class="flex items-center space-x-2">
-          <app-link
-            [link]="'/auth/login'"
-            class="text-gray-700 dark:text-gray-200 hover:text-blue-600 px-3 py-2 text-sm font-medium"
-          >
-            Iniciar Sesión
-          </app-link>
-          <app-link
-            [link]="'/auth/register'"
-            class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-          >
-            Registrarse
-          </app-link>
-        </div>
-      }
     </div>
   </div>
 </nav>
-
-
-@if (isAuth()) {
-  <!-- <app-breadcrumb></app-breadcrumb> -->
-}
 
 `,
 })

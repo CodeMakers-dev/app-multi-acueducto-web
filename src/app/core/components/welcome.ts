@@ -1,4 +1,6 @@
+import { RouterLink } from '@angular/router';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Link } from "@shared/components/link";
 
 @Component({
   selector: 'app-Welcome',
@@ -6,6 +8,20 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   template: `
     <section class="pt-5 py-12 lg:py-10 bg-transparent">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-end space-x-2 mb-4">
+  <app-link
+            [link]="'/auth/login'"
+            class="text-gray-700 dark:text-gray-200 hover:text-blue-600 px-3 py-2 text-sm font-medium"
+          >
+            Iniciar Sesión
+          </app-link>
+          <app-link
+    [link]="'/auth/register'"
+    class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+  >
+    Registrarse
+  </app-link>
+        </div>
         <div class="flex items-center mb-8 lg:mb-2">
           <div
             class="w-12 h-12 bg-blue-500 rounded-full mr-4 flex items-center justify-center"
@@ -50,5 +66,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     </section>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [Link],
 })
 export class Welcome {}

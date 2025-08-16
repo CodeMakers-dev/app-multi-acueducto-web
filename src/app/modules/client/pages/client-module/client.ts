@@ -19,13 +19,13 @@ import { PopupComponent } from "@shared/components/popUp";
  template: `
   <ng-template #actionsTemplate let-row>
     <div class="flex items-center space-x-4">
-      
+
       <button (click)="editar(row)"
         class="text-green-600 hover:text-green-900 text-sm cursor-pointer">
         <i class="fas fa-edit"></i>
       </button>
 
-      
+
       <button (click)="onDelete(row.id)"
         class="text-red-600 hover:text-red-900 text-sm cursor-pointer">
         <i class="fas fa-trash"></i>
@@ -56,7 +56,7 @@ import { PopupComponent } from "@shared/components/popUp";
     </div>
   </ng-template>
 
- 
+
   <app-table-dynamic
     [title]="title"
     [columns]="clienteColumns()"
@@ -68,7 +68,7 @@ import { PopupComponent } from "@shared/components/popUp";
     (action)="onTableAction($event)">
   </app-table-dynamic>
 
-  
+
   <app-pop-up
     [open]="showDeleteConfirm"
     [isConfirmation]="true"
@@ -105,14 +105,15 @@ export class Client {
     effect(() => {
       console.log('clientData__________>', this.clientData());
     });
-  }
+  }  
+
   protected readonly enterpriseClientCounterService = inject(EnterpriseClientCounterService);
   protected readonly router = inject(Router);
   protected readonly route = inject(ActivatedRoute);
   protected readonly toastService = inject(ToastService);
 
   dataClientCounter = rxResource({
-    stream: () => this.enterpriseClientCounterService.getAllClienteEnterprise().pipe(
+    stream: () => this.enterpriseClientCounterService.getAllClienteEnterprise().pipe(  // cambiar por el endpoint de getAllCounterByIdEnterprise , me trae las cleintesa asociados a ala empresa
       map(data => {
         return (data.clientes ?? []).map(clienteItem => {
           const personaId = clienteItem.cliente?.id;
@@ -148,7 +149,7 @@ export class Client {
     activo: nuevoEstado,
     usuario_cambio: localStorage.getItem('nameUser') || 'admin'
   }).subscribe({
-    next: (response) => {      
+    next: (response) => {
       row.estado = nuevoEstado;
       this.toastService.success('Éxito', 'Estado actualizado correctamente');
     },
