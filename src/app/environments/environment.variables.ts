@@ -1,3 +1,5 @@
+import { ProductoService } from "../modules/accounting/service/producto.service";
+
 export const END_POINT_SERVICE = {
   POST_AUTH_USER: 'Usuario/Autentication',
   POST_REC_PASS: 'recoverPassword',
@@ -44,6 +46,12 @@ export const END_POINT_SERVICE = {
   GET_ENTER:'Empresa',
   UPDATE_EMPRESA:'updateEmpresa',
   UPDATE_ESTADO: 'update',
+
+  GET_INVENTORY:'Inventario',
+  GET_ALL_INVENTORY:'empresa',
+
+  GET_PRODUC:'Producto',
+  GET_ALL_PRODUC:'empresa'
 };
 
 export const ENTERPRISE_CLIENT_COUNT = {
@@ -69,3 +77,8 @@ export const TYPE_COUNTER = {
 export const ADDRESS = {
   ADDRESS: 'Direccion'
 };
+
+export const PRODUCT_CATEGORY = {
+  PRODUCT_CATEGORY: 'CategoriaProducto',
+  GET_ALL: 'all',
+}

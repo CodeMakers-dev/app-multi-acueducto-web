@@ -9,7 +9,7 @@ import {
   computed,
 } from '@angular/core';
 
-/** Evento emitido al hacer clic en “add” o “edit”. */
+/** Evento emitido al hacer clic en "add" o "edit". */
 export interface Action<T = any> {
   action: string;
   row?: T;
@@ -21,7 +21,7 @@ export interface Action<T = any> {
   imports: [NgTemplateOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- ────── ENCABEZADO: título, buscador, selector de filas y botón “Agregar” ────── -->
+    <!-- ────── ENCABEZADO: título, buscador, selector de filas y botón "Agregar" ────── -->
     <div class="px-4 sm:px-6 lg:px-8 py-6 pb-0">
       <div class="mb-6">
         <h1
@@ -59,7 +59,7 @@ export interface Action<T = any> {
             >
           </div>
 
-          <!-- botón “Agregar” -->
+          <!-- botón "Agregar" -->
           @if (showAddButton()) {
             <button
               class="bg-blue-200 hover:bg-blue-400 text-gray-700 font-bold py-3 px-6 rounded-lg shadow-lg shadow-neutral-400 hover:text-white transform transition-all duration-500 ease-in-out hover:scale-110 hover:brightness-110 hover:animate-pulse active:animate-bounce flex items-center gap-2 whitespace-nowrap cursor-pointer"
@@ -159,7 +159,7 @@ export interface Action<T = any> {
       <div
         class="flex flex-col sm:flex-row items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-400 text-sm"
       >
-        <!-- info “Showing x to y of n entries” -->
+        <!-- info "Showing x to y of n entries" -->
         <span>
           Showing {{ startEntry() }} to {{ endEntry() }} of
           {{ filtered().length }} entries
@@ -242,7 +242,7 @@ export class TableComponent {
     this.pageIndex.set(i);
   }
 
-  /* ────────────── Datos filtrados y “slice” por página ──────────────── */
+  /* ────────────── Datos filtrados y "slice" por página ──────────────── */
   readonly filtered = computed(() => {
     const term = this.search().toLowerCase().trim();
     if (!term) return this.datasource() ?? [];
@@ -273,7 +273,7 @@ export class TableComponent {
   createRange = (n: number) =>
     Array.from({ length: n }, (_, i) => i);
 
-  /** índices mostrados en el texto “Showing x to y of n” */
+  /** índices mostrados en el texto "Showing x to y of n" */
   readonly startEntry = computed(() =>
     this.filtered().length ? this.pageIndex() * this.pageSize() + 1 : 0,
   );

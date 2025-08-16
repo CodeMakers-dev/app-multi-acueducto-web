@@ -47,6 +47,11 @@ export const routes: Routes = [
         path: 'enterprise',
         loadChildren: () => import('./modules/enterprise/enterprise.routes')
         .then(m => m.default),
+      },
+      {
+        path: 'accounting',
+        loadChildren: () => import('./modules/accounting/accounting.route')
+        .then(m => m.default),
       }
     ],
   },
