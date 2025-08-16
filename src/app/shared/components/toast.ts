@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ToastService } from '@services/toast.service';
-
+// implementacion de mejora en e componente de toast https://uiverse.io/hoshikawamaki/weak-cheetah-93
 @Component({
   selector: 'app-toast',
   standalone: true,
